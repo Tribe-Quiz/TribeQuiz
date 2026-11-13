@@ -12,7 +12,7 @@ let score = 0;
 let selectedAnswer = null;
 let answerSubmitted = false;
 let toastTimer;
-
+//fkjhgfdsdfghjkjhgtfr
 async function loadQuizData() {
   try {
     const response = await fetch("/api/quiz");

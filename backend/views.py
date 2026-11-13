@@ -2,16 +2,22 @@ import hashlib
 import hmac
 import json
 import logging
+import mimetypes
 import re
 import secrets
 import smtplib
 import sqlite3
 import uuid
 from datetime import datetime, timedelta, timezone
+from functools import wraps
+from pathlib import Path
 
-from fastapi import APIRouter, Cookie, HTTPException, Response
+from django.http import FileResponse, Http404, JsonResponse
+from django.views.decorators.csrf import ensure_csrf_cookie
+from pydantic import ValidationError
 
 from backend.database import database
+from backend.errors import APIError
 from backend.mailer import (
     APP_BASE_URL,
     is_configured as is_mail_configured,
@@ -42,50 +48,112 @@ from backend.security import (
 )
 
 
-router = APIRouter()
+BASE_DIR = Path(__file__).resolve().parent.parent
+FRONTEND_DIR = BASE_DIR / "frontend"
 logger = logging.getLogger(__name__)
 RESET_TOKEN_LIFETIME = timedelta(hours=1)
 RESET_REQUEST_COOLDOWN = timedelta(seconds=60)
 VERIFICATION_TOKEN_LIFETIME = timedelta(hours=24)
 VERIFICATION_REQUEST_COOLDOWN = timedelta(seconds=60)
+FRONTEND_FILES = {
+    "index.html",
+    "auth.html",
+    "forgot-password.html",
+    "reset-password.html",
+    "verify-email.html",
+    "styles.css",
+    "api.js",
+    "app.js",
+    "auth.js",
+    "forgot-password.js",
+    "reset-password.js",
+    "verify-email.js",
+}
 
 
-@router.get("/api/health")
-def health() -> dict:
-    return {"status": "ok"}
+def api_endpoint(method: str):
+    def decorate(view):
+        @wraps(view)
+        def wrapped(request, *args, **kwargs):
+            if request.method != method:
+                response = JsonResponse({"detail": "Method not allowed."}, status=405)
+                response["Allow"] = method
+                return response
+            try:
+                return view(request, *args, **kwargs)
+            except APIError as error:
+                return JsonResponse({"detail": error.detail}, status=error.status_code)
+
+        return wrapped
+
+    return decorate
 
 
-@router.get("/api/quiz")
-def get_quiz() -> dict:
+def parse_payload(request, schema):
+    try:
+        body = json.loads(request.body)
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise APIError(400, "Request body must be valid JSON.") from error
+    try:
+        return schema.model_validate(body)
+    except ValidationError as error:
+        details = [
+            {"loc": list(item["loc"]), "msg": item["msg"], "type": item["type"]}
+            for item in error.errors()
+        ]
+        raise APIError(422, details) from error
+
+
+def json_response(data: dict, status: int = 200) -> JsonResponse:
+    return JsonResponse(data, status=status)
+
+
+@api_endpoint("GET")
+def health(request):
+    return json_response({"status": "ok"})
+
+
+@api_endpoint("GET")
+def get_quiz(request):
     with database() as connection:
         cultures = [dict(row) for row in connection.execute("SELECT * FROM cultures ORDER BY id")]
-        questions = [dict(row) for row in connection.execute("SELECT id, prompt, options_json, note FROM questions ORDER BY id")]
+        questions = [
+            dict(row)
+            for row in connection.execute(
+                "SELECT id, prompt, options_json, note FROM questions ORDER BY id"
+            )
+        ]
     for question in questions:
         question["options"] = json.loads(question.pop("options_json"))
-    return {"cultures": cultures, "questions": questions}
+    return json_response({"cultures": cultures, "questions": questions})
 
 
-@router.post("/api/auth/signup", status_code=202)
-def signup(payload: SignupRequest) -> dict:
+@api_endpoint("POST")
+def signup(request):
+    payload = parse_payload(request, SignupRequest)
     if not is_mail_configured():
-        raise HTTPException(status_code=503, detail="Email verification is not configured on this server.")
+        raise APIError(503, "Email verification is not configured on this server.")
     email = payload.email.strip().lower()
     if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]+", email):
-        raise HTTPException(status_code=400, detail="Enter a valid email address.")
+        raise APIError(400, "Enter a valid email address.")
     name = payload.name.strip()
     if not name:
-        raise HTTPException(status_code=400, detail="Add a display name to create your account.")
+        raise APIError(400, "Add a display name to create your account.")
+
     now = datetime.now(timezone.utc)
     with database() as connection:
         if connection.execute("SELECT 1 FROM users WHERE email = ?", (email,)).fetchone():
-            raise HTTPException(status_code=409, detail="An account with that email already exists.")
+            raise APIError(409, "An account with that email already exists.")
         connection.execute("DELETE FROM pending_signups WHERE expires_at <= ?", (now.isoformat(),))
         pending = connection.execute(
             "SELECT created_at FROM pending_signups WHERE email = ?",
             (email,),
         ).fetchone()
         if pending and datetime.fromisoformat(pending["created_at"]) > now - VERIFICATION_REQUEST_COOLDOWN:
-            return {"message": "If this email can be registered, a verification link was sent. Check your inbox or try again shortly."}
+            return json_response(
+                {"message": "If this email can be registered, a verification link was sent. Check your inbox or try again shortly."},
+                status=202,
+            )
 
         token = secrets.token_urlsafe(32)
         token_hash = hashlib.sha256(token.encode()).hexdigest()
@@ -119,12 +187,16 @@ def signup(payload: SignupRequest) -> dict:
                 "DELETE FROM pending_signups WHERE email = ? AND token_hash = ?",
                 (email, token_hash),
             )
-        raise HTTPException(status_code=503, detail="Could not send the verification email. Please try again later.") from error
-    return {"message": "Verification email sent. Open the link in your email to activate your account."}
+        raise APIError(503, "Could not send the verification email. Please try again later.") from error
+    return json_response(
+        {"message": "Verification email sent. Open the link in your email to activate your account."},
+        status=202,
+    )
 
 
-@router.post("/api/auth/verify-email")
-def verify_email(payload: VerifyEmailRequest, response: Response) -> dict:
+@api_endpoint("POST")
+def verify_email(request):
+    payload = parse_payload(request, VerifyEmailRequest)
     token_hash = hashlib.sha256(payload.token.encode()).hexdigest()
     now = datetime.now(timezone.utc).isoformat()
     try:
@@ -135,7 +207,7 @@ def verify_email(payload: VerifyEmailRequest, response: Response) -> dict:
                 (token_hash, now),
             ).fetchone()
             if pending is None:
-                raise HTTPException(status_code=400, detail="This verification link is invalid or has expired.")
+                raise APIError(400, "This verification link is invalid or has expired.")
             cursor = connection.execute(
                 "INSERT INTO users (name, email, password_hash, created_at) VALUES (?, ?, ?, ?)",
                 (pending["name"], pending["email"], pending["password_hash"], now),
@@ -143,36 +215,40 @@ def verify_email(payload: VerifyEmailRequest, response: Response) -> dict:
             user_id = cursor.lastrowid
             connection.execute("DELETE FROM pending_signups WHERE email = ?", (pending["email"],))
     except sqlite3.IntegrityError as error:
-        raise HTTPException(status_code=409, detail="An account with that email already exists.") from error
+        raise APIError(409, "An account with that email already exists.") from error
 
+    response = json_response({"user": public_user(user_id)})
     issue_session(user_id, response)
-    return {"user": public_user(user_id)}
+    return response
 
 
-@router.post("/api/auth/signin")
-def signin(payload: LoginRequest, response: Response) -> dict:
+@api_endpoint("POST")
+def signin(request):
+    payload = parse_payload(request, LoginRequest)
     email = payload.email.strip().lower()
     with database() as connection:
         user = connection.execute("SELECT id, password_hash FROM users WHERE email = ?", (email,)).fetchone()
     if user is None or not password_matches(payload.password, user["password_hash"]):
-        raise HTTPException(status_code=401, detail="Email or password is incorrect.")
+        raise APIError(401, "Email or password is incorrect.")
+    response = json_response({"user": public_user(user["id"])})
     issue_session(user["id"], response)
-    return {"user": public_user(user["id"])}
+    return response
 
 
-@router.post("/api/auth/forgot-password")
-def forgot_password(payload: ForgotPasswordRequest) -> dict:
+@api_endpoint("POST")
+def forgot_password(request):
+    payload = parse_payload(request, ForgotPasswordRequest)
     if not is_mail_configured():
-        raise HTTPException(status_code=503, detail="Password reset email is not configured on this server.")
+        raise APIError(503, "Password reset email is not configured on this server.")
 
     email = payload.email.strip().lower()
     if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]+", email):
-        return {"message": "If an account exists for that email, a reset link has been sent."}
+        return json_response({"message": "If an account exists for that email, a reset link has been sent."})
     now = datetime.now(timezone.utc)
     with database() as connection:
         user = connection.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()
         if user is None:
-            return {"message": "If an account exists for that email, a reset link has been sent."}
+            return json_response({"message": "If an account exists for that email, a reset link has been sent."})
 
         user_id = user["id"]
         connection.execute(
@@ -184,18 +260,13 @@ def forgot_password(payload: ForgotPasswordRequest) -> dict:
             (user_id, (now - RESET_REQUEST_COOLDOWN).isoformat()),
         ).fetchone()
         if recent_token is not None:
-            return {"message": "If an account exists for that email, a reset link has been sent."}
+            return json_response({"message": "If an account exists for that email, a reset link has been sent."})
 
         token = secrets.token_urlsafe(32)
         token_hash = hashlib.sha256(token.encode()).hexdigest()
         connection.execute(
             "INSERT INTO password_reset_tokens (token_hash, user_id, expires_at, created_at) VALUES (?, ?, ?, ?)",
-            (
-                token_hash,
-                user_id,
-                (now + RESET_TOKEN_LIFETIME).isoformat(),
-                now.isoformat(),
-            ),
+            (token_hash, user_id, (now + RESET_TOKEN_LIFETIME).isoformat(), now.isoformat()),
         )
 
     reset_url = f"{APP_BASE_URL}/reset-password.html?token={token}"
@@ -211,11 +282,12 @@ def forgot_password(payload: ForgotPasswordRequest) -> dict:
                 "DELETE FROM password_reset_tokens WHERE user_id = ? AND token_hash != ?",
                 (user_id, token_hash),
             )
-    return {"message": "If an account exists for that email, a reset link has been sent."}
+    return json_response({"message": "If an account exists for that email, a reset link has been sent."})
 
 
-@router.post("/api/auth/reset-password")
-def reset_password(payload: ResetPasswordRequest) -> dict:
+@api_endpoint("POST")
+def reset_password(request):
+    payload = parse_payload(request, ResetPasswordRequest)
     token_hash = hashlib.sha256(payload.token.encode()).hexdigest()
     now = datetime.now(timezone.utc).isoformat()
     with database() as connection:
@@ -224,7 +296,7 @@ def reset_password(payload: ResetPasswordRequest) -> dict:
             (token_hash, now),
         ).fetchone()
         if reset_token is None:
-            raise HTTPException(status_code=400, detail="This reset link is invalid or has expired.")
+            raise APIError(400, "This reset link is invalid or has expired.")
         user_id = reset_token["user_id"]
         connection.execute(
             "UPDATE users SET password_hash = ? WHERE id = ?",
@@ -232,23 +304,24 @@ def reset_password(payload: ResetPasswordRequest) -> dict:
         )
         connection.execute("DELETE FROM password_reset_tokens WHERE user_id = ?", (user_id,))
         connection.execute("DELETE FROM sessions WHERE user_id = ?", (user_id,))
-    return {"status": "ok"}
+    return json_response({"status": "ok"})
 
 
-@router.get("/api/auth/google/config")
-def google_auth_config() -> dict:
-    return {"enabled": bool(GOOGLE_CLIENT_ID), "client_id": GOOGLE_CLIENT_ID or None}
+@api_endpoint("GET")
+def google_auth_config(request):
+    return json_response({"enabled": bool(GOOGLE_CLIENT_ID), "client_id": GOOGLE_CLIENT_ID or None})
 
 
-@router.post("/api/auth/google")
-def google_signin(payload: GoogleLoginRequest, response: Response) -> dict:
+@api_endpoint("POST")
+def google_signin(request):
+    payload = parse_payload(request, GoogleLoginRequest)
     claims = verify_google_credential(payload.credential)
     token_nonce = claims.get("nonce")
     if not isinstance(token_nonce, str) or not hmac.compare_digest(token_nonce, payload.nonce):
-        raise HTTPException(status_code=401, detail="Google sign-in token could not be verified.")
+        raise APIError(401, "Google sign-in token could not be verified.")
     email_claim = claims.get("email")
     if not isinstance(email_claim, str) or not email_claim.strip() or claims.get("email_verified") is not True:
-        raise HTTPException(status_code=401, detail="Google must verify your email address to continue.")
+        raise APIError(401, "Google must verify your email address to continue.")
     email = email_claim.strip().lower()
 
     name = str(claims.get("name") or email.split("@", maxsplit=1)[0]).strip()[:80]
@@ -257,66 +330,72 @@ def google_signin(payload: GoogleLoginRequest, response: Response) -> dict:
         if user is None:
             cursor = connection.execute(
                 "INSERT INTO users (name, email, password_hash, created_at) VALUES (?, ?, ?, ?)",
-                (
-                    name,
-                    email,
-                    hash_password(secrets.token_urlsafe(32)),
-                    datetime.now(timezone.utc).isoformat(),
-                ),
+                (name, email, hash_password(secrets.token_urlsafe(32)), datetime.now(timezone.utc).isoformat()),
             )
             user_id = cursor.lastrowid
         else:
             user_id = user["id"]
+    response = json_response({"user": public_user(user_id)})
     issue_session(user_id, response)
-    return {"user": public_user(user_id)}
+    return response
 
 
-@router.get("/api/auth/me")
-def get_current_user(tribe_quiz_session: str | None = Cookie(default=None)) -> dict:
-    return {"user": public_user(require_user(tribe_quiz_session))}
+@api_endpoint("GET")
+def get_current_user(request):
+    user_id = require_user(request.COOKIES.get(SESSION_COOKIE))
+    return json_response({"user": public_user(user_id)})
 
 
-@router.post("/api/auth/signout")
-def signout(response: Response, tribe_quiz_session: str | None = Cookie(default=None)) -> dict:
-    if tribe_quiz_session:
-        token_hash = hashlib.sha256(tribe_quiz_session.encode()).hexdigest()
+@api_endpoint("POST")
+def signout(request):
+    token = request.COOKIES.get(SESSION_COOKIE)
+    if token:
+        token_hash = hashlib.sha256(token.encode()).hexdigest()
         with database() as connection:
             connection.execute("DELETE FROM sessions WHERE token_hash = ?", (token_hash,))
-    response.delete_cookie(SESSION_COOKIE, path="/", httponly=True, secure=COOKIE_SECURE, samesite="lax")
-    return {"status": "ok"}
+    response = json_response({"status": "ok"})
+    response.delete_cookie(
+        SESSION_COOKIE,
+        path="/",
+        httponly=True,
+        secure=COOKIE_SECURE,
+        samesite="Lax",
+    )
+    return response
 
 
-@router.post("/api/attempts", status_code=201)
-def start_attempt(
-    payload: StartAttemptRequest,
-    tribe_quiz_session: str | None = Cookie(default=None),
-) -> dict:
+@api_endpoint("POST")
+def start_attempt(request):
+    payload = parse_payload(request, StartAttemptRequest)
     attempt_id = str(uuid.uuid4())
     with database() as connection:
         culture = connection.execute("SELECT id FROM cultures WHERE id = ?", (payload.culture_id,)).fetchone()
         if culture is None:
-            raise HTTPException(status_code=404, detail="Culture not found.")
+            raise APIError(404, "Culture not found.")
         question_count = connection.execute("SELECT COUNT(*) FROM questions").fetchone()[0]
         connection.execute(
             "INSERT INTO attempts (id, user_id, culture_id, question_count, started_at) VALUES (?, ?, ?, ?, ?)",
-            (attempt_id, session_user_id(tribe_quiz_session), payload.culture_id, question_count, datetime.now(timezone.utc).isoformat()),
+            (
+                attempt_id,
+                session_user_id(request.COOKIES.get(SESSION_COOKIE)),
+                payload.culture_id,
+                question_count,
+                datetime.now(timezone.utc).isoformat(),
+            ),
         )
-    return {"attempt_id": attempt_id, "question_count": question_count}
+    return json_response({"attempt_id": attempt_id, "question_count": question_count}, status=201)
 
 
-@router.post("/api/attempts/{attempt_id}/answers")
-def submit_answer(
-    attempt_id: str,
-    payload: AnswerRequest,
-    tribe_quiz_session: str | None = Cookie(default=None),
-) -> dict:
+@api_endpoint("POST")
+def submit_answer(request, attempt_id: str):
+    payload = parse_payload(request, AnswerRequest)
     with database() as connection:
         attempt = connection.execute("SELECT * FROM attempts WHERE id = ?", (attempt_id,)).fetchone()
         if attempt is None:
-            raise HTTPException(status_code=404, detail="Quiz attempt not found.")
-        user_id = session_user_id(tribe_quiz_session)
+            raise APIError(404, "Quiz attempt not found.")
+        user_id = session_user_id(request.COOKIES.get(SESSION_COOKIE))
         if (attempt["user_id"] is not None and attempt["user_id"] != user_id) or attempt["completed_at"]:
-            raise HTTPException(status_code=403, detail="This quiz attempt is not available.")
+            raise APIError(403, "This quiz attempt is not available.")
         answered_count = connection.execute(
             "SELECT COUNT(*) FROM attempt_answers WHERE attempt_id = ?", (attempt_id,)
         ).fetchone()[0]
@@ -324,12 +403,16 @@ def submit_answer(
             "SELECT * FROM questions ORDER BY id LIMIT 1 OFFSET ?", (answered_count,)
         ).fetchone()
         if question is None or question["id"] != payload.question_id:
-            raise HTTPException(status_code=409, detail="Answer the questions in order, one at a time.")
+            raise APIError(409, "Answer the questions in order, one at a time.")
         correct = payload.selected_index == question["correct_index"]
         correct_count = attempt["correct_count"] + int(correct)
         score = correct_count * 10
         answered_count += 1
-        completed_at = datetime.now(timezone.utc).isoformat() if answered_count == attempt["question_count"] else None
+        completed_at = (
+            datetime.now(timezone.utc).isoformat()
+            if answered_count == attempt["question_count"]
+            else None
+        )
         connection.execute(
             "INSERT INTO attempt_answers (attempt_id, question_id, selected_index, is_correct) VALUES (?, ?, ?, ?)",
             (attempt_id, question["id"], payload.selected_index, int(correct)),
@@ -338,20 +421,22 @@ def submit_answer(
             "UPDATE attempts SET correct_count = ?, score = ?, completed_at = ? WHERE id = ?",
             (correct_count, score, completed_at, attempt_id),
         )
-    return {
-        "correct": correct,
-        "correct_index": question["correct_index"],
-        "note": question["note"],
-        "score": score,
-        "correct_count": correct_count,
-        "answered_count": answered_count,
-        "completed": completed_at is not None,
-    }
+    return json_response(
+        {
+            "correct": correct,
+            "correct_index": question["correct_index"],
+            "note": question["note"],
+            "score": score,
+            "correct_count": correct_count,
+            "answered_count": answered_count,
+            "completed": completed_at is not None,
+        }
+    )
 
 
-@router.get("/api/auth/attempts")
-def get_user_attempts(tribe_quiz_session: str | None = Cookie(default=None)) -> dict:
-    user_id = require_user(tribe_quiz_session)
+@api_endpoint("GET")
+def get_user_attempts(request):
+    user_id = require_user(request.COOKIES.get(SESSION_COOKIE))
     with database() as connection:
         attempts = [
             dict(row)
@@ -364,4 +449,13 @@ def get_user_attempts(tribe_quiz_session: str | None = Cookie(default=None)) -> 
                 (user_id,),
             )
         ]
-    return {"attempts": attempts}
+    return json_response({"attempts": attempts})
+
+
+@ensure_csrf_cookie
+def serve_frontend(request, filename: str):
+    if filename not in FRONTEND_FILES:
+        raise Http404
+    path = FRONTEND_DIR / filename
+    content_type = mimetypes.guess_type(filename)[0] or "application/octet-stream"
+    return FileResponse(path.open("rb"), content_type=content_type)

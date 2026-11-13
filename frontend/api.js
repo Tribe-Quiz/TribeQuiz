@@ -1,8 +1,15 @@
 async function request(path, options = {}) {
   const { body, headers, ...requestOptions } = options;
+  const method = (requestOptions.method || "GET").toUpperCase();
+  const requestHeaders = { ...headers };
+  if (body !== undefined) requestHeaders["Content-Type"] = "application/json";
+  if (!["GET", "HEAD", "OPTIONS", "TRACE"].includes(method)) {
+    const csrfCookie = document.cookie.split("; ").find((cookie) => cookie.startsWith("csrftoken="));
+    if (csrfCookie) requestHeaders["X-CSRFToken"] = csrfCookie.slice("csrftoken=".length);
+  }
   const response = await fetch(`/api${path}`, {
     ...requestOptions,
-    headers: body === undefined ? headers : { ...headers, "Content-Type": "application/json" },
+    headers: requestHeaders,
     body: body === undefined ? undefined : JSON.stringify(body)
   });
   const payload = await response.json();

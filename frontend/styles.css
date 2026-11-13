@@ -108,6 +108,7 @@ button { color: inherit; }
 .auth-field input:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(231, 175, 32, .12); }
 .auth-field input::placeholder { color: #817360; }
 .auth-error { min-height: 17px; margin: -4px 0 8px; color: #f0ad8e; font-size: 11px; line-height: 1.5; }
+.auth-error.is-success { color: #a7dda2; }
 .auth-submit { width: 100%; min-height: 48px; }
 .auth-divider { display: flex; align-items: center; gap: 12px; margin: 19px 0; color: #9c8b75; font-size: 11px; }
 .auth-divider span { height: 1px; flex: 1; background: rgba(245, 230, 205, .12); }

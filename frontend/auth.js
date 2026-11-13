@@ -21,6 +21,7 @@ function setTab(tab) {
   authSubmit.innerHTML = isSignup ? "Create account <span>›</span>" : "Sign in <span>›</span>";
   authSwitch.innerHTML = isSignup ? 'Already have an account? <button type="button" data-switch>Sign In</button>' : 'New to Tribe Quiz? <button type="button" data-switch>Create an account</button>';
   errorMessage.textContent = "";
+  errorMessage.classList.remove("is-success");
   history.replaceState(null, "", isSignup ? "?tab=signup" : "?tab=signin");
   authSwitch.querySelector("[data-switch]").addEventListener("click", () => setTab(isSignup ? "signin" : "signup"));
 }
@@ -29,7 +30,7 @@ signinTab.addEventListener("click", () => setTab("signin"));
 signupTab.addEventListener("click", () => setTab("signup"));
 authSwitch.querySelector("[data-switch]").addEventListener("click", () => setTab(activeTab === "signup" ? "signin" : "signup"));
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const email = document.querySelector("#email").value.trim();
   const password = document.querySelector("#password").value;
@@ -38,8 +39,8 @@ form.addEventListener("submit", (event) => {
     errorMessage.textContent = "Enter a valid email address.";
     return;
   }
-  if (password.length < 6) {
-    errorMessage.textContent = "Your password must be at least 6 characters.";
+  if (password.length < 8) {
+    errorMessage.textContent = "Your password must be at least 8 characters.";
     return;
   }
   if (activeTab === "signup") {
@@ -51,15 +52,27 @@ form.addEventListener("submit", (event) => {
       errorMessage.textContent = "Those passwords do not match.";
       return;
     }
-    localStorage.setItem("tribeQuizUser", JSON.stringify({ name, email }));
-    errorMessage.textContent = "Account details saved on this device. You can now explore the quiz.";
-  } else {
-    const savedUser = JSON.parse(localStorage.getItem("tribeQuizUser") || "null");
-    if (!savedUser || savedUser.email !== email) {
-      errorMessage.textContent = "No local account was found for that email. Create an account on this device first.";
-      return;
-    }
-    errorMessage.textContent = `Welcome back, ${savedUser.name}. Your quiz is ready.`;
+  }
+  const isSignup = activeTab === "signup";
+  const payload = isSignup ? { name, email, password } : { email, password };
+  authSubmit.disabled = true;
+  errorMessage.classList.remove("is-success");
+  try {
+    const response = await fetch(isSignup ? "/api/auth/signup" : "/api/auth/signin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const result = await response.json();
+    if (!response.ok) throw new Error(typeof result.detail === "string" ? result.detail : "Account request failed.");
+    errorMessage.textContent = isSignup
+      ? "Your account is ready. You can now explore the quiz."
+      : `Welcome back, ${result.user.name}. Your quiz is ready.`;
+    errorMessage.classList.add("is-success");
+  } catch (error) {
+    errorMessage.textContent = error.message || "Could not connect to the account server.";
+  } finally {
+    authSubmit.disabled = false;
   }
 });
 

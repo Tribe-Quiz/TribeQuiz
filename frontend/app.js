@@ -7,12 +7,14 @@ const toast = document.querySelector("#toast");
 const menuToggle = document.querySelector("#menu-toggle");
 const nav = document.querySelector("#main-nav");
 let currentCulture = null;
+let currentAttemptId = null;
 let questionIndex = 0;
 let score = 0;
 let selectedAnswer = null;
 let answerSubmitted = false;
 let toastTimer;
-//fkjhgfdsdfghjkjhgtfr
+
+
 async function loadQuizData() {
   try {
     const response = await fetch("/api/quiz");
@@ -57,7 +59,20 @@ function closeOnBackdrop(event, dialog) {
   if (event.target === dialog) dialog.close();
 }
 
-function startQuiz(culture) {
+async function startQuiz(culture) {
+  try {
+    const response = await fetch("/api/attempts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ culture_id: culture.id })
+    });
+    const payload = await response.json();
+    if (!response.ok) throw new Error(payload.detail || "Could not start the quiz.");
+    currentAttemptId = payload.attempt_id;
+  } catch (error) {
+    showToast(error.message || "Could not connect to the quiz server.");
+    return;
+  }
   currentCulture = culture;
   questionIndex = 0;
   score = 0;
@@ -104,29 +119,44 @@ function selectAnswer(index) {
   document.querySelector("#quiz-next").disabled = false;
 }
 
-document.querySelector("#quiz-next").addEventListener("click", () => {
+document.querySelector("#quiz-next").addEventListener("click", async () => {
   if (answerSubmitted) {
     advanceQuestion();
     return;
   }
   if (selectedAnswer === null) return;
-  answerSubmitted = true;
   const question = questions[questionIndex];
   const buttons = [...document.querySelectorAll(".answer-option")];
   const feedback = document.querySelector("#quiz-feedback");
-  buttons.forEach((button, index) => {
-    button.disabled = true;
-    if (index === question.answer) button.classList.add("correct");
-    else if (index === selectedAnswer) button.classList.add("incorrect");
-  });
-  const isCorrect = selectedAnswer === question.answer;
-  if (isCorrect) score += 10;
-  feedback.textContent = isCorrect ? `Correct. ${question.note}` : `Not quite. ${question.note}`;
-  feedback.classList.add(isCorrect ? "is-correct" : "is-wrong");
-  document.querySelector("#quiz-score").textContent = `${score} points`;
   const nextButton = document.querySelector("#quiz-next");
-  nextButton.disabled = false;
-  nextButton.textContent = questionIndex === questions.length - 1 ? "See your result  ›" : "Next question  ›";
+  nextButton.disabled = true;
+  nextButton.textContent = "Checking answer...";
+  buttons.forEach((button) => { button.disabled = true; });
+  try {
+    const response = await fetch(`/api/attempts/${currentAttemptId}/answers`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question_id: question.id, selected_index: selectedAnswer })
+    });
+    const payload = await response.json();
+    if (!response.ok) throw new Error(payload.detail || "Could not submit your answer.");
+    answerSubmitted = true;
+    score = payload.score;
+    buttons.forEach((button, index) => {
+      if (index === payload.correct_index) button.classList.add("correct");
+      else if (index === selectedAnswer) button.classList.add("incorrect");
+    });
+    feedback.textContent = payload.correct ? `Correct. ${payload.note}` : `Not quite. ${payload.note}`;
+    feedback.classList.add(payload.correct ? "is-correct" : "is-wrong");
+    document.querySelector("#quiz-score").textContent = `${score} points`;
+    nextButton.disabled = false;
+    nextButton.textContent = questionIndex === questions.length - 1 ? "See your result  ›" : "Next question  ›";
+  } catch (error) {
+    buttons.forEach((button) => { button.disabled = false; });
+    nextButton.disabled = false;
+    nextButton.textContent = "Try answer again  ›";
+    showToast(error.message || "Could not connect to the quiz server.");
+  }
 });
 
 function advanceQuestion() {
@@ -158,7 +188,3 @@ function showToast(message) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => toast.classList.remove("visible"), 2800);
 }
-
-window.addEventListener("storage", (event) => {
-  if (event.key === "tribeQuizUser") showToast("Your account details were updated in another tab.");
-});

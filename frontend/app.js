@@ -1,3 +1,5 @@
+import { getQuiz, startAttempt, submitAnswer } from "./api.js";
+
 let cultures = [];
 let questions = [];
 const grid = document.querySelector("#culture-grid");
@@ -17,9 +19,7 @@ let toastTimer;
 
 async function loadQuizData() {
   try {
-    const response = await fetch("/api/quiz");
-    if (!response.ok) throw new Error("Quiz data request failed");
-    ({ cultures, questions } = await response.json());
+    ({ cultures, questions } = await getQuiz());
     cultures.forEach((culture, index) => {
       const card = document.createElement("article");
       card.className = "culture-card";
@@ -61,13 +61,10 @@ function closeOnBackdrop(event, dialog) {
 
 async function startQuiz(culture) {
   try {
-    const response = await fetch("/api/attempts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ culture_id: culture.id })
-    });
-    const payload = await response.json();
-    if (!response.ok) throw new Error(payload.detail || "Could not start the quiz.");
+    const payload = await startAttempt(culture.id);
+    if (payload.question_count !== questions.length) {
+      throw new Error("Quiz content changed. Refresh the page and try again.");
+    }
     currentAttemptId = payload.attempt_id;
   } catch (error) {
     showToast(error.message || "Could not connect to the quiz server.");
@@ -133,13 +130,7 @@ document.querySelector("#quiz-next").addEventListener("click", async () => {
   nextButton.textContent = "Checking answer...";
   buttons.forEach((button) => { button.disabled = true; });
   try {
-    const response = await fetch(`/api/attempts/${currentAttemptId}/answers`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question_id: question.id, selected_index: selectedAnswer })
-    });
-    const payload = await response.json();
-    if (!response.ok) throw new Error(payload.detail || "Could not submit your answer.");
+    const payload = await submitAnswer(currentAttemptId, question.id, selectedAnswer);
     answerSubmitted = true;
     score = payload.score;
     buttons.forEach((button, index) => {
@@ -173,8 +164,9 @@ function showResults() {
   document.querySelector("#result-view").hidden = false;
   const result = document.querySelector("#result-view");
   const correctCount = score / 10;
-  const message = correctCount >= 8 ? "A brilliant round. Your curiosity is a strength." : correctCount >= 5 ? "A strong start. Every answer adds to the story." : "Every journey begins with a question. Keep exploring.";
-  result.innerHTML = `<div class="result-mark" aria-hidden="true">✦</div><p class="eyebrow eyebrow-gold">Round complete · ${currentCulture.name}</p><h2>Your result</h2><p class="result-score">${score} / 100 points</p><p>${correctCount} of 10 correct.<br>${message}</p><div class="result-actions"><button class="button button-primary" id="play-again" type="button">Play this culture again <span>›</span></button><button class="button button-secondary" id="choose-culture" type="button">Choose another culture</button></div>`;
+  const questionCount = questions.length;
+  const message = correctCount >= questionCount * 0.8 ? "A brilliant round. Your curiosity is a strength." : correctCount >= questionCount * 0.5 ? "A strong start. Every answer adds to the story." : "Every journey begins with a question. Keep exploring.";
+  result.innerHTML = `<div class="result-mark" aria-hidden="true">✦</div><p class="eyebrow eyebrow-gold">Round complete · ${currentCulture.name}</p><h2>Your result</h2><p class="result-score">${score} / ${questionCount * 10} points</p><p>${correctCount} of ${questionCount} correct.<br>${message}</p><div class="result-actions"><button class="button button-primary" id="play-again" type="button">Play this culture again <span>›</span></button><button class="button button-secondary" id="choose-culture" type="button">Choose another culture</button></div>`;
   result.querySelector("#play-again").addEventListener("click", () => startQuiz(currentCulture));
   result.querySelector("#choose-culture").addEventListener("click", () => {
     quizModal.close();

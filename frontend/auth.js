@@ -1,3 +1,5 @@
+import { getGoogleAuthConfig, signIn, signInWithGoogle, signUp } from "./api.js";
+
 const form = document.querySelector("#auth-form");
 const signinTab = document.querySelector("#signin-tab");
 const signupTab = document.querySelector("#signup-tab");
@@ -7,7 +9,72 @@ const authTitle = document.querySelector("#auth-title");
 const authSubmit = document.querySelector("#auth-submit");
 const authSwitch = document.querySelector("#auth-switch");
 const errorMessage = document.querySelector("#auth-error");
+const googleButton = document.querySelector("#google-button");
+const forgotPasswordLink = document.querySelector("#forgot-password-link");
+const googleNonceBytes = crypto.getRandomValues(new Uint8Array(32));
+const googleNonce = Array.from(googleNonceBytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
 let activeTab = new URLSearchParams(location.search).get("tab") === "signup" ? "signup" : "signin";
+
+function loadGoogleIdentityServices() {
+  return new Promise((resolve, reject) => {
+    if (window.google && window.google.accounts && window.google.accounts.id) {
+      resolve();
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.onload = resolve;
+    script.onerror = () => reject(new Error("Google sign-in could not be loaded."));
+    document.head.append(script);
+  });
+}
+
+async function handleGoogleCredential(credential) {
+  errorMessage.textContent = "";
+  errorMessage.classList.remove("is-success");
+  googleButton.setAttribute("aria-busy", "true");
+  try {
+    const result = await signInWithGoogle(credential, googleNonce);
+    errorMessage.textContent = `Welcome, ${result.user.name}. Your Google account is ready.`;
+    errorMessage.classList.add("is-success");
+  } catch (error) {
+    errorMessage.textContent = error.message || "Google sign-in failed. Please try again.";
+  } finally {
+    googleButton.removeAttribute("aria-busy");
+  }
+}
+
+async function setupGoogleSignIn() {
+  try {
+    const config = await getGoogleAuthConfig();
+    if (!config.enabled || !config.client_id) {
+      googleButton.textContent = "Google sign-in is not configured on this server.";
+      googleButton.setAttribute("aria-disabled", "true");
+      return;
+    }
+    await loadGoogleIdentityServices();
+    window.google.accounts.id.initialize({
+      client_id: config.client_id,
+      nonce: googleNonce,
+      callback: ({ credential }) => {
+        if (credential) handleGoogleCredential(credential);
+        else errorMessage.textContent = "Google did not return a sign-in credential.";
+      }
+    });
+    window.google.accounts.id.renderButton(googleButton, {
+      type: "standard",
+      theme: "outline",
+      size: "large",
+      text: "continue_with",
+      shape: "rectangular",
+      width: Math.min(googleButton.clientWidth, 400)
+    });
+  } catch (error) {
+    googleButton.textContent = error.message || "Google sign-in could not be initialized.";
+    googleButton.setAttribute("aria-disabled", "true");
+  }
+}
 
 function setTab(tab) {
   activeTab = tab;
@@ -16,6 +83,7 @@ function setTab(tab) {
   signupTab.setAttribute("aria-selected", String(isSignup));
   nameField.hidden = !isSignup;
   confirmField.hidden = !isSignup;
+  forgotPasswordLink.hidden = isSignup;
   document.querySelector("#password").autocomplete = isSignup ? "new-password" : "current-password";
   authTitle.textContent = isSignup ? "Tribe Quiz" : "Welcome back";
   authSubmit.innerHTML = isSignup ? "Create account <span>›</span>" : "Sign in <span>›</span>";
@@ -58,15 +126,11 @@ form.addEventListener("submit", async (event) => {
   authSubmit.disabled = true;
   errorMessage.classList.remove("is-success");
   try {
-    const response = await fetch(isSignup ? "/api/auth/signup" : "/api/auth/signin", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-    const result = await response.json();
-    if (!response.ok) throw new Error(typeof result.detail === "string" ? result.detail : "Account request failed.");
+    const result = isSignup
+      ? await signUp(payload.name, payload.email, payload.password)
+      : await signIn(payload.email, payload.password);
     errorMessage.textContent = isSignup
-      ? "Your account is ready. You can now explore the quiz."
+      ? result.message
       : `Welcome back, ${result.user.name}. Your quiz is ready.`;
     errorMessage.classList.add("is-success");
   } catch (error) {
@@ -76,7 +140,5 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
-document.querySelector("#google-button").addEventListener("click", () => {
-  errorMessage.textContent = "Google sign-in is not connected in this local version.";
-});
 setTab(activeTab);
+setupGoogleSignIn();

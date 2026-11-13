@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
-    <script src="auth.js" defer></script>
+    <script type="module" src="auth.js"></script>
   </head>
   <body class="auth-body">
     <header class="topbar auth-topbar">
@@ -30,12 +30,13 @@
           <label class="auth-field" id="name-field"><span>Display name</span><input id="display-name" name="name" autocomplete="name" placeholder="Your name" /></label>
           <label class="auth-field"><span>Email</span><input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required /></label>
           <label class="auth-field"><span>Password</span><input id="password" name="password" type="password" autocomplete="new-password" placeholder="Min. 8 characters" required minlength="8" /></label>
+          <p class="auth-forgot" id="forgot-password-link" hidden><a href="forgot-password.html">Forgot your password?</a></p>
           <label class="auth-field" id="confirm-field"><span>Confirm password</span><input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" placeholder="Repeat password" /></label>
           <p class="auth-error" id="auth-error" role="alert"></p>
           <button class="button button-primary auth-submit" type="submit" id="auth-submit">Create account <span>›</span></button>
         </form>
         <div class="auth-divider"><span></span> or <span></span></div>
-        <button class="google-button" type="button" id="google-button"><span class="google-mark">G</span> Continue with Google</button>
+        <div class="google-button" id="google-button" aria-live="polite"></div>
         <p class="auth-switch" id="auth-switch">Already have an account? <button type="button" data-switch>Sign In</button></p>
       </section>
     </main>

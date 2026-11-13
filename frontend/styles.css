@@ -112,9 +112,13 @@ button { color: inherit; }
 .auth-submit { width: 100%; min-height: 48px; }
 .auth-divider { display: flex; align-items: center; gap: 12px; margin: 19px 0; color: #9c8b75; font-size: 11px; }
 .auth-divider span { height: 1px; flex: 1; background: rgba(245, 230, 205, .12); }
-.google-button { width: 100%; min-height: 46px; display: flex; align-items: center; justify-content: center; gap: 12px; border: 1px solid rgba(237, 218, 187, .18); border-radius: 4px; background: rgba(255, 255, 255, .04); color: #e8dcc8; cursor: pointer; font-size: 12px; font-weight: 600; }
-.google-button:hover { border-color: rgba(237, 218, 187, .42); background: rgba(255, 255, 255, .08); }
-.google-mark { font: 700 17px Arial, sans-serif; color: #4285f4; }
+.google-button { width: 100%; min-height: 46px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(237, 218, 187, .18); border-radius: 4px; background: rgba(255, 255, 255, .04); color: #e8dcc8; font-size: 12px; font-weight: 600; }
+.google-button[aria-disabled="true"] { padding: 12px; color: #ab9b85; text-align: center; }
+.google-button[aria-busy="true"] { opacity: .65; pointer-events: none; }
+.auth-forgot { margin: -7px 0 16px; text-align: right; font-size: 11px; }
+.auth-forgot[hidden] { display: none; }
+.auth-forgot a, .auth-back-link { color: var(--gold-light); font-weight: 600; }
+.auth-forgot a:hover, .auth-back-link:hover { text-decoration: underline; }
 .auth-switch { margin: 21px 0 0; color: #ab9b85; font-size: 11px; }
 .auth-switch button { padding: 0; border: 0; background: transparent; color: var(--gold-light); cursor: pointer; font-weight: 700; }
 

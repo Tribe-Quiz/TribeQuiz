@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#160c06" />
+    <meta name="description" content="Explore African cultures through a lively, thoughtful quiz." />
+    <title>Tribe Quiz | Explore African Cultures</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Tribe Quiz home">
+        <span class="brand-mark" aria-hidden="true">✦</span>
+        <span>Tribe Quiz</span>
+      </a>
+      <nav class="main-nav" id="main-nav" aria-label="Main navigation">
+        <a href="auth.html">Sign In</a>
+        <a class="nav-signup" href="auth.html?tab=signup">Sign Up</a>
+      </nav>
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-content">
+          <p class="eyebrow"><span></span> A journey across generations <span></span></p>
+          <h1 id="hero-title">Tribe <em>Quiz</em></h1>
+          <div class="ornament" aria-hidden="true"><i></i><b>◆</b><i></i></div>
+          <p class="hero-lede">Explore the rich cultures of Africa</p>
+          <p class="hero-subtitle">How well do you know your culture?</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#cultures">Play now <span aria-hidden="true">›</span></a>
+            <button class="button button-quiet" type="button" data-open-howto><span class="play-icon" aria-hidden="true">▶</span> How to play</button>
+          </div>
+          <a class="scroll-hint" href="#cultures"><span></span> Discover the cultures</a>
+        </div>
+        <div class="hero-caption"><span>01</span> Southern Africa · East Africa · Beyond</div>
+      </section>
+
+      <section class="culture-section" id="cultures" aria-labelledby="culture-title">
+        <div class="section-heading">
+          <p class="eyebrow eyebrow-gold">Choose your path</p>
+          <h2 id="culture-title">A continent of <em>stories</em></h2>
+          <p>Pick a culture to begin. Ten questions, one proud score.</p>
+        </div>
+        <div class="culture-grid" id="culture-grid"></div>
+      </section>
+
+      <section class="values-strip" aria-label="What you can discover">
+        <div class="value-item"><span class="value-icon">✧</span><div><h3>Learn as you play</h3><p>Small discoveries, lasting knowledge</p></div></div>
+        <div class="value-item"><span class="value-icon">⌖</span><div><h3>Discover traditions</h3><p>Explore language, history & heritage</p></div></div>
+        <div class="value-item"><span class="value-icon">◈</span><div><h3>Celebrate diversity</h3><p>Many stories, one shared humanity</p></div></div>
+        <div class="value-item"><span class="value-icon">☆</span><div><h3>Earn your place</h3><p>Build your score with every round</p></div></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand brand-footer" href="index.html"><span class="brand-mark" aria-hidden="true">✦</span><span>Tribe Quiz</span></a>
+      <p>Curiosity is a way of honoring one another.</p>
+      <span>© 2026 Tribe Quiz</span>
+    </footer>
+
+    <dialog class="modal howto-modal" id="howto-modal" aria-labelledby="howto-title">
+      <button class="modal-close" type="button" aria-label="Close dialog" data-close-dialog>×</button>
+      <p class="eyebrow eyebrow-gold">The journey</p>
+      <h2 id="howto-title">How to play</h2>
+      <ol class="howto-list">
+        <li><span>01</span> Choose a culture from the home screen.</li>
+        <li><span>02</span> Answer ten questions about African heritage.</li>
+        <li><span>03</span> Pick the best answer from four choices.</li>
+        <li><span>04</span> Every correct answer earns ten points.</li>
+        <li><span>05</span> See your result and take another round.</li>
+      </ol>
+      <button class="button button-primary modal-cta" type="button" data-close-dialog>Got it, let’s play <span>›</span></button>
+    </dialog>
+
+    <dialog class="modal quiz-modal" id="quiz-modal" aria-labelledby="quiz-title">
+      <button class="modal-close" type="button" aria-label="Exit quiz" data-exit-quiz>×</button>
+      <div class="quiz-topline"><span class="quiz-culture" id="quiz-culture"></span><span class="quiz-score" id="quiz-score">0 points</span></div>
+      <div class="progress-meta"><span id="question-count">Question 1 of 10</span><span id="progress-percent">10%</span></div>
+      <div class="progress-track"><span id="progress-fill"></span></div>
+      <div id="question-view">
+        <p class="eyebrow eyebrow-gold">Culture & heritage</p>
+        <h2 id="quiz-title"></h2>
+        <div class="answer-list" id="answer-list"></div>
+        <div class="quiz-feedback" id="quiz-feedback" aria-live="polite"></div>
+        <button class="button button-primary quiz-next" type="button" id="quiz-next" disabled>Lock in answer <span>›</span></button>
+      </div>
+      <div class="result-view" id="result-view" hidden></div>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

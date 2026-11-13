@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#160c06" />
+    <title>Sign In | Tribe Quiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="auth.js" defer></script>
+  </head>
+  <body class="auth-body">
+    <header class="topbar auth-topbar">
+      <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">✦</span><span>Tribe Quiz</span></a>
+      <a class="back-home" href="index.html">← Back to Home</a>
+    </header>
+    <main class="auth-main">
+      <section class="auth-panel" aria-labelledby="auth-title">
+        <span class="auth-mark" aria-hidden="true">✦</span>
+        <p class="eyebrow eyebrow-gold">A journey across generations</p>
+        <h1 id="auth-title">Tribe Quiz</h1>
+        <p class="auth-subtitle">Celebrate African Cultures</p>
+        <div class="auth-tabs" role="tablist" aria-label="Account access">
+          <button type="button" role="tab" id="signin-tab" aria-selected="false">Sign In</button>
+          <button type="button" role="tab" id="signup-tab" aria-selected="true">Sign Up</button>
+        </div>
+        <form id="auth-form" novalidate>
+          <label class="auth-field" id="name-field"><span>Display name</span><input id="display-name" name="name" autocomplete="name" placeholder="Your name" /></label>
+          <label class="auth-field"><span>Email</span><input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required /></label>
+          <label class="auth-field"><span>Password</span><input id="password" name="password" type="password" autocomplete="new-password" placeholder="Min. 6 characters" required minlength="6" /></label>
+          <label class="auth-field" id="confirm-field"><span>Confirm password</span><input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" placeholder="Repeat password" /></label>
+          <p class="auth-error" id="auth-error" role="alert"></p>
+          <button class="button button-primary auth-submit" type="submit" id="auth-submit">Create account <span>›</span></button>
+        </form>
+        <div class="auth-divider"><span></span> or <span></span></div>
+        <button class="google-button" type="button" id="google-button"><span class="google-mark">G</span> Continue with Google</button>
+        <p class="auth-switch" id="auth-switch">Already have an account? <button type="button" data-switch>Sign In</button></p>
+      </section>
+    </main>
+  </body>
+</html>

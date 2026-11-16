@@ -2,6 +2,7 @@ import json
 import os
 import tempfile
 from pathlib import Path
+from urllib.parse import parse_qs, urlparse
 from unittest.mock import Mock, patch
 
 from django.http import HttpResponse
@@ -179,3 +180,58 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
         self.assertEqual(question["image_url"], "https://thumb.wikimedia.org/question.jpg")
         self.assertEqual(question["image_credit"], "Zulu beadwork.jpg — A. Artist")
         self.assertEqual(question["image_license"], "CC BY-SA 4.0")
+
+    def test_signup_signin_and_complete_quiz_flow(self):
+        verification_urls = []
+        with (
+            patch("backend.views.is_mail_configured", return_value=True),
+            patch(
+                "backend.views.send_account_verification_email",
+                side_effect=lambda _email, url: verification_urls.append(url),
+            ),
+        ):
+            signup = self.client.post(
+                "/api/auth/signup",
+                data=json.dumps(
+                    {
+                        "name": "New Player",
+                        "email": "new-player@example.com",
+                        "password": "StrongPass123!",
+                    }
+                ),
+                content_type="application/json",
+            )
+
+        self.assertEqual(signup.status_code, 202)
+        token = parse_qs(urlparse(verification_urls[0]).query)["token"][0]
+        verification = self.client.post(
+            "/api/auth/verify-email",
+            data=json.dumps({"token": token}),
+            content_type="application/json",
+        )
+        self.assertEqual(verification.status_code, 200)
+
+        signin = self.client.post(
+            "/api/auth/signin",
+            data=json.dumps(
+                {"email": "new-player@example.com", "password": "StrongPass123!"}
+            ),
+            content_type="application/json",
+        )
+        self.assertEqual(signin.status_code, 200)
+        self.assertEqual(signin.json()["user"]["name"], "New Player")
+
+        attempt = self._start_attempt()
+        last_answer = None
+        for question in attempt["questions"]:
+            last_answer = self.client.post(
+                f"/api/attempts/{attempt['attempt_id']}/answers",
+                data=json.dumps(
+                    {"question_id": question["id"], "selected_index": 0}
+                ),
+                content_type="application/json",
+            )
+            self.assertEqual(last_answer.status_code, 200)
+
+        self.assertTrue(last_answer.json()["completed"])
+        self.assertEqual(last_answer.json()["answered_count"], 10)

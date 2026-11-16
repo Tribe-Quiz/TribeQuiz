@@ -13,7 +13,7 @@ from google import genai
 from google.genai import errors as genai_errors
 from pydantic import BaseModel, Field, ValidationError, field_validator, model_validator
 
-from backend.database import QUESTIONS, database
+from backend.database import database
 
 
 logger = logging.getLogger(__name__)
@@ -105,26 +105,6 @@ def _cached_questions(culture_id: int, *, fresh_only: bool) -> list[dict]:
         }
         for row in rows
         if row["question_set_id"] == latest_set_id
-    ]
-
-
-def _fallback_questions() -> list[dict]:
-    return [
-        {
-            "id": None,
-            "category": "Culture",
-            "prompt": question["prompt"],
-            "options": question["options"],
-            "correct_index": question["answer"],
-            "note": question["note"],
-            "image_url": None,
-            "image_search_term": question["prompt"],
-            "image_credit": None,
-            "image_source_url": None,
-            "image_license": None,
-            "image_license_url": None,
-        }
-        for question in QUESTIONS
     ]
 
 
@@ -244,7 +224,7 @@ def questions_for_culture(culture: dict) -> tuple[list[dict], str]:
             questions = _generate_questions(culture)
         except (genai_errors.APIError, ValidationError, ValueError) as error:
             logger.warning(
-                "Could not generate questions for %s; trying cached or general questions: %s",
+                "Could not generate questions for %s; trying cached questions: %s",
                 culture["name"],
                 error,
             )
@@ -285,7 +265,7 @@ def questions_for_culture(culture: dict) -> tuple[list[dict], str]:
     cached = _cached_questions(culture["id"], fresh_only=False)
     if len(cached) >= QUESTION_COUNT:
         return cached, "ai"
-    return _fallback_questions(), "general"
+    return [], "unavailable"
 
 
 def select_quiz_questions(questions: list[dict]) -> list[dict]:

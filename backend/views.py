@@ -398,6 +398,12 @@ def start_attempt(request):
 
     culture = dict(culture_row)
     question_pool, question_source = questions_for_culture(culture)
+    if question_source == "unavailable":
+        raise APIError(
+            503,
+            f"Tribe-specific questions for {culture['name']} are unavailable. "
+            "Configure GEMINI_API_KEY and try again.",
+        )
     try:
         selected_questions = select_quiz_questions(question_pool)
     except ValueError as error:

@@ -49,23 +49,99 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
             ).fetchone()
         return row["id"]
 
-    def _start_attempt(self):
+    def _culture_question_pool(self):
+        return [
+            {
+                "id": None,
+                "category": "Culture",
+                "prompt": f"Which fact is specific to the Zulu culture? {index}",
+                "options": ["A", "B", "C", "D"],
+                "correct_index": 0,
+                "note": "The answer explains a Zulu-specific cultural fact.",
+                "image_url": None,
+                "image_search_term": "Zulu culture",
+                "image_credit": None,
+                "image_source_url": None,
+                "image_license": None,
+                "image_license_url": None,
+            }
+            for index in range(10)
+        ]
+
+    def _start_attempt(self, question_pool=None):
+        with patch(
+            "backend.views.questions_for_culture",
+            return_value=(
+                question_pool if question_pool is not None else self._culture_question_pool(),
+                "ai",
+            ),
+        ):
+            response = self.client.post(
+                "/api/attempts",
+                data=json.dumps({"culture_id": self._culture_id()}),
+                content_type="application/json",
+            )
+        self.assertEqual(response.status_code, 201)
+        return response.json()
+
+    def test_start_attempt_requires_culture_specific_questions(self):
         response = self.client.post(
             "/api/attempts",
             data=json.dumps({"culture_id": self._culture_id()}),
             content_type="application/json",
         )
-        self.assertEqual(response.status_code, 201)
-        return response.json()
+
+        self.assertEqual(response.status_code, 503)
+        self.assertIn("Tribe-specific questions for Zulu", response.json()["detail"])
+        self.assertIn("GEMINI_API_KEY", response.json()["detail"])
+        with database() as connection:
+            self.assertEqual(
+                connection.execute("SELECT COUNT(*) FROM attempts").fetchone()[0],
+                0,
+            )
 
     def test_start_attempt_returns_ten_questions_without_answers(self):
         attempt = self._start_attempt()
 
         self.assertEqual(attempt["question_count"], 10)
         self.assertEqual(len(attempt["questions"]), 10)
-        self.assertEqual(attempt["question_source"], "general")
+        self.assertEqual(attempt["question_source"], "ai")
         self.assertNotIn("correct_index", attempt["questions"][0])
         self.assertIn("image_url", attempt["questions"][0])
+
+    def test_start_attempt_uses_cached_culture_specific_questions_without_api_key(self):
+        with database() as connection:
+            question_set_id = connection.execute(
+                """INSERT INTO question_sets (culture_id, source, generated_at)
+                   VALUES (?, 'ai', '2000-01-01T00:00:00+00:00')""",
+                (self._culture_id(),),
+            ).lastrowid
+            connection.executemany(
+                """INSERT INTO culture_questions
+                   (question_set_id, category, prompt, options_json, correct_index,
+                    note, image_search_term)
+                   VALUES (?, 'Culture', ?, ?, 0, ?, 'Zulu culture')""",
+                [
+                    (
+                        question_set_id,
+                        f"Which fact is specific to the Zulu culture? {index}",
+                        json.dumps(["A", "B", "C", "D"]),
+                        "The answer explains a Zulu-specific cultural fact.",
+                    )
+                    for index in range(10)
+                ],
+            )
+        response = self.client.post(
+            "/api/attempts",
+            data=json.dumps({"culture_id": self._culture_id()}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 201)
+        attempt = response.json()
+
+        self.assertEqual(attempt["question_source"], "ai")
+        self.assertEqual(len(attempt["questions"]), 10)
+        self.assertTrue(all("Zulu" in question["prompt"] for question in attempt["questions"]))
 
     def test_start_attempt_requires_a_signed_in_user(self):
         self.client.cookies.pop(SESSION_COOKIE, None)
@@ -174,8 +250,7 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
             }
             for index in range(10)
         ]
-        with patch("backend.views.questions_for_culture", return_value=(question_pool, "ai")):
-            attempt = self._start_attempt()
+        attempt = self._start_attempt(question_pool)
 
         self.assertEqual(attempt["question_source"], "ai")
         question = attempt["questions"][0]

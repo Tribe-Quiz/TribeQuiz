@@ -156,9 +156,6 @@ async function startQuiz(culture) {
     }
     currentAttemptId = payload.attempt_id;
     questions = payload.questions;
-    if (payload.question_source === "general") {
-      showToast("Using general questions until the AI question bank is configured.");
-    }
   } catch (error) {
     showToast(error.message || "Could not connect to the quiz server.");
     return;

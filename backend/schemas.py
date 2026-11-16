@@ -36,4 +36,4 @@ class StartAttemptRequest(BaseModel):
 
 class AnswerRequest(BaseModel):
     question_id: int = Field(gt=0)
-    selected_index: int = Field(ge=0, le=3)
+    selected_index: int = Field(ge=-1, le=3)

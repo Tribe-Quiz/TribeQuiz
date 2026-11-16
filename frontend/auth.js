@@ -1,4 +1,4 @@
-import { getGoogleAuthConfig, signIn, signInWithGoogle, signUp } from "./api.js";
+import { getCurrentUser, getGoogleAuthConfig, signIn, signInWithGoogle, signUp } from "./api.js";
 
 const form = document.querySelector("#auth-form");
 const signinTab = document.querySelector("#signin-tab");
@@ -38,6 +38,7 @@ async function handleGoogleCredential(credential) {
     const result = await signInWithGoogle(credential, googleNonce);
     errorMessage.textContent = `Welcome, ${result.user.name}. Your Google account is ready.`;
     errorMessage.classList.add("is-success");
+    window.setTimeout(() => { window.location.href = "index.html"; }, 700);
   } catch (error) {
     errorMessage.textContent = error.message || "Google sign-in failed. Please try again.";
   } finally {
@@ -133,6 +134,7 @@ form.addEventListener("submit", async (event) => {
       ? result.message
       : `Welcome back, ${result.user.name}. Your quiz is ready.`;
     errorMessage.classList.add("is-success");
+    if (!isSignup) window.setTimeout(() => { window.location.href = "index.html"; }, 700);
   } catch (error) {
     errorMessage.textContent = error.message || "Could not connect to the account server.";
   } finally {
@@ -142,3 +144,11 @@ form.addEventListener("submit", async (event) => {
 
 setTab(activeTab);
 setupGoogleSignIn();
+
+getCurrentUser().then(() => {
+  window.location.replace("index.html");
+}).catch((error) => {
+  if (error.status !== 401) {
+    errorMessage.textContent = error.message || "Could not check your account session.";
+  }
+});

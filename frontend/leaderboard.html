@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#160c06" />
+    <title>Leaderboard | Tribe Quiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="leaderboard.js"></script>
+  </head>
+  <body class="leaderboard-body">
+    <header class="topbar">
+      <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">✦</span><span>Tribe Quiz</span></a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="index.html#cultures">How to Play</a>
+        <a href="leaderboard.html" aria-current="page">Leaderboard</a>
+        <a href="index.html#about">About</a>
+        <button type="button" class="leaderboard-signout" id="leaderboard-signout">Sign Out</button>
+      </nav>
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </header>
+    <main class="leaderboard-main">
+      <div class="leaderboard-heading">
+        <p class="eyebrow eyebrow-gold">🏆 Leaderboard</p>
+        <h1>Top players from across Africa</h1>
+      </div>
+      <div class="leaderboard-filters" id="leaderboard-filters" aria-label="Filter scores by culture"></div>
+      <div class="leaderboard-panel" id="leaderboard-list" aria-live="polite">
+        <p class="leaderboard-message">Loading scores...</p>
+      </div>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

@@ -15,7 +15,9 @@ async function request(path, options = {}) {
   const payload = await response.json();
   if (!response.ok) {
     const message = typeof payload.detail === "string" ? payload.detail : `Request failed (${response.status}).`;
-    throw new Error(message);
+    const error = new Error(message);
+    error.status = response.status;
+    throw error;
   }
   return payload;
 }
@@ -49,6 +51,18 @@ export function verifyEmail(token) {
 
 export function getGoogleAuthConfig() {
   return request("/auth/google/config");
+}
+
+export function getCurrentUser() {
+  return request("/auth/me");
+}
+
+export function signOut() {
+  return request("/auth/signout", { method: "POST" });
+}
+
+export function getLeaderboard() {
+  return request("/leaderboard");
 }
 
 export function signInWithGoogle(credential, nonce) {

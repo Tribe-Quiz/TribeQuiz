@@ -9,6 +9,12 @@ The project is split into a browser frontend and a Python/Django backend. SQLite
 
 The browser uses the shared API client to call Django's `/api` endpoints. The server remains the source of truth for quiz and account data; starting a quiz also checks that the question count returned by the API matches the loaded quiz.
 
+## AI-generated quiz questions
+
+The backend can generate a 30-question pool for each culture using Gemini, validate its structured output, and cache it in SQLite for 30 days. Each round draws ten questions from that pool. Add `GEMINI_API_KEY` to `backend/.env` for local development and to the hosting provider's private environment settings for deployment; never put the key in frontend code. Without a key, the app uses the existing general quiz questions as an offline fallback.
+
+For each generated question, the backend searches Wikimedia Commons using the culture and the question's image-search phrase, then caches the thumbnail and its source/credit/license metadata with the question. The quiz displays the photo credit and links to the Commons file page. Image lookup does not require a separate API key. AI-generated cultural content and image relevance should be reviewed before being used publicly.
+
 ## Run locally
 
 Install Python 3.10 or newer, create a virtual environment, then install dependencies and start Django:
@@ -38,7 +44,7 @@ Passwords are stored as salted hashes. Production deployments should use HTTPS a
 
 ## Password reset email
 
-Signup verification and Signup verification and password reset links are sent over SMTP. For a free Gmail setup, enable 2-Step Verification on the sending Google account and create an App Password; use that App Password here, not the account password. Add these values to `backend/.env`:
+Signup verification and password reset links are sent over SMTP. For a free Gmail setup, enable 2-Step Verification on the sending Google account and create an App Password; use that App Password here, not the account password. Add these values to `backend/.env`:
 
 ```powershell
 SMTP_HOST=smtp.gmail.com
@@ -47,9 +53,10 @@ SMTP_USERNAME=your-sender@gmail.com
 SMTP_PASSWORD=your-16-character-app-password
 SMTP_FROM=your-sender@gmail.com
 APP_BASE_URL=http://127.0.0.1:8000
+GEMINI_API_KEY=your-private-gemini-api-key
 ```
 
-Set these variables in the hosting provider for deployment and set `APP_BASE_URL` to the public HTTPS origin. Signup creates a temporary pending record; the user is inserted into `users` and signed in only after opening the verification link. Verification links expire after 24 hours. Password reset links expire after one hour. Both token types are stored as hashes and are single-use; repeated requests are briefly throttled. Configure a production transactional email provider for higher sending limits.
+Set these variables in the hosting provider for deployment and set `APP_BASE_URL` to the public HTTPS origin. Keep `GEMINI_API_KEY` private in the provider's environment settings. Signup creates a temporary pending record; the user is inserted into `users` and signed in only after opening the verification link. Verification links expire after 24 hours. Password reset links expire after one hour. Both token types are stored as hashes and are single-use; repeated requests are briefly throttled. Configure a production transactional email provider for higher sending limits.
 
 ## Deploy on Render
 

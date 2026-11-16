@@ -10,17 +10,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DATABASE_PATH = Path(os.environ.get("DATABASE_PATH", BASE_DIR / "backend" / "tribe_quiz.db"))
 
 CULTURES = [
-    {"name": "Zulu", "language": "IsiZulu", "region": "South Africa", "image": "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=700&q=80"},
-    {"name": "Xhosa", "language": "IsiXhosa", "region": "South Africa", "image": "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=700&q=80"},
-    {"name": "Sesotho", "language": "Sesotho", "region": "Lesotho · South Africa", "image": "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=700&q=80"},
-    {"name": "Sepedi", "language": "Sesotho sa Leboa", "region": "South Africa", "image": "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=700&q=80"},
-    {"name": "Tswana", "language": "Setswana", "region": "Botswana · South Africa", "image": "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=700&q=80"},
-    {"name": "Tsonga", "language": "itsonga", "region": "Southern Africa", "image": "https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=700&q=80"},
-    {"name": "Venda", "language": "Tshivenḓa", "region": "South Africa", "image": "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=700&q=80"},
-    {"name": "Swati", "language": "siSwati", "region": "Eswatini · South Africa", "image": "https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&w=700&q=80"},
-    {"name": "Ndebele", "language": "isiNdebele", "region": "Southern Africa", "image": "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=700&q=80"},
-    {"name": "Afrikaner", "language": "Afrikaans", "region": "Southern Africa", "image": "https://images.unsplash.com/photo-1484318571209-661cf29a69c3?auto=format&fit=crop&w=700&q=80"},
-    {"name": "Swahili", "language": "Kiswahili", "region": "East Africa", "image": "https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=700&q=80"},
+    {"name": "Zulu", "language": "IsiZulu", "region": "South Africa", "image": "/TribeProfile/zulu.webp"},
+    {"name": "Xhosa", "language": "IsiXhosa", "region": "South Africa", "image": "/TribeProfile/xhosa.webp"},
+    {"name": "Sesotho", "language": "Sesotho", "region": "Lesotho · South Africa", "image": "/TribeProfile/sesotho.webp"},
+    {"name": "Sepedi", "language": "Sesotho sa Leboa", "region": "South Africa", "image": "/TribeProfile/sepedi.webp"},
+    {"name": "Tswana", "language": "Setswana", "region": "Botswana · South Africa", "image": "/TribeProfile/tswana.webp"},
+    {"name": "Tsonga", "language": "itsonga", "region": "Southern Africa", "image": "/TribeProfile/tsonga.webp"},
+    {"name": "Venda", "language": "Tshivenḓa", "region": "South Africa", "image": "/TribeProfile/vhenda.webp"},
+    {"name": "Swati", "language": "siSwati", "region": "Eswatini · South Africa", "image": "/TribeProfile/swati.webp"},
+    {"name": "Ndebele", "language": "isiNdebele", "region": "Southern Africa", "image": "/TribeProfile/ndebele.webp"},
+    {"name": "Afrikaner", "language": "Afrikaans", "region": "Southern Africa", "image": "/TribeProfile/afrikaans.png"},
+    {"name": "Swahili", "language": "Kiswahili", "region": "East Africa", "image": "/TribeProfile/swahili.png"},
 ]
 
 QUESTIONS = [
@@ -71,6 +71,29 @@ def initialize_database() -> None:
                 correct_index INTEGER NOT NULL,
                 note TEXT NOT NULL
             );
+            CREATE TABLE IF NOT EXISTS question_sets (
+                id INTEGER PRIMARY KEY,
+                culture_id INTEGER NOT NULL REFERENCES cultures(id) ON DELETE CASCADE,
+                source TEXT NOT NULL,
+                generated_at TEXT NOT NULL
+            );
+            CREATE INDEX IF NOT EXISTS question_sets_culture_date
+                ON question_sets (culture_id, generated_at DESC);
+            CREATE TABLE IF NOT EXISTS culture_questions (
+                id INTEGER PRIMARY KEY,
+                question_set_id INTEGER NOT NULL REFERENCES question_sets(id) ON DELETE CASCADE,
+                category TEXT NOT NULL,
+                prompt TEXT NOT NULL,
+                options_json TEXT NOT NULL,
+                correct_index INTEGER NOT NULL,
+                note TEXT NOT NULL,
+                image_url TEXT,
+                image_search_term TEXT NOT NULL,
+                image_credit TEXT,
+                image_source_url TEXT,
+                image_license TEXT,
+                image_license_url TEXT
+            );
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY,
                 name TEXT NOT NULL,
@@ -114,7 +137,51 @@ def initialize_database() -> None:
                 is_correct INTEGER NOT NULL,
                 PRIMARY KEY (attempt_id, question_id)
             );
+            CREATE TABLE IF NOT EXISTS quiz_attempt_questions (
+                id INTEGER PRIMARY KEY,
+                attempt_id TEXT NOT NULL REFERENCES attempts(id) ON DELETE CASCADE,
+                question_order INTEGER NOT NULL,
+                culture_question_id INTEGER REFERENCES culture_questions(id) ON DELETE SET NULL,
+                prompt TEXT NOT NULL,
+                options_json TEXT NOT NULL,
+                correct_index INTEGER NOT NULL,
+                note TEXT NOT NULL,
+                category TEXT NOT NULL,
+                image_url TEXT,
+                image_search_term TEXT NOT NULL,
+                image_credit TEXT,
+                image_source_url TEXT,
+                image_license TEXT,
+                image_license_url TEXT,
+                UNIQUE (attempt_id, question_order)
+            );
+            CREATE TABLE IF NOT EXISTS quiz_attempt_answers (
+                attempt_id TEXT NOT NULL REFERENCES attempts(id) ON DELETE CASCADE,
+                attempt_question_id INTEGER NOT NULL REFERENCES quiz_attempt_questions(id),
+                selected_index INTEGER NOT NULL,
+                is_correct INTEGER NOT NULL,
+                PRIMARY KEY (attempt_id, attempt_question_id)
+            );
             """
+        )
+        for table in ("culture_questions", "quiz_attempt_questions"):
+            existing_columns = {
+                row["name"] for row in connection.execute(f"PRAGMA table_info({table})")
+            }
+            for column in (
+                "image_credit",
+                "image_source_url",
+                "image_license",
+                "image_license_url",
+            ):
+                if column not in existing_columns:
+                    connection.execute(f"ALTER TABLE {table} ADD COLUMN {column} TEXT")
+        connection.executemany(
+            "UPDATE cultures SET language = ?, region = ?, image = ? WHERE name = ?",
+            [
+                (item["language"], item["region"], item["image"], item["name"])
+                for item in CULTURES
+            ],
         )
         if connection.execute("SELECT COUNT(*) FROM cultures").fetchone()[0] == 0:
             connection.executemany(

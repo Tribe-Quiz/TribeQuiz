@@ -19,8 +19,18 @@
         <span>Tribe Quiz</span>
       </a>
       <nav class="main-nav" id="main-nav" aria-label="Main navigation">
-        <a href="auth.html">Sign In</a>
-        <a class="nav-signup" href="auth.html?tab=signup">Sign Up</a>
+        <a href="#cultures">Home</a>
+        <a href="#" data-open-howto>How to Play</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="#" data-open-about>About</a>
+        <div class="nav-auth-links" id="nav-auth-links">
+          <a href="auth.html">Sign In</a>
+          <a class="nav-signup" href="auth.html?tab=signup">Sign Up</a>
+        </div>
+        <div class="nav-user-links" id="nav-user-links" hidden>
+          <span id="nav-user-name"></span>
+          <button type="button" id="nav-signout">Sign Out</button>
+        </div>
       </nav>
       <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -36,7 +46,7 @@
           <p class="hero-lede">Explore the rich cultures of Africa</p>
           <p class="hero-subtitle">How well do you know your culture?</p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#cultures">Play now <span aria-hidden="true">›</span></a>
+            <button class="button button-primary" id="play-now" type="button">Play now <span aria-hidden="true">›</span></button>
             <button class="button button-quiet" type="button" data-open-howto><span class="play-icon" aria-hidden="true">▶</span> How to play</button>
           </div>
           <a class="scroll-hint" href="#cultures"><span></span> Discover the cultures</a>
@@ -57,7 +67,7 @@
         <div class="value-item"><span class="value-icon">✧</span><div><h3>Learn as you play</h3><p>Small discoveries, lasting knowledge</p></div></div>
         <div class="value-item"><span class="value-icon">⌖</span><div><h3>Discover traditions</h3><p>Explore language, history & heritage</p></div></div>
         <div class="value-item"><span class="value-icon">◈</span><div><h3>Celebrate diversity</h3><p>Many stories, one shared humanity</p></div></div>
-        <div class="value-item"><span class="value-icon">☆</span><div><h3>Earn your place</h3><p>Build your score with every round</p></div></div>
+        <div class="value-item"><span class="value-icon">☆</span><div><h3>Earn badges</h3><p>Track your achievements</p></div></div>
       </section>
     </main>
 
@@ -81,13 +91,32 @@
       <button class="button button-primary modal-cta" type="button" data-close-dialog>Got it, let’s play <span>›</span></button>
     </dialog>
 
+    <dialog class="modal howto-modal" id="about-modal" aria-labelledby="about-title">
+      <button class="modal-close" type="button" aria-label="Close dialog" data-close-about>×</button>
+      <p class="eyebrow eyebrow-gold">Our story</p>
+      <h2 id="about-title">About Tribe Quiz</h2>
+      <p class="about-text">Tribe Quiz celebrates the diverse cultural heritage, languages, history, traditions, food, and music of African communities.</p>
+      <p class="about-text">Learn about your own culture or discover someone else's. Ubuntu: "I am because we are."</p>
+      <button class="button button-primary modal-cta" type="button" data-close-about>Close</button>
+    </dialog>
+
     <dialog class="modal quiz-modal" id="quiz-modal" aria-labelledby="quiz-title">
       <button class="modal-close" type="button" aria-label="Exit quiz" data-exit-quiz>×</button>
       <div class="quiz-topline"><span class="quiz-culture" id="quiz-culture"></span><span class="quiz-score" id="quiz-score">0 points</span></div>
       <div class="progress-meta"><span id="question-count">Question 1 of 10</span><span id="progress-percent">10%</span></div>
       <div class="progress-track"><span id="progress-fill"></span></div>
+      <div class="quiz-timer" aria-live="polite">
+        <span aria-hidden="true">⏱</span>
+        <div class="timer-track"><span id="timer-fill"></span></div>
+        <span id="timer-text">15s</span>
+      </div>
       <div id="question-view">
-        <p class="eyebrow eyebrow-gold">Culture & heritage</p>
+        <p class="eyebrow eyebrow-gold" id="quiz-category">Culture</p>
+        <img class="question-image" id="question-image" alt="" hidden />
+        <div class="image-credit" id="question-image-credit" hidden>
+          <a id="question-image-source" target="_blank" rel="noopener noreferrer"></a>
+          <a id="question-image-license" target="_blank" rel="noopener noreferrer"></a>
+        </div>
         <h2 id="quiz-title"></h2>
         <div class="answer-list" id="answer-list"></div>
         <div class="quiz-feedback" id="quiz-feedback" aria-live="polite"></div>

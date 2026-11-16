@@ -24,6 +24,11 @@ from backend.mailer import (
     send_account_verification_email,
     send_password_reset_email,
 )
+from backend.question_generator import (
+    QUESTION_COUNT,
+    questions_for_culture,
+    select_quiz_questions,
+)
 from backend.schemas import (
     AnswerRequest,
     ForgotPasswordRequest,
@@ -68,6 +73,21 @@ FRONTEND_FILES = {
     "forgot-password.js",
     "reset-password.js",
     "verify-email.js",
+    "leaderboard.html",
+    "leaderboard.js",
+}
+PROFILE_FILES = {
+    "afrikaans.png",
+    "ndebele.webp",
+    "sepedi.webp",
+    "sesotho.webp",
+    "swahili.png",
+    "swati.webp",
+    "tsonga.webp",
+    "tswana.webp",
+    "vhenda.webp",
+    "xhosa.webp",
+    "zulu.webp",
 }
 
 
@@ -367,23 +387,82 @@ def signout(request):
 @api_endpoint("POST")
 def start_attempt(request):
     payload = parse_payload(request, StartAttemptRequest)
-    attempt_id = str(uuid.uuid4())
+    user_id = require_user(request.COOKIES.get(SESSION_COOKIE))
     with database() as connection:
-        culture = connection.execute("SELECT id FROM cultures WHERE id = ?", (payload.culture_id,)).fetchone()
-        if culture is None:
-            raise APIError(404, "Culture not found.")
-        question_count = connection.execute("SELECT COUNT(*) FROM questions").fetchone()[0]
+        culture_row = connection.execute(
+            "SELECT id, name, language, region FROM cultures WHERE id = ?",
+            (payload.culture_id,),
+        ).fetchone()
+    if culture_row is None:
+        raise APIError(404, "Culture not found.")
+
+    culture = dict(culture_row)
+    question_pool, question_source = questions_for_culture(culture)
+    try:
+        selected_questions = select_quiz_questions(question_pool)
+    except ValueError as error:
+        raise APIError(503, "This culture does not have enough quiz questions yet.") from error
+
+    attempt_id = str(uuid.uuid4())
+    public_questions = []
+    with database() as connection:
         connection.execute(
             "INSERT INTO attempts (id, user_id, culture_id, question_count, started_at) VALUES (?, ?, ?, ?, ?)",
             (
                 attempt_id,
-                session_user_id(request.COOKIES.get(SESSION_COOKIE)),
+                user_id,
                 payload.culture_id,
-                question_count,
+                QUESTION_COUNT,
                 datetime.now(timezone.utc).isoformat(),
             ),
         )
-    return json_response({"attempt_id": attempt_id, "question_count": question_count}, status=201)
+        for question_order, question in enumerate(selected_questions):
+            cursor = connection.execute(
+                """INSERT INTO quiz_attempt_questions
+                   (attempt_id, question_order, culture_question_id, prompt, options_json,
+                    correct_index, note, category, image_url, image_search_term,
+                    image_credit, image_source_url, image_license, image_license_url)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (
+                    attempt_id,
+                    question_order,
+                    question["id"],
+                    question["prompt"],
+                    json.dumps(question["options"], ensure_ascii=False),
+                    question["correct_index"],
+                    question["note"],
+                    question["category"],
+                    question["image_url"],
+                    question["image_search_term"],
+                    question["image_credit"],
+                    question["image_source_url"],
+                    question["image_license"],
+                    question["image_license_url"],
+                ),
+            )
+            public_questions.append(
+                {
+                    "id": cursor.lastrowid,
+                    "prompt": question["prompt"],
+                    "options": question["options"],
+                    "category": question["category"],
+                    "image_url": question["image_url"],
+                    "image_search_term": question["image_search_term"],
+                    "image_credit": question["image_credit"],
+                    "image_source_url": question["image_source_url"],
+                    "image_license": question["image_license"],
+                    "image_license_url": question["image_license_url"],
+                }
+            )
+    return json_response(
+        {
+            "attempt_id": attempt_id,
+            "question_count": QUESTION_COUNT,
+            "questions": public_questions,
+            "question_source": question_source,
+        },
+        status=201,
+    )
 
 
 @api_endpoint("POST")
@@ -397,10 +476,12 @@ def submit_answer(request, attempt_id: str):
         if (attempt["user_id"] is not None and attempt["user_id"] != user_id) or attempt["completed_at"]:
             raise APIError(403, "This quiz attempt is not available.")
         answered_count = connection.execute(
-            "SELECT COUNT(*) FROM attempt_answers WHERE attempt_id = ?", (attempt_id,)
+            "SELECT COUNT(*) FROM quiz_attempt_answers WHERE attempt_id = ?", (attempt_id,)
         ).fetchone()[0]
         question = connection.execute(
-            "SELECT * FROM questions ORDER BY id LIMIT 1 OFFSET ?", (answered_count,)
+            """SELECT * FROM quiz_attempt_questions
+               WHERE attempt_id = ? AND question_order = ?""",
+            (attempt_id, answered_count),
         ).fetchone()
         if question is None or question["id"] != payload.question_id:
             raise APIError(409, "Answer the questions in order, one at a time.")
@@ -414,7 +495,9 @@ def submit_answer(request, attempt_id: str):
             else None
         )
         connection.execute(
-            "INSERT INTO attempt_answers (attempt_id, question_id, selected_index, is_correct) VALUES (?, ?, ?, ?)",
+            """INSERT INTO quiz_attempt_answers
+               (attempt_id, attempt_question_id, selected_index, is_correct)
+               VALUES (?, ?, ?, ?)""",
             (attempt_id, question["id"], payload.selected_index, int(correct)),
         )
         connection.execute(
@@ -452,10 +535,51 @@ def get_user_attempts(request):
     return json_response({"attempts": attempts})
 
 
+@api_endpoint("GET")
+def get_leaderboard(request):
+    require_user(request.COOKIES.get(SESSION_COOKIE))
+    with database() as connection:
+        rows = connection.execute(
+            """SELECT users.name AS user_name, cultures.name AS culture,
+                      attempts.score, attempts.correct_count, attempts.question_count,
+                      attempts.completed_at
+               FROM attempts
+               JOIN users ON users.id = attempts.user_id
+               JOIN cultures ON cultures.id = attempts.culture_id
+               WHERE attempts.completed_at IS NOT NULL
+                 AND attempts.id IN (
+                     SELECT id FROM (
+                         SELECT id,
+                                ROW_NUMBER() OVER (
+                                    PARTITION BY user_id, culture_id
+                                    ORDER BY score DESC, completed_at ASC
+                                ) AS rank
+                         FROM attempts
+                         WHERE user_id IS NOT NULL AND completed_at IS NOT NULL
+                     )
+                     WHERE rank = 1
+                 )
+               ORDER BY attempts.score DESC, attempts.completed_at DESC
+               LIMIT 100"""
+        ).fetchall()
+    return json_response({"scores": [dict(row) for row in rows]})
+
+
 @ensure_csrf_cookie
 def serve_frontend(request, filename: str):
     if filename not in FRONTEND_FILES:
         raise Http404
     path = FRONTEND_DIR / filename
+    content_type = mimetypes.guess_type(filename)[0] or "application/octet-stream"
+    return FileResponse(path.open("rb"), content_type=content_type)
+
+
+@ensure_csrf_cookie
+def serve_profile(request, filename: str):
+    if filename not in PROFILE_FILES:
+        raise Http404
+    path = FRONTEND_DIR / "TribeProfile" / filename
+    if not path.is_file():
+        raise Http404
     content_type = mimetypes.guess_type(filename)[0] or "application/octet-stream"
     return FileResponse(path.open("rb"), content_type=content_type)

@@ -18,6 +18,8 @@ urlpatterns = [
     path("api/attempts", views.start_attempt),
     path("api/attempts/<str:attempt_id>/answers", views.submit_answer),
     path("api/auth/attempts", views.get_user_attempts),
+    path("api/leaderboard", views.get_leaderboard),
+    path("TribeProfile/<str:filename>", views.serve_profile),
     path("", views.serve_frontend, {"filename": "index.html"}),
     path("<str:filename>", views.serve_frontend),
 ]

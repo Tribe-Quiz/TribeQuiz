@@ -1,5 +1,7 @@
+import hashlib
 import json
 import os
+import smtplib
 import tempfile
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -11,7 +13,7 @@ from pydantic import ValidationError
 
 from backend.database import database, initialize_database
 from backend.question_generator import GeneratedQuestion, _commons_image
-from backend.security import SESSION_COOKIE, issue_session
+from backend.security import SESSION_COOKIE, hash_password, issue_session
 
 
 class QuizAPIAndQuestionValidationTests(SimpleTestCase):
@@ -235,3 +237,111 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
 
         self.assertTrue(last_answer.json()["completed"])
         self.assertEqual(last_answer.json()["answered_count"], 10)
+
+    def test_password_reset_email_changes_password_once_and_invalidates_sessions(self):
+        old_password = "OldPassword123!"
+        new_password = "NewPassword456!"
+        with database() as connection:
+            connection.execute(
+                "UPDATE users SET password_hash = ? WHERE id = 1",
+                (hash_password(old_password),),
+            )
+
+        reset_urls = []
+        with (
+            patch("backend.views.is_mail_configured", return_value=True),
+            patch(
+                "backend.views.send_password_reset_email",
+                side_effect=lambda _email, url: reset_urls.append(url),
+            ),
+        ):
+            request = self.client.post(
+                "/api/auth/forgot-password",
+                data=json.dumps({"email": "player@example.com"}),
+                content_type="application/json",
+            )
+
+        self.assertEqual(request.status_code, 200)
+        token = parse_qs(urlparse(reset_urls[0]).query)["token"][0]
+        with database() as connection:
+            stored_token = connection.execute(
+                "SELECT token_hash FROM password_reset_tokens WHERE user_id = 1"
+            ).fetchone()
+            self.assertEqual(
+                stored_token["token_hash"],
+                hashlib.sha256(token.encode()).hexdigest(),
+            )
+            self.assertEqual(
+                connection.execute(
+                    "SELECT COUNT(*) FROM sessions WHERE user_id = 1"
+                ).fetchone()[0],
+                1,
+            )
+
+        reset = self.client.post(
+            "/api/auth/reset-password",
+            data=json.dumps({"token": token, "password": new_password}),
+            content_type="application/json",
+        )
+
+        self.assertEqual(reset.status_code, 200)
+        replay = self.client.post(
+            "/api/auth/reset-password",
+            data=json.dumps({"token": token, "password": new_password}),
+            content_type="application/json",
+        )
+        self.assertEqual(replay.status_code, 400)
+        with database() as connection:
+            self.assertEqual(
+                connection.execute(
+                    "SELECT COUNT(*) FROM password_reset_tokens WHERE user_id = 1"
+                ).fetchone()[0],
+                0,
+            )
+            self.assertEqual(
+                connection.execute(
+                    "SELECT COUNT(*) FROM sessions WHERE user_id = 1"
+                ).fetchone()[0],
+                0,
+            )
+
+        signin = self.client.post(
+            "/api/auth/signin",
+            data=json.dumps({"email": "player@example.com", "password": new_password}),
+            content_type="application/json",
+        )
+        self.assertEqual(signin.status_code, 200)
+        self.assertEqual(signin.json()["user"]["email"], "player@example.com")
+
+    def test_password_reset_is_generic_for_unknown_accounts_and_mail_failures(self):
+        with patch("backend.views.is_mail_configured", return_value=True):
+            unknown = self.client.post(
+                "/api/auth/forgot-password",
+                data=json.dumps({"email": "unknown@example.com"}),
+                content_type="application/json",
+            )
+        self.assertEqual(unknown.status_code, 200)
+
+        with (
+            patch("backend.views.is_mail_configured", return_value=True),
+            patch(
+                "backend.views.send_password_reset_email",
+                side_effect=smtplib.SMTPException("test delivery failure"),
+            ),
+        ):
+            with self.assertLogs("backend.views", level="ERROR"):
+                failed_delivery = self.client.post(
+                    "/api/auth/forgot-password",
+                    data=json.dumps({"email": "player@example.com"}),
+                    content_type="application/json",
+                )
+
+        self.assertEqual(failed_delivery.status_code, 200)
+        self.assertEqual(failed_delivery.json(), unknown.json())
+        with database() as connection:
+            self.assertEqual(
+                connection.execute(
+                    "SELECT COUNT(*) FROM password_reset_tokens"
+                ).fetchone()[0],
+                0,
+            )

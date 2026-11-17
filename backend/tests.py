@@ -11,6 +11,7 @@ from django.http import HttpResponse
 from django.test import Client, SimpleTestCase
 from pydantic import ValidationError
 
+from backend import mailer
 from backend.database import database, initialize_database
 from backend.question_generator import (
     GeneratedQuestion,
@@ -18,6 +19,87 @@ from backend.question_generator import (
     questions_for_culture,
 )
 from backend.security import SESSION_COOKIE, hash_password, issue_session
+
+
+class ResendEmailTests(SimpleTestCase):
+    def setUp(self):
+        self.provider_patch = patch("backend.mailer.EMAIL_PROVIDER", "resend")
+        self.api_key_patch = patch("backend.mailer.RESEND_API_KEY", "re_test_key")
+        self.from_patch = patch(
+            "backend.mailer.EMAIL_FROM",
+            "Tribe Quiz <noreply@example.com>",
+        )
+        self.provider_patch.start()
+        self.api_key_patch.start()
+        self.from_patch.start()
+
+    def tearDown(self):
+        self.from_patch.stop()
+        self.api_key_patch.stop()
+        self.provider_patch.stop()
+
+    def test_resend_sends_verification_and_password_reset_emails_over_https(self):
+        response = Mock()
+        with patch("backend.mailer.requests.post", return_value=response) as post:
+            mailer.send_account_verification_email(
+                "player@example.com",
+                "https://tribequiz.example/verify?token=verify-token",
+            )
+            mailer.send_password_reset_email(
+                "player@example.com",
+                "https://tribequiz.example/reset?token=reset-token",
+            )
+
+        self.assertEqual(post.call_count, 2)
+        verification = post.call_args_list[0]
+        self.assertEqual(
+            verification.args[0],
+            "https://api.resend.com/emails",
+        )
+        self.assertEqual(
+            verification.kwargs["headers"],
+            {"Authorization": "Bearer re_test_key"},
+        )
+        self.assertEqual(
+            verification.kwargs["json"],
+            {
+                "from": "Tribe Quiz <noreply@example.com>",
+                "to": ["player@example.com"],
+                "subject": "Verify your Tribe Quiz email",
+                "text": (
+                    "Thanks for signing up for Tribe Quiz.\n\n"
+                    "Verify your email address within 24 hours to activate your account:\n"
+                    "https://tribequiz.example/verify?token=verify-token\n\n"
+                    "If you did not create this account, you can ignore this email.\n"
+                ),
+            },
+        )
+        self.assertEqual(verification.kwargs["timeout"], 10)
+        self.assertEqual(
+            post.call_args_list[1].kwargs["json"]["subject"],
+            "Reset your Tribe Quiz password",
+        )
+        self.assertIn(
+            "https://tribequiz.example/reset?token=reset-token",
+            post.call_args_list[1].kwargs["json"]["text"],
+        )
+        self.assertEqual(response.raise_for_status.call_count, 2)
+
+    def test_resend_http_failures_are_reported_as_delivery_errors(self):
+        response = Mock()
+        response.raise_for_status.side_effect = mailer.requests.HTTPError("rejected")
+        with patch("backend.mailer.requests.post", return_value=response):
+            with self.assertRaises(mailer.EmailDeliveryError):
+                mailer.send_account_verification_email(
+                    "player@example.com",
+                    "https://tribequiz.example/verify?token=verify-token",
+                )
+
+    def test_resend_requires_api_key_and_verified_sender_configuration(self):
+        with patch("backend.mailer.RESEND_API_KEY", ""):
+            self.assertFalse(mailer.is_configured())
+        with patch("backend.mailer.EMAIL_FROM", ""):
+            self.assertFalse(mailer.is_configured())
 
 
 class QuizAPIAndQuestionValidationTests(SimpleTestCase):
@@ -391,6 +473,37 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
         self.assertTrue(last_answer.json()["completed"])
         self.assertEqual(last_answer.json()["answered_count"], 10)
 
+    def test_signup_cleans_pending_record_when_email_delivery_fails(self):
+        with (
+            patch("backend.views.is_mail_configured", return_value=True),
+            patch(
+                "backend.views.send_account_verification_email",
+                side_effect=mailer.EmailDeliveryError("provider unavailable"),
+            ),
+        ):
+            with self.assertLogs("backend.views", level="ERROR"):
+                response = self.client.post(
+                    "/api/auth/signup",
+                    data=json.dumps(
+                        {
+                            "name": "New Player",
+                            "email": "new-player@example.com",
+                            "password": "StrongPass123!",
+                        }
+                    ),
+                    content_type="application/json",
+                )
+
+        self.assertEqual(response.status_code, 503)
+        with database() as connection:
+            self.assertEqual(
+                connection.execute(
+                    "SELECT COUNT(*) FROM pending_signups WHERE email = ?",
+                    ("new-player@example.com",),
+                ).fetchone()[0],
+                0,
+            )
+
     def test_password_reset_email_changes_password_once_and_invalidates_sessions(self):
         old_password = "OldPassword123!"
         new_password = "NewPassword456!"
@@ -475,22 +588,27 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
             )
         self.assertEqual(unknown.status_code, 200)
 
-        with (
-            patch("backend.views.is_mail_configured", return_value=True),
-            patch(
-                "backend.views.send_password_reset_email",
-                side_effect=smtplib.SMTPException("test delivery failure"),
-            ),
-        ):
-            with self.assertLogs("backend.views", level="ERROR"):
-                failed_delivery = self.client.post(
-                    "/api/auth/forgot-password",
-                    data=json.dumps({"email": "player@example.com"}),
-                    content_type="application/json",
-                )
+        delivery_errors = (
+            smtplib.SMTPException("test SMTP delivery failure"),
+            mailer.EmailDeliveryError("test HTTPS delivery failure"),
+        )
+        for delivery_error in delivery_errors:
+            with (
+                patch("backend.views.is_mail_configured", return_value=True),
+                patch(
+                    "backend.views.send_password_reset_email",
+                    side_effect=delivery_error,
+                ),
+            ):
+                with self.assertLogs("backend.views", level="ERROR"):
+                    failed_delivery = self.client.post(
+                        "/api/auth/forgot-password",
+                        data=json.dumps({"email": "player@example.com"}),
+                        content_type="application/json",
+                    )
 
-        self.assertEqual(failed_delivery.status_code, 200)
-        self.assertEqual(failed_delivery.json(), unknown.json())
+            self.assertEqual(failed_delivery.status_code, 200)
+            self.assertEqual(failed_delivery.json(), unknown.json())
         with database() as connection:
             self.assertEqual(
                 connection.execute(

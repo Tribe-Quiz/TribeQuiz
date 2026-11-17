@@ -44,7 +44,7 @@ Passwords are stored as salted hashes. Production deployments should use HTTPS a
 
 ## Password reset email
 
-Signup verification and password reset links are sent over SMTP. For a free Gmail setup, enable 2-Step Verification on the sending Google account and create an App Password; use that App Password here, not the account password. Add these values to `backend/.env`:
+Signup verification and password reset links can use SMTP or Resend. For local development or a host that permits SMTP, a free Gmail setup requires 2-Step Verification and an App Password; use that App Password here, not the account password. Add these values to `backend/.env`:
 
 ```powershell
 SMTP_HOST=smtp.gmail.com
@@ -58,6 +58,17 @@ GEMINI_API_KEY=your-private-gemini-api-key
 
 Set these variables in the hosting provider for deployment and set `APP_BASE_URL` to the public HTTPS origin. Keep `GEMINI_API_KEY` private in the provider's environment settings. Signup creates a temporary pending record; the user is inserted into `users` and signed in only after opening the verification link. Verification links expire after 24 hours. Password reset links expire after one hour. Both token types are stored as hashes and are single-use; repeated requests are briefly throttled. Configure a production transactional email provider for higher sending limits.
 
+For Render Free, use Resend's HTTPS API because outbound SMTP ports are blocked. Verify a domain in Resend, then set these environment variables in Render:
+
+```text
+EMAIL_PROVIDER=resend
+RESEND_API_KEY=your-private-resend-api-key
+EMAIL_FROM=Tribe Quiz <noreply@your-verified-domain>
+APP_BASE_URL=https://tribequiz.onrender.com
+```
+
+Keep `RESEND_API_KEY` private in Render and use a sender address on the domain verified with Resend. When `EMAIL_PROVIDER=resend`, the SMTP variables are not used.
+
 ## Deploy on Render
 
-Use the repository root as the service root, `pip install -r requirements.txt` as the build command, and `waitress-serve --listen=0.0.0.0:$PORT backend.wsgi:application` as the start command. Set `ALLOWED_HOSTS` to the Render hostname, set `CSRF_TRUSTED_ORIGINS` to its HTTPS origin (for example, `https://your-service.onrender.com`), set `DJANGO_SECRET_KEY` to a private random value, and configure `APP_BASE_URL`, `COOKIE_SECURE=true`, and the email/Google variables for the deployment. Attach a persistent disk and set `DATABASE_PATH` to a file on its mount path (for example, `/var/data/tribe_quiz.db`) or SQLite data may be lost when the service is replaced.
+Use the repository root as the service root, `pip install -r requirements.txt` as the build command, and `waitress-serve --listen=0.0.0.0:$PORT backend.wsgi:application` as the start command. Set `ALLOWED_HOSTS` to the Render hostname, set `CSRF_TRUSTED_ORIGINS` to its HTTPS origin (for example, `https://your-service.onrender.com`), set `DJANGO_SECRET_KEY` to a private random value, and configure `APP_BASE_URL`, `COOKIE_SECURE=true`, and the email/Google variables for the deployment. Render Free cannot send outbound SMTP on ports 25, 465, or 587; configure an HTTPS email provider such as Resend instead. Attach a persistent disk and set `DATABASE_PATH` to a file on its mount path (for example, `/var/data/tribe_quiz.db`) or SQLite data may be lost when the service is replaced.

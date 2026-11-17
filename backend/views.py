@@ -20,6 +20,7 @@ from backend.database import database
 from backend.errors import APIError
 from backend.mailer import (
     APP_BASE_URL,
+    EmailDeliveryError,
     is_configured as is_mail_configured,
     send_account_verification_email,
     send_password_reset_email,
@@ -201,7 +202,7 @@ def signup(request):
     verification_url = f"{APP_BASE_URL}/verify-email.html?token={token}"
     try:
         send_account_verification_email(email, verification_url)
-    except (OSError, smtplib.SMTPException) as error:
+    except (EmailDeliveryError, OSError, smtplib.SMTPException) as error:
         logger.exception("Could not send an account verification email.")
         with database() as connection:
             connection.execute(
@@ -293,7 +294,7 @@ def forgot_password(request):
     reset_url = f"{APP_BASE_URL}/reset-password.html?token={token}"
     try:
         send_password_reset_email(email, reset_url)
-    except (OSError, smtplib.SMTPException):
+    except (EmailDeliveryError, OSError, smtplib.SMTPException):
         logger.exception("Could not send a password reset email.")
         with database() as connection:
             connection.execute("DELETE FROM password_reset_tokens WHERE token_hash = ?", (token_hash,))

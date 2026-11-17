@@ -240,6 +240,28 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "image/webp")
 
+    def test_static_question_images_are_matched_and_served_locally(self):
+        questions, source = questions_for_culture(
+            {"id": self._culture_id(), "name": "Zulu"}
+        )
+        amasi = next(
+            question
+            for question in questions
+            if question["prompt"] == "What is 'Amasi' in Zulu culture?"
+        )
+
+        self.assertEqual(source, "static")
+        self.assertEqual(amasi["image_url"], "/quiz-images/zulu-photos/amasi.jpg")
+        response = self.client.get(amasi["image_url"])
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "image/jpeg")
+
+    def test_unreferenced_question_images_are_not_served(self):
+        response = self.client.get("/quiz-images/zulu-photos/not-a-quiz-image.jpg")
+
+        self.assertEqual(response.status_code, 404)
+
     def test_generated_questions_reject_duplicate_answer_choices(self):
         with self.assertRaises(ValidationError):
             GeneratedQuestion.model_validate(

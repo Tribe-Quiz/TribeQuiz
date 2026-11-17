@@ -195,12 +195,22 @@ function renderQuestion() {
     questionImage.src = question.image_url;
     questionImage.alt = question.image_search_term || `Illustration for ${currentCulture.name}`;
     questionImage.hidden = false;
-    imageSource.href = question.image_source_url || "https://commons.wikimedia.org/";
-    imageSource.textContent = `Photo: ${question.image_credit || "Wikimedia Commons"}`;
-    imageLicense.href = question.image_license_url || question.image_source_url || "https://commons.wikimedia.org/";
-    imageLicense.textContent = question.image_license || "Source and license";
-    imageLicense.hidden = false;
-    imageCredit.hidden = false;
+    const hasImageAttribution = Boolean(
+      question.image_credit || question.image_source_url || question.image_license || question.image_license_url,
+    );
+    imageCredit.hidden = !hasImageAttribution;
+    imageLicense.hidden = !hasImageAttribution;
+    if (hasImageAttribution) {
+      imageSource.href = question.image_source_url || "https://commons.wikimedia.org/";
+      imageSource.textContent = `Photo: ${question.image_credit || "Wikimedia Commons"}`;
+      imageLicense.href = question.image_license_url || question.image_source_url || "https://commons.wikimedia.org/";
+      imageLicense.textContent = question.image_license || "Source and license";
+    } else {
+      imageSource.removeAttribute("href");
+      imageSource.textContent = "";
+      imageLicense.removeAttribute("href");
+      imageLicense.textContent = "";
+    }
     questionImage.onerror = () => {
       questionImage.hidden = true;
       imageCredit.hidden = true;

@@ -20,6 +20,7 @@ urlpatterns = [
     path("api/auth/attempts", views.get_user_attempts),
     path("api/leaderboard", views.get_leaderboard),
     path("TribeProfile/<str:filename>", views.serve_profile),
+    path("quiz-images/<str:folder>/<str:filename>", views.serve_quiz_image),
     path("", views.serve_frontend, {"filename": "index.html"}),
     path("<str:filename>", views.serve_frontend),
 ]

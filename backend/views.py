@@ -26,6 +26,7 @@ from backend.mailer import (
 )
 from backend.question_generator import (
     QUESTION_COUNT,
+    QUESTION_IMAGE_REFERENCES,
     questions_for_culture,
     select_quiz_questions,
 )
@@ -585,6 +586,18 @@ def serve_profile(request, filename: str):
     if filename not in PROFILE_FILES:
         raise Http404
     path = FRONTEND_DIR / "TribeProfile" / filename
+    if not path.is_file():
+        raise Http404
+    content_type = mimetypes.guess_type(filename)[0] or "application/octet-stream"
+    return FileResponse(path.open("rb"), content_type=content_type)
+
+
+@ensure_csrf_cookie
+def serve_quiz_image(request, folder: str, filename: str):
+    image_reference = f"public/{folder}/{filename}"
+    if image_reference not in QUESTION_IMAGE_REFERENCES:
+        raise Http404
+    path = FRONTEND_DIR / "quiz pictures" / folder / filename
     if not path.is_file():
         raise Http404
     content_type = mimetypes.guess_type(filename)[0] or "application/octet-stream"

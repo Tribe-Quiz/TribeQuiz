@@ -6,8 +6,9 @@ import random
 import re
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Literal
+from urllib.parse import quote
 
 import requests
 from google import genai
@@ -20,6 +21,15 @@ from backend.database import database
 logger = logging.getLogger(__name__)
 STATIC_QUESTION_SETS = json.loads(
     (Path(__file__).parent / "data" / "tribe_questions.json").read_text(encoding="utf-8")
+)
+QUESTION_IMAGE_REFERENCES = frozenset(
+    question["image_path"]
+    for questions in STATIC_QUESTION_SETS.values()
+    for question in questions
+    if question.get("image_path")
+)
+QUESTION_IMAGE_DIRECTORY = (
+    Path(__file__).resolve().parent.parent / "frontend" / "quiz pictures"
 )
 QUESTION_COUNT = 10
 QUESTION_POOL_SIZE = 30
@@ -122,7 +132,7 @@ def _static_questions(culture: dict) -> list[dict]:
             "options": question["options"],
             "correct_index": question["correct_index"],
             "note": f"The correct answer is {question['options'][question['correct_index']]}",
-            "image_url": None,
+            "image_url": _static_question_image_url(question.get("image_path")),
             "image_search_term": question["prompt"],
             "image_credit": None,
             "image_source_url": None,
@@ -131,6 +141,21 @@ def _static_questions(culture: dict) -> list[dict]:
         }
         for question in questions
     ]
+
+
+def _static_question_image_url(image_path: str | None) -> str | None:
+    if not image_path:
+        return None
+    if image_path not in QUESTION_IMAGE_REFERENCES:
+        raise ValueError("Question image path is not in the static question data.")
+
+    parts = PurePosixPath(image_path).parts
+    if len(parts) != 3 or parts[0] != "public":
+        raise ValueError(f"Invalid static question image path: {image_path}")
+    folder, filename = parts[1:]
+    if not (QUESTION_IMAGE_DIRECTORY / folder / filename).is_file():
+        return None
+    return f"/quiz-images/{quote(folder, safe='')}/{quote(filename, safe='')}"
 
 
 def _commons_image(search_term: str) -> dict[str, str | None]:

@@ -102,6 +102,105 @@ class ResendEmailTests(SimpleTestCase):
             self.assertFalse(mailer.is_configured())
 
 
+class EmailJSTests(SimpleTestCase):
+    def setUp(self):
+        self.provider_patch = patch("backend.mailer.EMAIL_PROVIDER", "emailjs")
+        self.service_patch = patch(
+            "backend.mailer.EMAILJS_SERVICE_ID",
+            "service-test",
+        )
+        self.verification_template_patch = patch(
+            "backend.mailer.EMAILJS_VERIFICATION_TEMPLATE_ID",
+            "template-verification",
+        )
+        self.reset_template_patch = patch(
+            "backend.mailer.EMAILJS_RESET_TEMPLATE_ID",
+            "template-reset",
+        )
+        self.public_key_patch = patch(
+            "backend.mailer.EMAILJS_PUBLIC_KEY",
+            "public-key",
+        )
+        self.private_key_patch = patch(
+            "backend.mailer.EMAILJS_PRIVATE_KEY",
+            "private-key",
+        )
+        self.provider_patch.start()
+        self.service_patch.start()
+        self.verification_template_patch.start()
+        self.reset_template_patch.start()
+        self.public_key_patch.start()
+        self.private_key_patch.start()
+
+    def tearDown(self):
+        self.private_key_patch.stop()
+        self.public_key_patch.stop()
+        self.reset_template_patch.stop()
+        self.verification_template_patch.stop()
+        self.service_patch.stop()
+        self.provider_patch.stop()
+
+    def test_emailjs_sends_verification_and_password_reset_templates(self):
+        response = Mock()
+        with patch("backend.mailer.requests.post", return_value=response) as post:
+            mailer.send_account_verification_email(
+                "player@example.com",
+                "https://tribequiz.example/verify?token=verify-token",
+            )
+            mailer.send_password_reset_email(
+                "player@example.com",
+                "https://tribequiz.example/reset?token=reset-token",
+            )
+
+        self.assertEqual(post.call_count, 2)
+        verification = post.call_args_list[0]
+        self.assertEqual(
+            verification.args[0],
+            "https://api.emailjs.com/api/v1.0/email/send",
+        )
+        self.assertEqual(
+            verification.kwargs["json"],
+            {
+                "service_id": "service-test",
+                "template_id": "template-verification",
+                "user_id": "public-key",
+                "accessToken": "private-key",
+                "template_params": {
+                    "to_email": "player@example.com",
+                    "subject": "Verify your Tribe Quiz email",
+                    "message_body": (
+                        "Thanks for signing up for Tribe Quiz.\n\n"
+                        "Verify your email address within 24 hours to activate your account:\n"
+                        "https://tribequiz.example/verify?token=verify-token\n\n"
+                        "If you did not create this account, you can ignore this email.\n"
+                    ),
+                },
+            },
+        )
+        self.assertIn(
+            "https://tribequiz.example/reset?token=reset-token",
+            post.call_args_list[1].kwargs["json"]["template_params"]["message_body"],
+        )
+        self.assertEqual(response.raise_for_status.call_count, 2)
+
+    def test_emailjs_http_failures_are_reported_as_delivery_errors(self):
+        response = Mock()
+        response.raise_for_status.side_effect = mailer.requests.HTTPError("rejected")
+        with patch(
+            "backend.mailer.requests.post",
+            return_value=response,
+        ):
+            with self.assertRaises(mailer.EmailDeliveryError):
+                mailer.send_account_verification_email(
+                    "player@example.com",
+                    "https://tribequiz.example/verify?token=verify-token",
+                )
+
+    def test_emailjs_requires_all_service_and_template_settings(self):
+        with patch("backend.mailer.EMAILJS_PRIVATE_KEY", ""):
+            self.assertFalse(mailer.is_configured())
+
+
 class QuizAPIAndQuestionValidationTests(SimpleTestCase):
     def setUp(self):
         self.temporary_directory = tempfile.TemporaryDirectory()

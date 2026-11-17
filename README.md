@@ -69,6 +69,20 @@ APP_BASE_URL=https://tribequiz.onrender.com
 
 Keep `RESEND_API_KEY` private in Render and use a sender address on the domain verified with Resend. When `EMAIL_PROVIDER=resend`, the SMTP variables are not used.
 
+If you do not own a sending domain, EmailJS can connect a Gmail account and send through its HTTPS API. Connect Gmail in EmailJS, create two templates, and configure each template's recipient as `{{to_email}}`, subject as `{{subject}}`, and body as `{{message_body}}`. Set these variables in Render:
+
+```text
+EMAIL_PROVIDER=emailjs
+EMAILJS_SERVICE_ID=your-emailjs-service-id
+EMAILJS_VERIFICATION_TEMPLATE_ID=your-verification-template-id
+EMAILJS_RESET_TEMPLATE_ID=your-password-reset-template-id
+EMAILJS_PUBLIC_KEY=your-emailjs-public-key
+EMAILJS_PRIVATE_KEY=your-private-emailjs-key
+APP_BASE_URL=https://tribequiz.onrender.com
+```
+
+The EmailJS templates receive `to_email`, `subject`, and `message_body` parameters. Keep `EMAILJS_PRIVATE_KEY` private in Render. EmailJS's current free plan lists 200 requests per month and two templates; it recommends personal email services like Gmail only for development or very low volume. Verification and reset links pass through EmailJS, so disable its email-history storage if you do not want those message variables retained. When `EMAIL_PROVIDER=emailjs`, the SMTP and Resend variables are not used.
+
 ## Deploy on Render
 
 Use the repository root as the service root, `pip install -r requirements.txt` as the build command, and `waitress-serve --listen=0.0.0.0:$PORT backend.wsgi:application` as the start command. Set `ALLOWED_HOSTS` to the Render hostname, set `CSRF_TRUSTED_ORIGINS` to its HTTPS origin (for example, `https://your-service.onrender.com`), set `DJANGO_SECRET_KEY` to a private random value, and configure `APP_BASE_URL`, `COOKIE_SECURE=true`, and the email/Google variables for the deployment. Render Free cannot send outbound SMTP on ports 25, 465, or 587; configure an HTTPS email provider such as Resend instead. Attach a persistent disk and set `DATABASE_PATH` to a file on its mount path (for example, `/var/data/tribe_quiz.db`) or SQLite data may be lost when the service is replaced.

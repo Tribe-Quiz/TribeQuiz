@@ -12,7 +12,11 @@ from django.test import Client, SimpleTestCase
 from pydantic import ValidationError
 
 from backend.database import database, initialize_database
-from backend.question_generator import GeneratedQuestion, _commons_image
+from backend.question_generator import (
+    GeneratedQuestion,
+    _commons_image,
+    questions_for_culture,
+)
 from backend.security import SESSION_COOKIE, hash_password, issue_session
 
 
@@ -85,11 +89,15 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
         return response.json()
 
     def test_start_attempt_requires_culture_specific_questions(self):
-        response = self.client.post(
-            "/api/attempts",
-            data=json.dumps({"culture_id": self._culture_id()}),
-            content_type="application/json",
-        )
+        with patch(
+            "backend.views.questions_for_culture",
+            return_value=([], "unavailable"),
+        ):
+            response = self.client.post(
+                "/api/attempts",
+                data=json.dumps({"culture_id": self._culture_id()}),
+                content_type="application/json",
+            )
 
         self.assertEqual(response.status_code, 503)
         self.assertIn("Tribe-specific questions for Zulu", response.json()["detail"])
@@ -99,6 +107,53 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
                 connection.execute("SELECT COUNT(*) FROM attempts").fetchone()[0],
                 0,
             )
+
+    def test_static_question_pools_are_available_for_every_culture_without_ai(self):
+        with database() as connection:
+            cultures = [
+                dict(row)
+                for row in connection.execute(
+                    "SELECT id, name FROM cultures ORDER BY id"
+                )
+            ]
+
+        self.assertEqual(len(cultures), 11)
+        for culture in cultures:
+            with self.subTest(culture=culture["name"]):
+                questions, source = questions_for_culture(culture)
+                self.assertEqual(source, "static")
+                self.assertGreaterEqual(len(questions), 10)
+                self.assertTrue(all(len(question["options"]) == 4 for question in questions))
+                self.assertTrue(
+                    all(0 <= question["correct_index"] < 4 for question in questions)
+                )
+
+    def test_start_attempt_uses_tribe_specific_static_questions_without_ai(self):
+        culture_id = self._culture_id()
+
+        response = self.client.post(
+            "/api/attempts",
+            data=json.dumps({"culture_id": culture_id}),
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 201)
+        attempt = response.json()
+        self.assertEqual(attempt["question_source"], "static")
+        self.assertEqual(attempt["question_count"], 10)
+        self.assertEqual(len(attempt["questions"]), 10)
+        static_prompts = {
+            question["prompt"]
+            for question in questions_for_culture(
+                {"id": culture_id, "name": "Zulu"}
+            )[0]
+        }
+        self.assertTrue(
+            all(
+                question["prompt"] in static_prompts
+                for question in attempt["questions"]
+            )
+        )
 
     def test_start_attempt_returns_ten_questions_without_answers(self):
         attempt = self._start_attempt()
@@ -131,11 +186,12 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
                     for index in range(10)
                 ],
             )
-        response = self.client.post(
-            "/api/attempts",
-            data=json.dumps({"culture_id": self._culture_id()}),
-            content_type="application/json",
-        )
+        with patch("backend.question_generator._static_questions", return_value=[]):
+            response = self.client.post(
+                "/api/attempts",
+                data=json.dumps({"culture_id": self._culture_id()}),
+                content_type="application/json",
+            )
         self.assertEqual(response.status_code, 201)
         attempt = response.json()
 

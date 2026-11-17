@@ -9,9 +9,9 @@ The project is split into a browser frontend and a Python/Django backend. SQLite
 
 The browser uses the shared API client to call Django's `/api` endpoints. The server remains the source of truth for quiz and account data; starting a quiz also checks that the question count returned by the API matches the loaded quiz.
 
-## AI-generated quiz questions
+## Tribe question banks
 
-The backend generates a 30-question pool for the selected culture using Gemini, validates its structured output, and caches it in SQLite for 30 days. Each round draws ten questions from that culture's pool. Add `GEMINI_API_KEY` to `backend/.env` for local development and to the hosting provider's private environment settings for deployment; never put the key in frontend code. If neither a key nor a cached question set for the selected culture is available, the app reports that tribe-specific questions are unavailable instead of substituting the shared general quiz.
+The curated question pools for all 11 cultures are stored in `backend/data/tribe_questions.json`. Each pool is matched to its culture and a round draws ten questions from that pool, so local quizzes do not require an API key. If a culture has no curated pool, the backend can generate a 30-question pool with Gemini, validate its structured output, and cache it in SQLite for 30 days. Add `GEMINI_API_KEY` to `backend/.env` for local development and to the hosting provider's private environment settings for deployment; never put the key in frontend code.
 
 For each generated question, the backend searches Wikimedia Commons using the culture and the question's image-search phrase, then caches the thumbnail and its source/credit/license metadata with the question. The quiz displays the photo credit and links to the Commons file page. Image lookup does not require a separate API key. AI-generated cultural content and image relevance should be reviewed before being used publicly.
 

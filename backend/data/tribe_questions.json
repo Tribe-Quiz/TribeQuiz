@@ -1,0 +1,3984 @@
+{
+  "Afrikaner": [
+    {
+      "category": "Language",
+      "prompt": "How do you say 'Hello' in Afrikaans?",
+      "options": [
+        "Hallo",
+        "Goeie dag",
+        "Both Hallo and Goeie dag",
+        "Dag se"
+      ],
+      "correct_index": 2,
+      "image_path": "public/afrikaans-photos/hello-afr.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "Afrikaans developed mainly from which European language?",
+      "options": [
+        "German",
+        "Dutch",
+        "French",
+        "Portuguese"
+      ],
+      "correct_index": 1,
+      "image_path": "public/afrikaans-photos/dutch.jpg"
+    },
+    {
+      "category": "Language",
+      "prompt": "How do you say 'Thank you' in Afrikaans?",
+      "options": [
+        "Asseblief",
+        "Dankie",
+        "Totsiens",
+        "Goeie dag"
+      ],
+      "correct_index": 1,
+      "image_path": "public/afrikaans-photos/thank-you.jpg"
+    },
+    {
+      "category": "Language",
+      "prompt": "What does 'Baie dankie' mean?",
+      "options": [
+        "Good morning",
+        "Thank you very much",
+        "See you later",
+        "Please"
+      ],
+      "correct_index": 1,
+      "image_path": "public/afrikaans-photos/thank-you.jpg"
+    },
+    {
+      "category": "Language",
+      "prompt": "Afrikaans borrowed words from which other languages besides Dutch, due to its colonial-era history?",
+      "options": [
+        "Only English",
+        "Malay, Khoekhoe, Portuguese and others",
+        "Only German",
+        "Only French"
+      ],
+      "correct_index": 1,
+      "image_path": "public/afrikaans-photos/laungages.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "Who were the original Dutch settlers in the Cape called?",
+      "options": [
+        "Voortrekkers",
+        "Boers",
+        "Cape Dutch",
+        "Both Boers and Cape Dutch"
+      ],
+      "correct_index": 3,
+      "image_path": "public/afrikaans-photos/boers.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "What was the Great Trek?",
+      "options": [
+        "A religious pilgrimage to Cape Town",
+        "A mass migration of Boer settlers away from British rule in the Cape",
+        "A trade route to Mozambique",
+        "An annual harvest festival"
+      ],
+      "correct_index": 1,
+      "image_path": "public/afrikaans-photos/great-trek-exp.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "In which decade did the Great Trek mainly take place?",
+      "options": [
+        "1800s-1810s",
+        "1830s-1840s",
+        "1860s-1870s",
+        "1890s-1900s"
+      ],
+      "correct_index": 1,
+      "image_path": "public/afrikaans-photos/decade.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "What were the independent states the Voortrekkers established called?",
+      "options": [
+        "Cape Colony and Natal",
+        "The Boer Republics (e.g. Transvaal, Orange Free State)",
+        "British Dominions",
+        "The Zulu Kingdom"
+      ],
+      "correct_index": 1,
+      "image_path": "public/afrikaans-photos/Voortrekkers.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "The Anglo-Boer War was fought between the British and which group?",
+      "options": [
+        "The Zulu Kingdom",
+        "The Boer republics",
+        "Portuguese settlers",
+        "The Xhosa nation"
+      ],
+      "correct_index": 1,
+      "image_path": "public/afrikaans-photos/anglo-boer-war.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "When did the Anglo-Boer War take place?",
+      "options": [
+        "1850-1852",
+        "1879-1881",
+        "1899-1902",
+        "1914-1918"
+      ],
+      "correct_index": 2,
+      "image_path": "public/afrikaans-photos/anglo-war.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "What is the Voortrekker Monument, located near Pretoria?",
+      "options": [
+        "A famous Afrikaans university",
+        "A monument honouring the Voortrekkers and the Great Trek",
+        "A wine estate",
+        "A type of folk dance"
+      ],
+      "correct_index": 1,
+      "image_path": "public/afrikaans-photos/voortrekker-monument.jpg"
+    },
+    {
+      "category": "Traditions",
+      "prompt": "What is a 'braai'?",
+      "options": [
+        "A traditional dance",
+        "A type of hat",
+        "A barbecue / outdoor grilling tradition",
+        "A folk song"
+      ],
+      "correct_index": 2,
+      "image_path": "public/afrikaans-photos/braai.jpg"
+    },
+    {
+      "category": "Traditions",
+      "prompt": "Which South African public holiday celebrates braai culture, also known as 'National Braai Day'?",
+      "options": [
+        "Freedom Day",
+        "Heritage Day",
+        "Youth Day",
+        "Workers' Day"
+      ],
+      "correct_index": 1,
+      "image_path": "public/afrikaans-photos/braai-day.jpg"
+    },
+    {
+      "category": "Traditions",
+      "prompt": "What is 'Voortrekker' clothing typically associated with?",
+      "options": [
+        "Modern streetwear",
+        "Traditional dress worn by descendants reenacting Great Trek history",
+        "Beach wear",
+        "Workwear for miners"
+      ],
+      "correct_index": 1,
+      "image_path": "public/afrikaans-photos/trad-dress.jpg"
+    },
+    {
+      "category": "Traditions",
+      "prompt": "What kind of music is closely tied to traditional Afrikaner folk culture, often played with concertina and guitar?",
+      "options": [
+        "Boeremusiek",
+        "Kwaito",
+        "Maskandi",
+        "Amapiano"
+      ],
+      "correct_index": 0,
+      "image_path": "public/afrikaans-photos/boeremusiek.jpg"
+    },
+    {
+      "category": "Traditions",
+      "prompt": "What is a 'volkspele'?",
+      "options": [
+        "A type of traditional Afrikaner folk dance/game gathering",
+        "A religious sermon",
+        "A type of farm tool",
+        "A legal court"
+      ],
+      "correct_index": 0,
+      "image_path": "public/afrikaans-photos/folk-dance.jpg"
+    },
+    {
+      "category": "Traditions",
+      "prompt": "The Dutch Reformed Church has historically played a major role in which aspect of Afrikaner life?",
+      "options": [
+        "Sport",
+        "Religion and community life",
+        "Agriculture only",
+        "Mining"
+      ],
+      "correct_index": 1,
+      "image_path": "public/afrikaans-photos/dutch-church.jpg"
+    },
+    {
+      "category": "Traditions",
+      "prompt": "What is a 'plaasstal' or farm stall commonly associated with in Afrikaner rural culture?",
+      "options": [
+        "Roadside stalls selling local farm produce and preserves",
+        "A type of dance",
+        "A government office",
+        "A music genre"
+      ],
+      "correct_index": 0,
+      "image_path": "public/afrikaans-photos/farm-side.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'biltong'?",
+      "options": [
+        "A dried, cured meat snack",
+        "A type of bread",
+        "A dessert",
+        "A soft drink"
+      ],
+      "correct_index": 0,
+      "image_path": "public/afrikaans-photos/biltong.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'boerewors'?",
+      "options": [
+        "A type of cheese",
+        "A traditional South African farmer's sausage",
+        "A vegetable stew",
+        "A pastry"
+      ],
+      "correct_index": 1,
+      "image_path": "public/afrikaans-photos/boerewors.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'melktert'?",
+      "options": [
+        "A spicy curry",
+        "A milk tart dessert",
+        "A type of bread roll",
+        "A meat pie"
+      ],
+      "correct_index": 1,
+      "image_path": "public/afrikaans-photos/melktert.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'koeksisters'?",
+      "options": [
+        "A syrup-coated plaited fried dough pastry",
+        "A type of stew",
+        "A savoury pie",
+        "A grilled meat dish"
+      ],
+      "correct_index": 0,
+      "image_path": "public/afrikaans-photos/koeksisters.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'potjiekos' traditionally cooked in?",
+      "options": [
+        "A clay oven",
+        "A three-legged cast-iron pot over an open fire",
+        "A microwave",
+        "A wood-fired pizza oven"
+      ],
+      "correct_index": 1,
+      "image_path": "public/afrikaans-photos/potjiekos.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'rusks' (beskuit) typically eaten with?",
+      "options": [
+        "Soup",
+        "Coffee or tea, often dunked",
+        "Salad",
+        "Braai meat"
+      ],
+      "correct_index": 1,
+      "image_path": "public/afrikaans-photos/beskuit.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'bobotie', a well-known South African dish with strong Cape Malay and Afrikaner influence?",
+      "options": [
+        "A spiced minced meat bake topped with an egg-based custard",
+        "A clear vegetable soup",
+        "A type of flatbread",
+        "A fish curry"
+      ],
+      "correct_index": 0,
+      "image_path": "public/afrikaans-photos/bobotie.jpg"
+    },
+    {
+      "category": "Language",
+      "prompt": "How do you say 'Goodbye' in Afrikaans?",
+      "options": [
+        "Totsiens",
+        "Goeie nag",
+        "Dag se",
+        "All of the above"
+      ],
+      "correct_index": 3,
+      "image_path": "public/afrikaans-photos/goodbye-afr.png"
+    }
+  ],
+  "Ndebele": [
+    {
+      "category": "Language",
+      "prompt": "What does 'Lotjhani' mean in isiNdebele?",
+      "options": [
+        "Goodbye",
+        "Hello",
+        "Thank you",
+        "Yes"
+      ],
+      "correct_index": 1,
+      "image_path": "public/ndebele-photos/lotjhani.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "How do you say 'Thank you' in isiNdebele?",
+      "options": [
+        "Ngiyabonga",
+        "Ngiyathokoza",
+        "Lotjhani",
+        "Yebo"
+      ],
+      "correct_index": 1,
+      "image_path": "public/ndebele-photos/thank-you.jpg"
+    },
+    {
+      "category": "Language",
+      "prompt": "How do you say 'Goodbye' in isiNdebele?",
+      "options": [
+        "Salakahle",
+        "Lotjhani",
+        "Hamba kahle",
+        "Nisale kuhle"
+      ],
+      "correct_index": 3,
+      "image_path": "public/ndebele-photos/lotjhani.png"
+    },
+    {
+      "category": "History",
+      "prompt": "To which larger ethnic group do the Southern Ndebele belong?",
+      "options": [
+        "Nguni",
+        "Sotho-Tswana",
+        "Venda",
+        "Tsonga"
+      ],
+      "correct_index": 0,
+      "image_path": "public/ndebele-photos/nguni.png"
+    },
+    {
+      "category": "History",
+      "prompt": "Who is regarded as the founder of the Southern Ndebele nation?",
+      "options": [
+        "King Musi",
+        "King Nyabela",
+        "King Mabhoko",
+        "King Magoboli"
+      ],
+      "correct_index": 0,
+      "image_path": "public/ndebele-photos/king-musi.png"
+    },
+    {
+      "category": "History",
+      "prompt": "The Ndebele in South Africa are primarily located in which province?",
+      "options": [
+        "Limpopo",
+        "Gauteng",
+        "Mpumalanga",
+        "KwaZulu-Natal"
+      ],
+      "correct_index": 2,
+      "image_path": "public/ndebele-photos/kwandebele.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "In 1883 the Ndzundza Ndebele fought the Mapoch War against which group?",
+      "options": [
+        "The British Army",
+        "The ZAR (Boer Republic) forces",
+        "The Zulu Kingdom",
+        "The Pedi Kingdom"
+      ],
+      "correct_index": 1,
+      "image_path": "public/ndebele-photos/mapoch-war.png"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "What are Ndebele women famous for wearing around their necks, arms, and legs?",
+      "options": [
+        "Beaded necklaces",
+        "Brass rings (idzila)",
+        "Feathers",
+        "Cowrie shells"
+      ],
+      "correct_index": 1,
+      "image_path": "public/ndebele-photos/idzila.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The colorful geometric patterns painted on Ndebele houses are called?",
+      "options": [
+        "Umgwalo",
+        "Iimbali",
+        "Amaphepha",
+        "Painting"
+      ],
+      "correct_index": 0,
+      "image_path": "public/ndebele-photos/umgwalo.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "Which traditional ceremony is important in Ndebele culture?",
+      "options": [
+        "Umhlanga",
+        "Wedding ceremonies",
+        "Initiation ceremonies",
+        "Ukweshwama"
+      ],
+      "correct_index": 2,
+      "image_path": "public/ndebele-photos/ukuwela.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "What does 'Ukuthomba' mean in Ndebele culture?",
+      "options": [
+        "A wedding ceremony",
+        "A coming-of-age ritual for girls",
+        "A harvest festival",
+        "A prayer ritual"
+      ],
+      "correct_index": 1,
+      "image_path": "public/ndebele-photos/iqude.png"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "What is a traditional healer called in Southern Ndebele culture?",
+      "options": [
+        "Sangoma",
+        "Inyanga",
+        "Isangoma",
+        "Muthi"
+      ],
+      "correct_index": 2,
+      "image_path": "public/ndebele-photos/isangoma.jpg"
+    },
+    {
+      "category": "Art",
+      "prompt": "What is the main purpose of traditional Ndebele beadwork?",
+      "options": [
+        "Decoration only",
+        "Communication of messages and status",
+        "Religious worship",
+        "Tourist attraction"
+      ],
+      "correct_index": 1,
+      "image_path": "public/ndebele-photos/beadwork.jpg"
+    },
+    {
+      "category": "Art",
+      "prompt": "What is an 'umseme' that Ndebele women traditionallymake?",
+      "options": [
+        "A traditional woven grass mat",
+        "A beaded necklace",
+        "A clay cooking pot",
+        "A traditional drum"
+      ],
+      "correct_index": 0,
+      "image_path": "public/ndebele-photos/umseme.jpg"
+    },
+    {
+      "category": "Art",
+      "prompt": "Ndebele beadwork patterns are known for being?",
+      "options": [
+        "Floral designs",
+        "Geometric and symmetrical",
+        "Animal shapes",
+        "Abstract swirls"
+      ],
+      "correct_index": 1,
+      "image_path": "public/ndebele-photos/beadwork.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "What is the importance of clan names (izibongo) in Ndebele culture?",
+      "options": [
+        "They identify family lineage and ancestry",
+        "They identify a person's occupation",
+        "They are only used during weddings",
+        "They replace surnames"
+      ],
+      "correct_index": 0,
+      "image_path": "public/ndebele-photos/clan-names.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "What makes Southern Ndebele culture easily recognizable around the world?",
+      "options": [
+        "Its colourful geometric art and beadwork",
+        "Its pyramids",
+        "Its snow festivals",
+        "Its wooden castles"
+      ],
+      "correct_index": 0,
+      "image_path": "public/ndebele-photos/ndebele-women.png"
+    },
+    {
+      "category": "Music",
+      "prompt": "The traditional Ndebele dance performed at ceremonies and celebrations is called?",
+      "options": [
+        "Indlamu",
+        "Pantsula",
+        "Ingadla",
+        "Gumboot"
+      ],
+      "correct_index": 2,
+      "image_path": "public/ndebele-photos/ingadla.png"
+    },
+    {
+      "category": "Music",
+      "prompt": "What instrument is commonly used in Ndebele traditional music?",
+      "options": [
+        "Drum (Ingungu)",
+        "Mbira",
+        "Guitar",
+        "Flute"
+      ],
+      "correct_index": 2,
+      "image_path": "public/ndebele-photos/guitar.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "Which Southern Ndebele singer is well known for performing traditional isiNdebele music from KwaNdebele?",
+      "options": [
+        "Yvonne Chaka Chaka",
+        "Busi Mhlongo",
+        "Brenda Fassie",
+        "Nothembi Mkhwebane"
+      ],
+      "correct_index": 3,
+      "image_path": "public/ndebele-photos/nothembi.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "The main Ndebele area in South Africa is known as?",
+      "options": [
+        "KwaNdebele",
+        "Mapumalanga",
+        "KwaZulu",
+        "Eastern Cape"
+      ],
+      "correct_index": 0,
+      "image_path": "public/ndebele-photos/kwandebele.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is the name of the traditional flour porridge enjoyed by many Ndebele families?",
+      "options": [
+        "Amatlontjisi",
+        "Amasi",
+        "Ting",
+        "Mabele"
+      ],
+      "correct_index": 0,
+      "image_path": "public/ndebele-photos/amatlontjisi.jpeg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Which famous Ndebele artist is known worldwide for her colorful house paintings?",
+      "options": [
+        "Esther Mahlangu",
+        "Maggie Laubser",
+        "Irma Stern",
+        "Mary Sibande"
+      ],
+      "correct_index": 0,
+      "image_path": "public/ndebele-photos/esther-mahlangu.jpg"
+    },
+    {
+      "category": "Fashion",
+      "prompt": "BMW famously commissioned which Ndebele artist to paint a luxury car?",
+      "options": [
+        "Esther Mahlangu",
+        "Dr. Esther Mnguni",
+        "Noria Mabasa",
+        "Jackson Hlungwani"
+      ],
+      "correct_index": 0,
+      "image_path": "public/ndebele-photos/bmw.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Who is the current reigning king of the Ndebele(Ndzundza) in South Africa?",
+      "options": [
+        "King Makhosoke II",
+        "King Nyabela",
+        "King Mabhoko III",
+        "King Makhosonke II"
+      ],
+      "correct_index": 2,
+      "image_path": "public/ndebele-photos/king-mabhoko-iii.png"
+    },
+    {
+      "category": "Culture",
+      "prompt": "What is the traditional Ndebele marriage blanket called?",
+      "options": [
+        "Nguba",
+        "Umbhalo",
+        "Irhasi",
+        "Mokorotlo"
+      ],
+      "correct_index": 1,
+      "image_path": "public/ndebele-photos/umbhalo.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Who is the current reigning king of the Ndebele(Manala) in South Africa?",
+      "options": [
+        "King Makhosoke II",
+        "King Nyabela",
+        "King Mabhoko III",
+        "King Makhosonke II"
+      ],
+      "correct_index": 0,
+      "image_path": "public/ndebele-photos/king-makhosoke-ii.png"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Audrey Kozwana is known for her YouTube series 'Ituthuko Yethelerina' which documents what?",
+      "options": [
+        "The evolution and growth stages of a young Ndebele maiden",
+        "Traditional Ndebele cooking recipes",
+        "The history of Ndebele house painting",
+        "Ndebele wedding ceremonies"
+      ],
+      "correct_index": 0,
+      "image_path": "public/ndebele-photos/audrey-kozwana.jpg"
+    }
+  ],
+  "Sepedi": [
+    {
+      "category": "Language",
+      "prompt": "How do you greet someone in Sepedi (Northern Sotho)?",
+      "options": [
+        "Sawubona",
+        "Dumela",
+        "Molweni",
+        "Lotsha"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sepedi-photos/greet.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "What does 'Ke a leboga' mean in Sepedi?",
+      "options": [
+        "Good morning",
+        "Goodbye",
+        "Thank you",
+        "I am hungry"
+      ],
+      "correct_index": 2,
+      "image_path": "public/sepedi-photos/thank-you.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "Sepedi is officially known as?",
+      "options": [
+        "Sesotho",
+        "Sesotho sa Leboa",
+        "SiSwati",
+        "Setswana"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sepedi-photos/sesotho-sa-leboa.jpg"
+    },
+    {
+      "category": "Language",
+      "prompt": "What does 'Ee' mean in Sepedi?",
+      "options": [
+        "No",
+        "Yes",
+        "Please",
+        "Come here"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sepedi-photos/yes.png"
+    },
+    {
+      "category": "History",
+      "prompt": "The Bapedi people are historically associated with which South African province?",
+      "options": [
+        "KwaZulu-Natal",
+        "Western Cape",
+        "Limpopo",
+        "Free State"
+      ],
+      "correct_index": 2,
+      "image_path": "public/sepedi-photos/limpopo.png"
+    },
+    {
+      "category": "History",
+      "prompt": "King Sekhukhune I famously resisted which colonial power in the 1870s?",
+      "options": [
+        "Portuguese",
+        "German",
+        "French",
+        "British"
+      ],
+      "correct_index": 3,
+      "image_path": "public/sepedi-photos/king-sekhukhune.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "The Bapedi kingdom's capital during King Sekhukhune's reign was located in which mountain area?",
+      "options": [
+        "Magaliesberg",
+        "Drakensberg",
+        "Leolo Mountains",
+        "Waterberg"
+      ],
+      "correct_index": 2,
+      "image_path": "public/sepedi-photos/leolo.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "The Bapedi people are a subgroup of which broader language family?",
+      "options": [
+        "Nguni",
+        "Sotho-Tswana",
+        "Tsonga",
+        "Venda"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sepedi-photos/bapedi.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The Bapedi initiation school for boys is called?",
+      "options": [
+        "Koma",
+        "Umemulo",
+        "Ukweshwama",
+        "Bogwera"
+      ],
+      "correct_index": 0,
+      "image_path": "public/sepedi-photos/pedi-initiation.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The Bapedi female initiation ceremony is known as?",
+      "options": [
+        "Umhlanga",
+        "Koma ya basadi",
+        "Lobola",
+        "Bjale"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sepedi-photos/pedi-girls-initiation.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "What is the Sepedi term for bride wealth paid by the groom's family?",
+      "options": [
+        "Lobola",
+        "Bohadi",
+        "Magadi",
+        "Ikhazi"
+      ],
+      "correct_index": 2,
+      "image_path": "public/sepedi-photos/magadi.png"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "In Bapedi tradition, the community leader or chief is referred to as?",
+      "options": [
+        "Sangoma",
+        "Kgoši",
+        "Induna",
+        "Morena"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sepedi-photos/kgosi.png"
+    },
+    {
+      "category": "Culture",
+      "prompt": "Bapedi women are known for wearing striking beaded aprons during ceremonies. What are these aprons called?",
+      "options": [
+        "Isidwaba",
+        "Ntepa",
+        "Ijogolo",
+        "Phephetu"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sepedi-photos/bapedi-attire.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "What is a 'ngaka' in Bapedi culture?",
+      "options": [
+        "A praise singer",
+        "A traditional healer/diviner",
+        "A chief's messenger",
+        "A male elder"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sepedi-photos/ngaka.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "The concept of 'botho' in Sepedi culture is closely related to which pan-African philosophy?",
+      "options": [
+        "Negritude",
+        "Ubuntu",
+        "Pan-Africanism",
+        "Afrocentrism"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sepedi-photos/botho.png"
+    },
+    {
+      "category": "Culture",
+      "prompt": "Traditional Bapedi homes are characterised by?",
+      "options": [
+        "Rectangular brick houses with tin roofs",
+        "Round mud-and-thatch huts decorated with geometric murals",
+        "Stone-walled enclosures",
+        "Underground earth shelters"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sepedi-photos/bapedi-home.png"
+    },
+    {
+      "category": "Music",
+      "prompt": "The Bapedi are famous for which energetic dance and musical style that uses drums and leg rattles?",
+      "options": [
+        "Kiba",
+        "Indlamu",
+        "Gumboot",
+        "Mohobelo"
+      ],
+      "correct_index": 0,
+      "image_path": "public/sepedi-photos/kiba.png"
+    },
+    {
+      "category": "Music",
+      "prompt": "In Kiba music, the metal leg rattles worn by male dancers are called?",
+      "options": [
+        "Dipela",
+        "Moropa",
+        "Setinkane",
+        "Digoma"
+      ],
+      "correct_index": 0,
+      "image_path": "public/sepedi-photos/kiba.png"
+    },
+    {
+      "category": "Music",
+      "prompt": "The 'moropa' is a well-known instrument in Sepedi music. What type of instrument is it?",
+      "options": [
+        "A stringed bow",
+        "A flute",
+        "A traditional drum",
+        "A horn trumpet"
+      ],
+      "correct_index": 2,
+      "image_path": "public/sepedi-photos/moropa.jpeg"
+    },
+    {
+      "category": "Music",
+      "prompt": "What is the Sepedi term for oral praise poetry performed to honour chiefs and ancestors?",
+      "options": [
+        "Isibongo",
+        "Dipale",
+        "Izibongo",
+        "Maboko"
+      ],
+      "correct_index": 1,
+      "image_path": null
+    },
+    {
+      "category": "Geography",
+      "prompt": "Sepedi is the most widely spoken language in which South African province?",
+      "options": [
+        "Mpumalanga",
+        "North West",
+        "Limpopo",
+        "Gauteng"
+      ],
+      "correct_index": 2,
+      "image_path": "public/sepedi-photos/limpopo.png"
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Sekhukhune District, the historical heartland of the Bapedi, is located in which part of Limpopo?",
+      "options": [
+        "Far North (Vhembe)",
+        "Central Limpopo (Sekhukhuneland)",
+        "Waterberg",
+        "Mopani"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sepedi-photos/sekhukhune.png"
+    },
+    {
+      "category": "Geography",
+      "prompt": "Which major river runs through Sekhukhuneland and is important to Bapedi heritage?",
+      "options": [
+        "Limpopo River",
+        "Vaal River",
+        "Olifants (Lepelle) River",
+        "Crocodile River"
+      ],
+      "correct_index": 2,
+      "image_path": "public/sepedi-photos/olifants.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is the Sepedi name for the thick porridge that is a staple of Bapedi cuisine?",
+      "options": [
+        "Uphuthu",
+        "Pap",
+        "Bogobe jwa lerotse",
+        "Sadza"
+      ],
+      "correct_index": 2,
+      "image_path": "public/sepedi-photos/bogobe.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "Mopane worms ('mašontši') are a traditional Bapedi delicacy. What are they?",
+      "options": [
+        "A type of river fish",
+        "Caterpillars of the mopane tree moth",
+        "Dried locusts",
+        "Wild mushrooms"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sepedi-photos/mopane-worms.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'mageu' commonly prepared and drunk in Bapedi households?",
+      "options": [
+        "A hot herbal tea",
+        "A non-alcoholic fermented maize drink",
+        "Soured goat's milk",
+        "A marula fruit brew"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sepedi-photos/mageu.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Which South African politician, of Bapedi heritage, served as Deputy President from 2014 to 2018 and became President in 2018?",
+      "options": [
+        "Jacob Zuma",
+        "Kgalema Motlanthe",
+        "Cyril Ramaphosa",
+        "Thabo Mbeki"
+      ],
+      "correct_index": 2,
+      "image_path": "public/sepedi-photos/ramaphosa.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "King Sekhukhune I is remembered as a symbol of what in South African history?",
+      "options": [
+        "Early Christianity in Limpopo",
+        "Resistance against colonial conquest",
+        "Trade relations with the Portuguese",
+        "The unification of all Sotho peoples"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sepedi-photos/king-sekhukhune.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Chuene Moremi was a pioneering Sepedi figure known for his contributions to?",
+      "options": [
+        "Sepedi literature and poetry",
+        "Military resistance against the British",
+        "The founding of the ANC",
+        "Bapedi trade routes"
+      ],
+      "correct_index": 0,
+      "image_path": null
+    }
+  ],
+  "Sesotho": [
+    {
+      "category": "Language",
+      "prompt": "What does 'Dumela' mean in Sesotho?",
+      "options": [
+        "Goodbye",
+        "Hello",
+        "Thank you",
+        "How are you?"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sotho-photos/dumela.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "How do you say 'Thank you' in Sesotho?",
+      "options": [
+        "Ke a leboha",
+        "Dumela",
+        "Sala hantle",
+        "Tsamaya hantle"
+      ],
+      "correct_index": 0,
+      "image_path": "public/sotho-photos/thank-you.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "Who was the legendary founder of the Basotho nation in the early 19th century?",
+      "options": [
+        "Moshoeshoe I",
+        "Shaka Zulu",
+        "Mzilikazi",
+        "Sobhuza I"
+      ],
+      "correct_index": 0,
+      "image_path": "public/sotho-photos/moshoeshoe.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "King Moshoeshoe I established his stronghold on which mountain?",
+      "options": [
+        "Table Mountain",
+        "Thaba-Bosiu",
+        "Drakensberg",
+        "Majesty Mountain"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sotho-photos/thaba-bosiu.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "The Basotho successfully defended themselves against which colonial power in the Free State-Basotho Wars?",
+      "options": [
+        "British",
+        "Portuguese",
+        "Boers (Dutch settlers)",
+        "Germans"
+      ],
+      "correct_index": 2,
+      "image_path": "public/sotho-photos/basotho-war.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "Lesotho gained full independence from Britain in which year?",
+      "options": [
+        "1960",
+        "1966",
+        "1970",
+        "1975"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sotho-photos/independence.png"
+    },
+    {
+      "category": "History",
+      "prompt": "Who was the first Prime Minister of independent Lesotho?",
+      "options": [
+        "King Moshoeshoe II",
+        "Leabua Jonathan",
+        "Ntsu Mokhehle",
+        "Pakalitha Mosisili"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sotho-photos/prime-minister.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "What is the traditional Basotho blanket called?",
+      "options": [
+        "Kente",
+        "Shweshwe",
+        "Seanamarena",
+        "Basotho blanket"
+      ],
+      "correct_index": 2,
+      "image_path": "public/sotho-photos/seanamarena.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The initiation school for Basotho boys is called?",
+      "options": [
+        "Lebollo",
+        "Mokorotlo",
+        "Pitso",
+        "Lekhotla"
+      ],
+      "correct_index": 0,
+      "image_path": "public/sotho-photos/lebollo.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "What is the distinctive conical hat of Lesotho called?",
+      "options": [
+        "Mokorotlo",
+        "Basotho hat",
+        "Mophato",
+        "Seanamarena"
+      ],
+      "correct_index": 0,
+      "image_path": "public/sotho-photos/mokorotlo.png"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The traditional Basotho dance performed at ceremonies is called?",
+      "options": [
+        "Indlamu",
+        "Pantsula",
+        "Mokhibo",
+        "Gumboot"
+      ],
+      "correct_index": 2,
+      "image_path": "public/sotho-photos/mokhibo.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "What is 'Lekhotla' in Basotho culture?",
+      "options": [
+        "A traditional wedding",
+        "A village council/meeting",
+        "A harvest festival",
+        "A rainmaking ceremony"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sotho-photos/lekhotla.png"
+    },
+    {
+      "category": "Culture",
+      "prompt": "The Basotho people are known for their colorful traditional blankets. Which company is famous for producing them?",
+      "options": [
+        "Aranda",
+        "Woolworths",
+        "Aranda and Victoria Blankets",
+        "Basotho Mills"
+      ],
+      "correct_index": 2,
+      "image_path": "public/sotho-photos/aranda&victoria.png"
+    },
+    {
+      "category": "Culture",
+      "prompt": "What is 'Pitso' in Basotho culture?",
+      "options": [
+        "A public gathering/indaba",
+        "A type of food",
+        "A traditional weapon",
+        "A wedding ceremony"
+      ],
+      "correct_index": 0,
+      "image_path": "public/sotho-photos/pitso.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "The Basotho phrase 'Botho' is similar to which South African philosophy?",
+      "options": [
+        "Ubuntu",
+        "Sawubona",
+        "Hunhu",
+        "Undhu"
+      ],
+      "correct_index": 0,
+      "image_path": "public/sotho-photos/botho.png"
+    },
+    {
+      "category": "Culture",
+      "prompt": "What is the traditional Basotho homestead called?",
+      "options": [
+        "Kraal",
+        "Motenko",
+        "Rondavel",
+        "Lapa"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sotho-photos/homestead.png"
+    },
+    {
+      "category": "Culture",
+      "prompt": "Basotho women are famous for what type of traditional art?",
+      "options": [
+        "Beadwork",
+        "Pottery",
+        "Mural painting",
+        "Basket weaving"
+      ],
+      "correct_index": 2,
+      "image_path": "public/sotho-photos/mural-art.png"
+    },
+    {
+      "category": "Music",
+      "prompt": "Which traditional Lesotho musical instrument is a stringed bow?",
+      "options": [
+        "Thomo",
+        "Lesiba",
+        "Uhadi",
+        "Mbira"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sotho-photos/lesiba.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "Famo music is a popular genre in Lesotho. What instrument is central to Famo?",
+      "options": [
+        "Guitar",
+        "Accordion",
+        "Drums",
+        "Violin"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sotho-photos/famo.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "Which famous Lesotho musician is known for the hit 'Mosotho'?",
+      "options": [
+        "Tsepo Tshola",
+        "Sankomota",
+        "Lekanta",
+        "Machesa"
+      ],
+      "correct_index": 0,
+      "image_path": "public/sotho-photos/tsepo.png"
+    },
+    {
+      "category": "Music",
+      "prompt": "The band Sankomota, led by Tsepo Tshola, was popular in which decade?",
+      "options": [
+        "1970s",
+        "1980s",
+        "1990s",
+        "2000s"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sotho-photos/sankomota.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "What is 'Mokorotlo' also known as in Basotho music?",
+      "options": [
+        "A dance",
+        "A traditional song genre",
+        "A musical instrument",
+        "A festival"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sotho-photos/mokorotlo-music.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "Lesotho is known as 'The Kingdom in the Sky' because...",
+      "options": [
+        "It has high mountains",
+        "It has many clouds",
+        "It is the highest country in Africa",
+        "It has many airports"
+      ],
+      "correct_index": 2,
+      "image_path": "public/sotho-photos/lesotho.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "What is the highest point in Lesotho and southern Africa?",
+      "options": [
+        "Table Mountain",
+        "Thabana Ntlenyana",
+        "Drakensberg Peak",
+        "Mount Kilimanjaro"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sotho-photos/thabana-ntlenyana.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "Lesotho is completely surrounded by which country?",
+      "options": [
+        "South Africa",
+        "Botswana",
+        "Zimbabwe",
+        "Eswatini"
+      ],
+      "correct_index": 0,
+      "image_path": "public/sotho-photos/lesotho-sa.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "What is the capital city of Lesotho?",
+      "options": [
+        "Maseru",
+        "Mafeteng",
+        "Leribe",
+        "Quthing"
+      ],
+      "correct_index": 0,
+      "image_path": "public/sotho-photos/maseru.png"
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Maloti Mountains are part of which larger mountain range?",
+      "options": [
+        "Drakensberg",
+        "Rwenzori",
+        "Atlas",
+        "Ethiopian Highlands"
+      ],
+      "correct_index": 0,
+      "image_path": "public/sotho-photos/drakensberg.jpeg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'Papa' or 'Mieliepap' in Sesotho cuisine?",
+      "options": [
+        "Maize porridge",
+        "Meat stew",
+        "Vegetable dish",
+        "Fermented milk"
+      ],
+      "correct_index": 0,
+      "image_path": "public/sotho-photos/papa.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'Morohe' in Basotho cuisine?",
+      "options": [
+        "Dried meat",
+        "Wild spinach/cabbage dish",
+        "Sorghum beer",
+        "Maize bread"
+      ],
+      "correct_index": 1,
+      "image_path": "public/sotho-photos/morohe.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "'Motoho' is a traditional Basotho drink made from...",
+      "options": [
+        "Fermented sorghum",
+        "Maize",
+        "Soured milk",
+        "Fruit juice"
+      ],
+      "correct_index": 0,
+      "image_path": "public/sotho-photos/motoho.png"
+    }
+  ],
+  "Swahili": [
+    {
+      "category": "Language",
+      "prompt": "What does 'Jambo' mean in Swahili?",
+      "options": [
+        "Goodbye",
+        "Hello",
+        "Thank you",
+        "How are you?"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/hello-swah.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "How do you say 'Thank you' in Swahili?",
+      "options": [
+        "Asante",
+        "Karibu",
+        "Habari",
+        "Samahani"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swahili-photos/asante.jpg"
+    },
+    {
+      "category": "Language",
+      "prompt": "What does 'Habari yako' mean?",
+      "options": [
+        "Good night",
+        "How are you?",
+        "What's your name?",
+        "Where are you going?"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/how-are-you-swa.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "How do you say 'Goodbye' in Swahili?",
+      "options": [
+        "Asante",
+        "Karibu",
+        "Kwaheri",
+        "Habari"
+      ],
+      "correct_index": 2,
+      "image_path": "public/swahili-photos/goodbye.jpg"
+    },
+    {
+      "category": "Language",
+      "prompt": "What does 'Karibu' mean in Swahili?",
+      "options": [
+        "You're welcome",
+        "Good morning",
+        "Sorry",
+        "Please"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swahili-photos/karibu.jpg"
+    },
+    {
+      "category": "Language",
+      "prompt": "How do you say 'Yes' and 'No' in Swahili?",
+      "options": [
+        "Ee / Hapana",
+        "Ndiyo / Hapana",
+        "Ee / Aa",
+        "Ndio / Sawa"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/yes-swah.png"
+    },
+    {
+      "category": "History",
+      "prompt": "The Swahili language originated along which coast of Africa?",
+      "options": [
+        "West Africa",
+        "East Africa",
+        "North Africa",
+        "South Africa"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/east-africa.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "The ancient Swahili city-states included which famous trading port?",
+      "options": [
+        "Timbuktu",
+        "Great Zimbabwe",
+        "Kilwa Kisiwani",
+        "Meroë"
+      ],
+      "correct_index": 2,
+      "image_path": "public/swahili-photos/kilwa-kisiwani.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "Swahili is heavily influenced by which language due to trade?",
+      "options": [
+        "Portuguese",
+        "English",
+        "Arabic",
+        "French"
+      ],
+      "correct_index": 2,
+      "image_path": "public/swahili-photos/arabic.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "The word 'Swahili' comes from the Arabic word 'Sawahil' meaning?",
+      "options": [
+        "Coasts",
+        "Traders",
+        "People",
+        "Language"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swahili-photos/coasts.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "Which famous explorer wrote about the Swahili coast in the 14th century?",
+      "options": [
+        "Marco Polo",
+        "Ibn Battuta",
+        "Vasco da Gama",
+        "David Livingstone"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/ibn-battuta.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The traditional Swahili wedding festival lasting several days is called?",
+      "options": [
+        "Harusi",
+        "Siku kuu",
+        "Arusi",
+        "Sherehe"
+      ],
+      "correct_index": 2,
+      "image_path": "public/swahili-photos/swahili-wedding.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "What is 'Mchango' in Swahili culture?",
+      "options": [
+        "A harvest dance",
+        "A communal savings/fundraising event",
+        "A coming-of-age ceremony",
+        "An ancestral ritual"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/mchango.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The traditional Swahili garment worn by women is called?",
+      "options": [
+        "Kanzu",
+        "Kofia",
+        "Kanga",
+        "Bui bui"
+      ],
+      "correct_index": 2,
+      "image_path": "public/swahili-photos/kanga.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "Swahili doors are famous for their intricate what?",
+      "options": [
+        "Paintings",
+        "Carvings",
+        "Metal inlays",
+        "Glass work"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/swahili-door.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "The traditional Swahili dish of rice, coconut milk, and spices is called?",
+      "options": [
+        "Ugali",
+        "Pilau",
+        "Wali wa Nazi",
+        "Biriani"
+      ],
+      "correct_index": 2,
+      "image_path": "public/swahili-photos/wali-wa-nazi.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "What is 'Taarab' in Swahili culture?",
+      "options": [
+        "A type of food",
+        "A traditional music genre",
+        "A dance style",
+        "A religious ceremony"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/taarabi.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "The Swahili concept of 'Ujamaa' means?",
+      "options": [
+        "Freedom",
+        "Familyhood/Community",
+        "Respect",
+        "Peace"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/familyhood.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "Lamu Old Town, a famous Swahili settlement, is located in which country?",
+      "options": [
+        "Tanzania",
+        "Kenya",
+        "Mozambique",
+        "Somalia"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/lamu.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "The traditional Swahili string instrument is called?",
+      "options": [
+        "Zeze",
+        "Ngoma",
+        "Filimbi",
+        "Chizeze"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swahili-photos/zeze.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "Famous Tanzanian Swahili musician known as 'King of Bongo Flava' is?",
+      "options": [
+        "Diamond Platnumz",
+        "Ali Kiba",
+        "Mbosso",
+        "Rayvanny"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swahili-photos/diamond-platnumz.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "Bongo Flava music originated in which country?",
+      "options": [
+        "Kenya",
+        "Uganda",
+        "Tanzania",
+        "Rwanda"
+      ],
+      "correct_index": 2,
+      "image_path": "public/swahili-photos/flava.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "The famous Swahili poet and composer of 'Mwana Mdogo' was?",
+      "options": [
+        "Muyaka bin Haji",
+        "Siti binti Saad",
+        "Fumo Liyongo",
+        "Shaaban Robert"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/siti.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "Swahili is an official language of which two East African countries?",
+      "options": [
+        "Kenya & Uganda",
+        "Tanzania & Kenya",
+        "Tanzania & Mozambique",
+        "Kenya & Rwanda"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/east-africa-map.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "Zanzibar, a major Swahili cultural center, is part of which country?",
+      "options": [
+        "Kenya",
+        "Tanzania",
+        "Comoros",
+        "Somalia"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/zanzibar.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Great Mosque of Kilwa is located in which modern country?",
+      "options": [
+        "Kenya",
+        "Mozambique",
+        "Tanzania",
+        "Somalia"
+      ],
+      "correct_index": 2,
+      "image_path": "public/swahili-photos/kilwa-mosque.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "Mombasa, a historic Swahili port city, is in which country?",
+      "options": [
+        "Tanzania",
+        "Mozambique",
+        "Kenya",
+        "Somalia"
+      ],
+      "correct_index": 2,
+      "image_path": "public/swahili-photos/kenya.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'Ugali' in Swahili cuisine?",
+      "options": [
+        "A sweet dessert",
+        "Stiff maize porridge - staple food",
+        "A fried bread",
+        "A coconut soup"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/ugali.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "'Maharage ya Nazi' is a Swahili dish made from?",
+      "options": [
+        "Rice and fish",
+        "Beans in coconut sauce",
+        "Fried plantains",
+        "Spiced meat stew"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/maharage-ya-nazi.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'Mandazi' in Swahili cuisine?",
+      "options": [
+        "A coconut bread",
+        "Fried dough pastry (African donut)",
+        "A grilled fish",
+        "A banana porridge"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/mandazi.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "'Samaki wa Kupaka' is a Swahili dish of?",
+      "options": [
+        "Fried fish",
+        "Grilled fish with coconut curry sauce",
+        "Fish soup",
+        "Dried fish"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/samaki.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Julius Nyerere, who promoted Swahili as a unifying language, was president of?",
+      "options": [
+        "Kenya",
+        "Uganda",
+        "Tanzania",
+        "Zambia"
+      ],
+      "correct_index": 2,
+      "image_path": "public/swahili-photos/julius-nyerere.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Lupita Nyong'o, who speaks Swahili, won an Oscar for which film?",
+      "options": [
+        "Black Panther",
+        "12 Years a Slave",
+        "Us",
+        "The Woman King"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/lupita-nyongo.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Wangari Maathai, the first African woman to win the Nobel Peace Prize, was from?",
+      "options": [
+        "Tanzania",
+        "Kenya",
+        "Uganda",
+        "Rwanda"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/wangari-maathai.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Barack Obama, who famously used the Swahili phrase 'Sisi kwa sisi', was?",
+      "options": [
+        "Kenyan President",
+        "US President",
+        "UN Secretary",
+        "Tanzanian activist"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/obama.jpg"
+    },
+    {
+      "category": "Proverbs",
+      "prompt": "What does 'Haraka haraka haina baraka' mean in Swahili?",
+      "options": [
+        "Slow and steady wins the race",
+        "Hurry hurry has no blessings",
+        "Time is money",
+        "Patience is a virtue"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swahili-photos/haraka.jpg"
+    },
+    {
+      "category": "Proverbs",
+      "prompt": "What does 'Samaki mmoja akioza, wote wameoza' mean?",
+      "options": [
+        "One bad apple spoils the bunch",
+        "Fish are sacred",
+        "Unity is strength",
+        "Don't judge a book by its cover"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swahili-photos/samaki-mmoja.jpg"
+    }
+  ],
+  "Swati": [
+    {
+      "category": "Language",
+      "prompt": "What does 'Sawubona' mean in siSwati?",
+      "options": [
+        "Goodbye",
+        "Hello / I see you",
+        "Thank you",
+        "How are you?"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swati-photos/hello.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "How do you say 'Thank you' in siSwati?",
+      "options": [
+        "Siyabonga",
+        "Ngiyabonga",
+        "Yebo",
+        "Sala kahle"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swati-photos/thank-you.jpg"
+    },
+    {
+      "category": "Language",
+      "prompt": "What does 'Yebo' mean in siSwati?",
+      "options": [
+        "No",
+        "Yes",
+        "Please",
+        "Goodbye"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swati-photos/yes.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "How do you say 'How are you?' in siSwati?",
+      "options": [
+        "Unjani?",
+        "Kunjani?",
+        "Sawubona",
+        "Ngiyaphila"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swati-photos/how-are-you.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "What does 'Sala kahle' mean in siSwati?",
+      "options": [
+        "Hello",
+        "Goodbye (stay well)",
+        "Thank you",
+        "Yes"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swati-photos/goodbye.png"
+    },
+    {
+      "category": "History",
+      "prompt": "Who was the first king of the Swazi nation (Eswatini)?",
+      "options": [
+        "King Sobhuza I",
+        "King Mswati II",
+        "King Ngwane III",
+        "King Sobhuza II"
+      ],
+      "correct_index": 2,
+      "image_path": "public/swati-photos/ngwane.jpeg"
+    },
+    {
+      "category": "History",
+      "prompt": "The Swazi nation is named after which king?",
+      "options": [
+        "King Mswati II",
+        "King Sobhuza I",
+        "King Ngwane III",
+        "King Mbandzeni"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swati-photos/mswati.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "Eswatini (formerly Swaziland) gained independence from Britain in which year?",
+      "options": [
+        "1960",
+        "1968",
+        "1975",
+        "1980"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swati-photos/swazi-flag.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "Who was the longest-reigning monarch in Swazi history (reigned 82 years)?",
+      "options": [
+        "King Mswati II",
+        "King Sobhuza II",
+        "King Ngwane III",
+        "King Mswati III"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swati-photos/king-sobhuza.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "What was Eswatini officially renamed from in 2018?",
+      "options": [
+        "Swaziland",
+        "Ngwane",
+        "KaNgwane",
+        "Swati Nation"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swati-photos/swaziland.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "What is the famous Reed Dance ceremony in Eswatini called?",
+      "options": [
+        "Umhlanga",
+        "Incwala",
+        "Umchwasho",
+        "Lusekwane"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swati-photos/umhlanga.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The Incwala ceremony is also known as what?",
+      "options": [
+        "Kingship Ceremony",
+        "First Fruits Ceremony",
+        "Reed Dance",
+        "Harvest Festival"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swati-photos/incwala-2.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "During the Umhlanga (Reed Dance), what do young Swati women present to the Queen Mother?",
+      "options": [
+        "Flowers",
+        "Reeds",
+        "Beads",
+        "Traditional beer"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swati-photos/reeds.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "What is 'Lusekwane' in Swati tradition?",
+      "options": [
+        "A sacred tree used in Incwala",
+        "A type of beadwork",
+        "A wedding ceremony",
+        "A traditional dance"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swati-photos/lusekwane.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The Swati chastity ceremony called 'Umchwasho' involves what?",
+      "options": [
+        "Young women wearing wool tassels",
+        "Men wearing special beads",
+        "Both men and women",
+        "Only married couples"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swati-photos/umchwasho.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "Who is the current reigning king of Eswatini (as of 2024)?",
+      "options": [
+        "King Sobhuza II",
+        "King Mswati III",
+        "King Makhosetive",
+        "King Ngwane V"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swati-photos/king-mswati.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "What is the Swati Queen Mother called?",
+      "options": [
+        "Ndlovukati",
+        "Indlovukazi",
+        "Inkosikazi",
+        "Mama waTinkhosi"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swati-photos/queen-mother.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "The Swati philosophy 'Umuntfu ngumuntfu ngabantfu' means?",
+      "options": [
+        "A person is a person through people",
+        "Work hard for your family",
+        "Respect your king",
+        "Unity is strength"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swati-photos/ubuntu.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "What is the traditional Swati homestead called?",
+      "options": [
+        "Umuzi",
+        "Kraal",
+        "Lobamba",
+        "Sibaya"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swati-photos/homestead.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "The capital city of Eswatini (royal and legislative) is?",
+      "options": [
+        "Mbabane",
+        "Lobamba",
+        "Manzini",
+        "Siteki"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swati-photos/lobamba.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "What is the traditional Swati dance performed at the Incwala ceremony?",
+      "options": [
+        "Siswati dance",
+        "Umhlanga dance",
+        "Sibhaca",
+        "Ingoma"
+      ],
+      "correct_index": 2,
+      "image_path": "public/swati-photos/sibhaca.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "Which instrument is central to Swati traditional music?",
+      "options": [
+        "Drum (Sigubhu)",
+        "Mbira",
+        "Guitar",
+        "Flute"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swati-photos/sigubhu.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "What is the name of the Swati royal war dance?",
+      "options": [
+        "Indlamu",
+        "Sibhaca",
+        "Umchwasho",
+        "Siswati"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swati-photos/sibhaca.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "Eswatini is landlocked and completely surrounded by which country?",
+      "options": [
+        "South Africa",
+        "Mozambique",
+        "Both South Africa and Mozambique",
+        "Zimbabwe"
+      ],
+      "correct_index": 2,
+      "image_path": "public/swati-photos/southafrica-moz.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "What is the largest city in Eswatini?",
+      "options": [
+        "Mbabane",
+        "Lobamba",
+        "Manzini",
+        "Nhlangano"
+      ],
+      "correct_index": 2,
+      "image_path": "public/swati-photos/manzini.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "Eswatini is divided into how many administrative regions?",
+      "options": [
+        "2",
+        "4",
+        "6",
+        "8"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swati-photos/regions.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "The famous cultural village of Swazi people is located in?",
+      "options": [
+        "Mantenga",
+        "Lobamba",
+        "Ezulwini Valley",
+        "Mbabane"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swati-photos/mantenga.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is the staple food in Swati cuisine?",
+      "options": [
+        "Pap (mealie-meal porridge)",
+        "Rice",
+        "Bread",
+        "Potatoes"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swati-photos/sishwala.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'Emasi' in Swati culture?",
+      "options": [
+        "Fermented milk",
+        "Traditional beer",
+        "Meat stew",
+        "Maize porridge"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swati-photos/emasi.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "Traditional Swati beer is called?",
+      "options": [
+        "Umqombothi",
+        "Tjwala",
+        "Amasi",
+        "Utshwala"
+      ],
+      "correct_index": 3,
+      "image_path": "public/swati-photos/utshwala.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'Sishwala'?",
+      "options": [
+        "Thick porridge",
+        "Thin porridge",
+        "Meat dish",
+        "Vegetable relish"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swati-photos/porridge.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Who is known as the 'Mother of the Nation' in Eswatini?",
+      "options": [
+        "Queen Ntombi",
+        "Queen Mother Ndlovukati",
+        "Princess Sikhanyiso",
+        "Queen LaMatsebula"
+      ],
+      "correct_index": 1,
+      "image_path": "public/swati-photos/ndlovukazi.png"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Which famous Swati gospel singer is known internationally?",
+      "options": [
+        "Dr. Rebecca Malope",
+        "Lundi Tyamara",
+        "Bheki Mseleku",
+        "Pastor Nomathemba"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swati-photos/reebecca-malope.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Who is Princess Sikhanyiso of Eswatini known for?",
+      "options": [
+        "Being a rapper and Royal Princess",
+        "Being a traditional healer",
+        "Being a politician",
+        "Being a fashion designer"
+      ],
+      "correct_index": 0,
+      "image_path": "public/swati-photos/sikhanyiso.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "What is 'Ligugu' in Swati culture?",
+      "options": [
+        "Traditional skirt",
+        "Beaded necklace",
+        "Honor/Pride",
+        "Ceremonial shield"
+      ],
+      "correct_index": 2,
+      "image_path": "public/swati-photos/pride.jpg"
+    }
+  ],
+  "Tsonga": [
+    {
+      "category": "Language",
+      "prompt": "What does 'Avuxeni' mean in Xitsonga?",
+      "options": [
+        "Goodbye",
+        "Hello/Good morning",
+        "Thank you",
+        "How are you?"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tsonga-photos/avuxeni.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "How do you say 'Thank you' in Xitsonga?",
+      "options": [
+        "Inkomu",
+        "Dumela",
+        "Ndza khensa",
+        "Siyabonga"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tsonga-photos/thank-you.jpg"
+    },
+    {
+      "category": "Language",
+      "prompt": "How do you say 'Goodbye' in Xitsonga (to someone staying)?",
+      "options": [
+        "Sala kahle",
+        "Hamba kahle",
+        "Avuxeni",
+        "Rivoningo"
+      ],
+      "correct_index": 0,
+      "image_path": "public/tsonga-photos/tsonga-goodbye.png"
+    },
+    {
+      "category": "History",
+      "prompt": "The Tsonga people primarily inhabit which countries?",
+      "options": [
+        "South Africa only",
+        "Mozambique and South Africa",
+        "Zimbabwe only",
+        "Botswana and Namibia"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tsonga-photos/tsonga-map.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "The Tsonga people are historically descendants of which larger group?",
+      "options": [
+        "Nguni",
+        "Sotho-Tswana",
+        "Shangaan/Tsonga",
+        "Venda"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tsonga-photos/shangaan.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "Which powerful leader incorporated Tsonga groups into the Gaza Empire?",
+      "options": [
+        "Shaka Zulu",
+        "Moshoshoe",
+        "Soshangane",
+        "Mzilikazi"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tsonga-photos/soshangane.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "Which South African province has the largest Tsonga population?",
+      "options": [
+        "Gauteng",
+        "Mpumalanga",
+        "Limpopo",
+        "KwaZulu-Natal"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tsonga-photos/limpopo-province.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The traditional Tsonga wedding ceremony is called?",
+      "options": [
+        "Mabogo",
+        "Lobola",
+        "Chikweru",
+        "Bogadi"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tsonga-photos/tsonga-wedd.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "What is 'Lobola' (Lovola) in Tsonga culture?",
+      "options": [
+        "A harvest festival",
+        "Bride wealth paid by the groom's family",
+        "A coming-of-age ceremony",
+        "An ancestral worship ritual"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tsonga-photos/lobola.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The Tsonga initiation school for young men is called?",
+      "options": [
+        "Khomba",
+        "Matimba",
+        "Ka Xidziso",
+        "Mghunda"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tsonga-photos/tsonga-initiation.png"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The Tsonga initiation school for young women is called?",
+      "options": [
+        "Khomba",
+        "Matimba",
+        "Xidziso",
+        "Mghunda"
+      ],
+      "correct_index": 0,
+      "image_path": "public/tsonga-photos/girls.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "The traditional Tsonga dance performed at weddings and ceremonies is called?",
+      "options": [
+        "Xibelani",
+        "Indlamu",
+        "Pantsula",
+        "Mokorotlo"
+      ],
+      "correct_index": 0,
+      "image_path": "public/tsonga-photos/xibelani-dance.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "The Xibelani dance is famously performed with what accessory?",
+      "options": [
+        "Beaded necklace",
+        "Straw skirt",
+        "Animal skin",
+        "Feather headdress"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tsonga-photos/straw-skirt.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "The Tsonga traditional dwelling is called?",
+      "options": [
+        "Rondavel",
+        "Ntanga",
+        "Yindlu",
+        "Xivala"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tsonga-photos/yindlu.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "What is the Tsonga concept of respect and proper behavior called?",
+      "options": [
+        "Ubuntu",
+        "Xixima",
+        "Botho",
+        "Mensen"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tsonga-photos/xixima.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "The traditional Tsonga instrument similar to a xylophone is called?",
+      "options": [
+        "Mbira",
+        "Timila",
+        "Xipendana",
+        "Marimba"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tsonga-photos/xipendana.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "Famous Tsonga musician known for 'Hi Laveka N'wina' and 'Xigubu' is?",
+      "options": [
+        "Thomas Chauke",
+        "Penny Penny",
+        "Joe Shirimani",
+        "General Muzka"
+      ],
+      "correct_index": 0,
+      "image_path": "public/tsonga-photos/thomas-chauke.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "Which South African music genre originated from Tsonga culture?",
+      "options": [
+        "Kwaito",
+        "Shangaan Electro",
+        "Amapiano",
+        "Mbaqanga"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tsonga-photos/shangaaan-electro.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "The Tsonga drum often used in traditional ceremonies is called?",
+      "options": [
+        "Ngoma",
+        "Xigubu",
+        "Djembe",
+        "Bodu"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tsonga-photos/xigubu-drum.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Tsonga people are concentrated in which region of South Africa?",
+      "options": [
+        "Lowveld (Mpumalanga/Limpopo)",
+        "Highveld",
+        "Karoo",
+        "West Coast"
+      ],
+      "correct_index": 0,
+      "image_path": "public/tsonga-photos/lowveld.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "In Mozambique, Tsonga people are primarily found in which province?",
+      "options": [
+        "Maputo Province",
+        "Gaza Province",
+        "Inhambane",
+        "Nampula"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tsonga-photos/mozambique-prov.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Kruger National Park borders which Tsonga-populated area?",
+      "options": [
+        "Eastern Cape",
+        "Mpumalanga",
+        "KwaZulu-Natal",
+        "North West"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tsonga-photos/kruger-park.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'Vuswa' (or Xipapa) in Tsonga cuisine?",
+      "options": [
+        "A fermented drink",
+        "Maize porridge - staple food",
+        "A meat stew",
+        "A type of bread"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tsonga-photos/vuswa.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "'Xigugu' is a traditional Tsonga dish made from?",
+      "options": [
+        "Maize",
+        "Pumpkin and peanuts",
+        "Beans",
+        "Sour milk"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tsonga-photos/xigugu.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'Mageu' (Mahleu) in Tsonga culture?",
+      "options": [
+        "A fermented maize drink",
+        "A type of bread",
+        "A meat dish",
+        "A vegetable stew"
+      ],
+      "correct_index": 0,
+      "image_path": "public/tsonga-photos/mageu.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Which famous Tsonga footballer captained Orlando Pirates and Bafana Bafana?",
+      "options": [
+        "Lucas Radebe",
+        "Benni McCarthy",
+        "Teko Modise",
+        "Lucky Lekgwathi"
+      ],
+      "correct_index": 3,
+      "image_path": "public/tsonga-photos/lucky-lekgwathi.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Dr. Nkosazana Dlamini-Zuma, who has Tsonga heritage, served as?",
+      "options": [
+        "President of South Africa",
+        "AU Commission Chairperson",
+        "UN Secretary General",
+        "IMF Director"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tsonga-photos/nkosazana.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Penny Penny, the famous Tsonga musician, is known for his hit song?",
+      "options": [
+        "Yaa Yaa",
+        "Shakaribho",
+        "M'bungu",
+        "Xihaha Xa Madoda"
+      ],
+      "correct_index": 0,
+      "image_path": "public/tsonga-photos/penny-penny.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Which Tsonga actress is known for her role as 'Mamokete' on Skeem Saam?",
+      "options": [
+        "Connie Ferguson",
+        "Inno Sadiki",
+        "Harriet Manamela",
+        "Sophie Ndaba"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tsonga-photos/Harriet-manamela.jpg"
+    }
+  ],
+  "Tswana": [
+    {
+      "category": "Language",
+      "prompt": "What does 'Dumela' mean in Setswana?",
+      "options": [
+        "Goodbye",
+        "Hello",
+        "Thank you",
+        "Please"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tswana-photos/hello-tswana.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "How do you say 'Thank you' in Setswana?",
+      "options": [
+        "Ke a leboga",
+        "Dumela",
+        "Tsamaya sentle",
+        "Robala sentle"
+      ],
+      "correct_index": 0,
+      "image_path": "public/tswana-photos/kealeboga.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "What does 'Ee' mean in Setswana?",
+      "options": [
+        "No",
+        "Yes",
+        "Maybe",
+        "Never"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tswana-photos/ee.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "How do you say 'Goodbye' in Setswana?",
+      "options": [
+        "Dumela",
+        "Ke a leboga",
+        "Tsamaya sentle",
+        "Ee"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tswana-photos/goodbye-tswana.png"
+    },
+    {
+      "category": "History",
+      "prompt": "The Tswana people primarily inhabit which country?",
+      "options": [
+        "South Africa only",
+        "Botswana and South Africa",
+        "Zimbabwe only",
+        "Namibia only"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tswana-photos/tswana-map.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "Which famous Tswana chief led his people during the Difaqane/Mfecane wars?",
+      "options": [
+        "Kgosi Sechele I",
+        "King Moshoeshoe",
+        "King Shaka",
+        "Kgosi Mampuru"
+      ],
+      "correct_index": 0,
+      "image_path": "public/tswana-photos/sechele.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "The Tswana royal lineage is known as?",
+      "options": [
+        "The House of Senzangakhona",
+        "The House of Chieftaincy",
+        "The Bahurutshe",
+        "The Zulu Kingdom"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tswana-photos/bahurutshe.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "Which South African province has the largest Tswana population?",
+      "options": [
+        "Limpopo",
+        "Gauteng",
+        "North West",
+        "Free State"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tswana-photos/north-west-province.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The traditional Tswana wedding ceremony is called?",
+      "options": [
+        "Patlo",
+        "Mabogo",
+        "Lobola",
+        "Bogadi"
+      ],
+      "correct_index": 3,
+      "image_path": "public/tswana-photos/tswana-wedding.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "What is 'Bogadi' in Tswana culture?",
+      "options": [
+        "A harvest festival",
+        "Bride wealth paid by the groom's family",
+        "A coming-of-age ceremony",
+        "An ancestral worship ritual"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tswana-photos/bogadi.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The Tswana initiation school for young men is called?",
+      "options": [
+        "Bojale",
+        "Bogwera",
+        "Lebollo",
+        "Mephato"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tswana-photos/bogwera.png"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The Tswana initiation school for young women is called?",
+      "options": [
+        "Bojale",
+        "Bogwera",
+        "Lebollo",
+        "Mephato"
+      ],
+      "correct_index": 0,
+      "image_path": "public/tswana-photos/bojale.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "The traditional Tswana blanket worn during ceremonies is called?",
+      "options": [
+        "Kente",
+        "Shweshwe",
+        "Khiba",
+        "Mokorotlo"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tswana-photos/khiba-blanket.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "Tswana people are known for their intricate?",
+      "options": [
+        "Beadwork",
+        "Pottery",
+        "Wood carving",
+        "Basket weaving"
+      ],
+      "correct_index": 0,
+      "image_path": "public/tswana-photos/beadwork.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "The Tswana traditional dwelling is called?",
+      "options": [
+        "Rondavel",
+        "Lapa",
+        "Ntlo",
+        "Moraka"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tswana-photos/ntlo.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "What is the Tswana concept of community and togetherness called?",
+      "options": [
+        "Ubuntu",
+        "Botho",
+        "Harambee",
+        "Umoja"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tswana-photos/botho.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "Which Tswana music genre is characterized by guitar and accordion?",
+      "options": [
+        "Mbaqanga",
+        "Kwaito",
+        "Tsaba Tsaba",
+        "Amapiano"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tswana-photos/tsaba-tsaba.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "Famous Tswana musician known for 'Korobela' is?",
+      "options": [
+        "Mahlathini",
+        "Oliver Mtukudzi",
+        "Dr. Mageba",
+        "Mpharanyana"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tswana-photos/mageba.png"
+    },
+    {
+      "category": "Music",
+      "prompt": "Traditional Tswana music often features which instrument?",
+      "options": [
+        "Marimba",
+        "Segaba (traditional violin)",
+        "Djembe",
+        "Mbira"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tswana-photos/segaba.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "The Tswana praise song performed at important ceremonies is called?",
+      "options": [
+        "Serankure",
+        "Maboko",
+        "Dipina",
+        "Makgotla"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tswana-photos/maboko.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "The capital city of Botswana, which is predominantly Tswana, is?",
+      "options": [
+        "Lobatse",
+        "Francistown",
+        "Gaborone",
+        "Maun"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tswana-photos/gaborone.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Tswana people are concentrated in which South African region?",
+      "options": [
+        "Bushveld",
+        "Highveld",
+        "Lowveld",
+        "West Rand"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tswana-photos/highveld.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Kalahari Desert covers much of which Tswana-inhabited area?",
+      "options": [
+        "Eastern Cape",
+        "Botswana",
+        "KwaZulu-Natal",
+        "Limpopo"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tswana-photos/kalahari-dessert.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'Pap' (Bogobe) in Tswana cuisine?",
+      "options": [
+        "A fermented drink",
+        "Maize porridge - staple food",
+        "A meat stew",
+        "A type of bread"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tswana-photos/bogobe.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "'Morogo' is a traditional Tswana dish made from?",
+      "options": [
+        "Maize",
+        "Wild spinach/leafy greens",
+        "Beans",
+        "Sour milk"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tswana-photos/morogo.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'Mageu' (or Magou) in Tswana culture?",
+      "options": [
+        "A fermented maize drink",
+        "A type of bread",
+        "A meat dish",
+        "A vegetable stew"
+      ],
+      "correct_index": 0,
+      "image_path": "public/tswana-photos/mageu.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Sir Seretse Khama was the first President of which country?",
+      "options": [
+        "South Africa",
+        "Zimbabwe",
+        "Botswana",
+        "Namibia"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tswana-photos/seretse.png"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Dr. Ruth Mompati was a prominent Tswana anti-apartheid activist and?",
+      "options": [
+        "Nobel Peace Prize winner",
+        "First woman mayor in SA",
+        "Musician",
+        "Scientist"
+      ],
+      "correct_index": 1,
+      "image_path": "public/tswana-photos/ruth-mompati.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Quett Masire served as the second President of which country?",
+      "options": [
+        "South Africa",
+        "Zambia",
+        "Botswana",
+        "Lesotho"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tswana-photos/masire.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Which famous Tswana musician sang 'Africa' and was part of Mango Groove?",
+      "options": [
+        "Brenda Fassie",
+        "Miriam Makeba",
+        "Claire Johnston",
+        "Yvonne Chaka Chaka"
+      ],
+      "correct_index": 2,
+      "image_path": "public/tswana-photos/claire-johnston.jpeg"
+    }
+  ],
+  "Venda": [
+    {
+      "category": "Language",
+      "prompt": "What is the Tshivenḓa word for 'Hello' or 'Good day'?",
+      "options": [
+        "Ndaa",
+        "Dankie",
+        "Sawubona",
+        "Dumela"
+      ],
+      "correct_index": 0,
+      "image_path": "public/venda-photos/handshake.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "What does 'Vhuthu' mean in Tshivenḓa?",
+      "options": [
+        "War",
+        "Humanity / Personhood",
+        "Rain",
+        "Fire"
+      ],
+      "correct_index": 1,
+      "image_path": "public/venda-photos/vhuthu.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "How do you say 'Thank you' in Tshivenḓa?",
+      "options": [
+        "Ndo livhuwa",
+        "Ndaa",
+        "Ndi fhano",
+        "Vho da"
+      ],
+      "correct_index": 0,
+      "image_path": "public/venda-photos/thank-you.jpg"
+    },
+    {
+      "category": "Language",
+      "prompt": "Tshivenḓa belongs to which language family?",
+      "options": [
+        "Germanic",
+        "Bantu",
+        "Khoisan",
+        "Romance"
+      ],
+      "correct_index": 1,
+      "image_path": "public/venda-photos/venda-people.jpg"
+    },
+    {
+      "category": "Language",
+      "prompt": "What is the Tshivenḓa word for water?",
+      "options": [
+        "Mufhiso",
+        "Maḓi",
+        "Mulilo",
+        "Muya"
+      ],
+      "correct_index": 1,
+      "image_path": "public/venda-photos/water.jpg"
+    },
+    {
+      "category": "Language",
+      "prompt": "In which South African province is Tshivenḓa primarily spoken?",
+      "options": [
+        "Gauteng",
+        "KwaZulu-Natal",
+        "Limpopo",
+        "Western Cape"
+      ],
+      "correct_index": 2,
+      "image_path": "public/venda-photos/limpopo.png"
+    },
+    {
+      "category": "History",
+      "prompt": "The VhaVenḓa people are believed to have migrated from which region before settling in present-day Limpopo?",
+      "options": [
+        "West Africa",
+        "Central Africa (Great Lakes region)",
+        "North Africa",
+        "Southern coastal areas"
+      ],
+      "correct_index": 1,
+      "image_path": "public/venda-photos/central-africa.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "What was the Kingdom of Venda?",
+      "options": [
+        "A pre-colonial Venda kingdom that existed in the Soutpansberg mountains",
+        "A British colonial territory",
+        "A Zulu sub-kingdom",
+        "A trading empire based on the coast"
+      ],
+      "correct_index": 0,
+      "image_path": "public/venda-photos/kingdom-venda.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "Who is considered the founding ancestor/king of the VhaVenḓa people?",
+      "options": [
+        "Shaka",
+        "Dimbanyika",
+        "Tshivhase",
+        "Makhado"
+      ],
+      "correct_index": 1,
+      "image_path": "public/venda-photos/dimbanyika.png"
+    },
+    {
+      "category": "History",
+      "prompt": "King Makhado is remembered in Venda history for what reason?",
+      "options": [
+        "Signing a peace treaty with the British",
+        "Successfully resisting Boer settlers in the Soutpansberg",
+        "Building the first Venda school",
+        "Introducing Christianity to the Venda"
+      ],
+      "correct_index": 1,
+      "image_path": "public/venda-photos/king-makhado.png"
+    },
+    {
+      "category": "History",
+      "prompt": "The Venda homeland during apartheid was known as?",
+      "options": [
+        "Bophuthatswana",
+        "Transkei",
+        "Venda",
+        "Gazankulu"
+      ],
+      "correct_index": 2,
+      "image_path": "public/venda-photos/venda-homeland.png"
+    },
+    {
+      "category": "History",
+      "prompt": "Where is the Thulamela archaeological site, linked to ancient Venda history, located?",
+      "options": [
+        "Drakensberg, KwaZulu-Natal",
+        "Kruger National Park, Limpopo",
+        "Table Mountain, Western Cape",
+        "Pilanesberg, North West"
+      ],
+      "correct_index": 1,
+      "image_path": "public/venda-photos/thulamela.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "The Venda people are closely related culturally and linguistically to which other group across the border?",
+      "options": [
+        "Shona people of Zimbabwe",
+        "Zulu people",
+        "Xhosa people",
+        "Sotho people"
+      ],
+      "correct_index": 0,
+      "image_path": "public/venda-photos/venda-people.jpg"
+    },
+    {
+      "category": "Traditions",
+      "prompt": "What is the 'Domba' dance?",
+      "options": [
+        "A war dance performed by Venda men",
+        "A sacred python dance performed by young Venda women as part of initiation",
+        "A harvest celebration dance",
+        "A funeral ceremony dance"
+      ],
+      "correct_index": 1,
+      "image_path": "public/venda-photos/domba-dance.jpg"
+    },
+    {
+      "category": "Traditions",
+      "prompt": "The Venda are renowned for their skill in which art form?",
+      "options": [
+        "Beadwork",
+        "Wood carving",
+        "Sand painting",
+        "Tapestry weaving"
+      ],
+      "correct_index": 1,
+      "image_path": "public/venda-photos/wood-carving.jpg"
+    },
+    {
+      "category": "Traditions",
+      "prompt": "What is the sacred 'Tshikona' in Venda culture?",
+      "options": [
+        "A type of food",
+        "A national dance performed with pipes, considered the most important Venda musical tradition",
+        "A rain-making ritual",
+        "A type of clay pot"
+      ],
+      "correct_index": 1,
+      "image_path": "public/venda-photos/tshikona.jpg"
+    },
+    {
+      "category": "Traditions",
+      "prompt": "What is Lake Fundudzi significant for in Venda culture?",
+      "options": [
+        "It is a major fishing lake",
+        "It is a sacred lake associated with ancestral spirits and the python god",
+        "It is the site of the first Venda school",
+        "It is a popular tourist resort"
+      ],
+      "correct_index": 1,
+      "image_path": "public/venda-photos/lake-fundudzi.png"
+    },
+    {
+      "category": "Traditions",
+      "prompt": "What does 'u hulela' mean when approaching Lake Fundudzi?",
+      "options": [
+        "To swim across the lake",
+        "A respectful greeting ritual — turning your back and bending forward to show reverence",
+        "To throw offerings into the water",
+        "To sing a prayer song"
+      ],
+      "correct_index": 1,
+      "image_path": "public/venda-photos/lake-fundudzi-ritual.png"
+    },
+    {
+      "category": "Traditions",
+      "prompt": "Venda women are well known for making which type of craft?",
+      "options": [
+        "Grass baskets and pottery",
+        "Silk garments",
+        "Iron jewellery",
+        "Leather sandals"
+      ],
+      "correct_index": 0,
+      "image_path": "public/venda-photos/venda-pottery.jpg"
+    },
+    {
+      "category": "Traditions",
+      "prompt": "What is the 'Murundu' in Venda tradition?",
+      "options": [
+        "A male initiation ceremony",
+        "A type of musical instrument",
+        "A traditional court/gathering of elders",
+        "A type of traditional dress"
+      ],
+      "correct_index": 0,
+      "image_path": "public/venda-photos/murundu.jpg"
+    },
+    {
+      "category": "Traditions",
+      "prompt": "The Venda people traditionally believe in a god known as?",
+      "options": [
+        "Modimo",
+        "Raluvhimba",
+        "uNkulunkulu",
+        "Inkosi yezulu"
+      ],
+      "correct_index": 1,
+      "image_path": null
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'Tshidzimba', a traditional Venda dish?",
+      "options": [
+        "A wild spinach and peanut stew",
+        "A fermented milk drink",
+        "A type of dried meat",
+        "A sweet bean pudding"
+      ],
+      "correct_index": 0,
+      "image_path": "public/venda-photos/tshidzimba.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'Mutuku', a popular Venda staple?",
+      "options": [
+        "A thick porridge made from millet or sorghum",
+        "A grilled fish dish",
+        "A type of soup",
+        "A fried dough snack"
+      ],
+      "correct_index": 0,
+      "image_path": "public/venda-photos/mutuku.png"
+    },
+    {
+      "category": "Food",
+      "prompt": "What traditional Venda drink is made from fermented millet or sorghum?",
+      "options": [
+        "Mahewu",
+        "Ginger beer",
+        "Umqombothi",
+        "Mageu"
+      ],
+      "correct_index": 0,
+      "image_path": "public/venda-photos/mahewu.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'Mufodi' in Venda cuisine?",
+      "options": [
+        "A type of wild caterpillar (mopane worm) eaten as a protein-rich snack",
+        "A type of bread",
+        "A vegetable curry",
+        "A smoked fish"
+      ],
+      "correct_index": 0,
+      "image_path": "public/venda-photos/mopane-worms.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "Venda people are known for growing and eating which fruit that is also made into beer?",
+      "options": [
+        "Marula",
+        "Baobab",
+        "Morula and Marula",
+        "Mango"
+      ],
+      "correct_index": 2,
+      "image_path": "public/venda-photos/marula.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'Dzikungo', traditionally eaten during celebrations in Venda?",
+      "options": [
+        "Slaughtered goat or cow meat shared communally",
+        "A sweet rice pudding",
+        "Deep fried vegetables",
+        "Dried fish stew"
+      ],
+      "correct_index": 0,
+      "image_path": "public/venda-photos/dzikungo.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "Which grain is most traditionally associated with Venda cooking and brewing?",
+      "options": [
+        "Maize only",
+        "Wheat",
+        "Sorghum and millet",
+        "Rice"
+      ],
+      "correct_index": 2,
+      "image_path": "public/venda-photos/sorghum-millet.png"
+    }
+  ],
+  "Xhosa": [
+    {
+      "category": "Language",
+      "prompt": "What does 'Molo' mean in IsiXhosa?",
+      "options": [
+        "Goodbye",
+        "Hello (to one person)",
+        "Thank you",
+        "Good night"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/molo.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "How do you say 'Thank you' in IsiXhosa?",
+      "options": [
+        "Ewe",
+        "Hayi",
+        "Enkosi",
+        "Hamba kakuhle"
+      ],
+      "correct_index": 2,
+      "image_path": "public/xhosa-photos/thank-you.jpg"
+    },
+    {
+      "category": "Language",
+      "prompt": "What does 'Ewe' mean in IsiXhosa?",
+      "options": [
+        "No",
+        "Yes",
+        "Please",
+        "Come here"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/ewe.png"
+    },
+    {
+      "category": "History",
+      "prompt": "The series of wars fought between the Xhosa and British colonial forces over land in the Eastern Cape are known as the?",
+      "options": [
+        "Anglo-Zulu Wars",
+        "Cape Frontier Wars",
+        "Difaqane Wars",
+        "Mfecane"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/wars.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "In 1856–57, prophetess Nongqawuse convinced the Xhosa to slaughter their cattle and destroy crops, believing ancestors would rise and expel the British. This tragedy is called?",
+      "options": [
+        "The Great Trek",
+        "The Xhosa Cattle-Killing Movement",
+        "The Cape Rebellion",
+        "The Frontier Famine"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/nongqawuse.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "Which legendary Xhosa chief led resistance against British colonial forces in the 8th Frontier War and was later exiled to Robben Island?",
+      "options": [
+        "Hintsa",
+        "Sandile",
+        "Maqoma",
+        "Ngqika"
+      ],
+      "correct_index": 2,
+      "image_path": "public/xhosa-photos/xhosa-chief.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "The Eastern Cape province, the historic heartland of the Xhosa, was previously known by which colonial name?",
+      "options": [
+        "Natal",
+        "Griqualand",
+        "British Kaffraria",
+        "Zululand"
+      ],
+      "correct_index": 2,
+      "image_path": "public/xhosa-photos/eastern-cape-xhosa.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The Xhosa male initiation ceremony, marking the passage from boyhood to manhood, is called?",
+      "options": [
+        "Umemulo",
+        "Ulwaluko",
+        "Ukweshwama",
+        "Umhlanga"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/ulwaluko.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "During Xhosa initiation, young men (abakhwetha) smear their bodies with white clay and wear white blankets. What does the white symbolise?",
+      "options": [
+        "Wealth and prosperity",
+        "Purity and spiritual transition",
+        "Strength in battle",
+        "Mourning for the past"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/xhosa-facepaint.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The Xhosa equivalent of lobola — cattle or goods paid by the groom's family to the bride's family — is known as?",
+      "options": [
+        "Umabo",
+        "Ilobolo",
+        "Ukuyalwa",
+        "Imbeleko"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/lobola.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "'Imbeleko' is a Xhosa ceremony held to?",
+      "options": [
+        "Celebrate a harvest",
+        "Introduce a newborn to the ancestors",
+        "Mark a girl's coming of age",
+        "Begin a wedding negotiation"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/imbeleko.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "The Xhosa share the Ubuntu philosophy with other Nguni peoples. What does Ubuntu mean?",
+      "options": [
+        "I am the greatest",
+        "I am because we are",
+        "Work hard, eat well",
+        "Respect your elders"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/ubuntu-philosophy.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "Xhosa women are known for wearing a specific traditional style of face decoration. What is it?",
+      "options": [
+        "Henna patterns",
+        "White umchokozo clay face paint",
+        "Red ochre body paint",
+        "Black charcoal markings"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/xhosa-facepaint.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "The brightly coloured, intricately patterned traditional dress of Xhosa women typically features which dominant colour?",
+      "options": [
+        "Blue and white",
+        "Green and yellow",
+        "Black and white with colourful embroidery",
+        "Red and orange"
+      ],
+      "correct_index": 2,
+      "image_path": "public/xhosa-photos/tradition.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "What is a 'rondavel' in the context of Xhosa homestead life?",
+      "options": [
+        "A sacred burial ground",
+        "A round thatched traditional dwelling",
+        "A cattle enclosure",
+        "A communal meeting hall"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/xhosa-rondavel.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "Which uniquely Xhosa musical instrument is played by plucking a string held between the teeth, using the mouth as a resonating chamber?",
+      "options": [
+        "Uhadi (musical bow)",
+        "Imbaqa (drum)",
+        "Isigqi (rattle)",
+        "Umrubhe (mouth bow)"
+      ],
+      "correct_index": 3,
+      "image_path": "public/xhosa-photos/xhosa-instru.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "The traditional Xhosa practice of throat singing, often performed by women, is known as?",
+      "options": [
+        "Isicathamiya",
+        "Umngqokolo",
+        "Mbaqanga",
+        "Ingoma"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/xhosa-throat-singing.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "Miriam Makeba, a global icon of African music and a Xhosa woman, was nicknamed?",
+      "options": [
+        "The Queen of Jazz",
+        "Mama Africa",
+        "Lady Day",
+        "The Voice of the Cape"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/miriam-makeba.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "The Xhosa genre of choral music sung at community and church gatherings, blending traditional harmonies with Western hymn structures, is called?",
+      "options": [
+        "Kwaito",
+        "Amapiano",
+        "Ingoma",
+        "Gumboot"
+      ],
+      "correct_index": 2,
+      "image_path": "public/xhosa-photos/xhosa-genre.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Xhosa people are primarily associated with which South African province?",
+      "options": [
+        "KwaZulu-Natal",
+        "Limpopo",
+        "Eastern Cape",
+        "Western Cape"
+      ],
+      "correct_index": 2,
+      "image_path": "public/xhosa-photos/eastern-cape-xhosa.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "The historic city of Mthatha (formerly Umtata) in the Eastern Cape is significant as?",
+      "options": [
+        "The first capital of the Cape Colony",
+        "The birthplace of Nelson Mandela and former capital of Transkei",
+        "The site of the last Frontier War battle",
+        "The largest Xhosa royal palace"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/mthatha.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Xhosa 'Wild Coast' region of the Eastern Cape is named for its?",
+      "options": [
+        "Dangerous wildlife",
+        "Rugged, shipwreck-prone coastline",
+        "Wild indigenous forests",
+        "Unpredictable storms year-round"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/wild-coast.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'Umngqusho', a traditional Xhosa dish?",
+      "options": [
+        "A fermented milk drink",
+        "Samp (dried corn) and beans cooked together",
+        "A spiced mutton stew",
+        "Roasted corn on the cob"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/umngqusho.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "Like the Zulu, Xhosa people also drink amasi. What is it?",
+      "options": [
+        "A sweet fermented grain beer",
+        "Fermented soured milk, similar to yoghurt",
+        "A herbal medicinal tea",
+        "Fresh cow's milk warmed with spices"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/amasi.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "Umvubo is a Xhosa dish made by mixing?",
+      "options": [
+        "Rice and beans",
+        "Maize meal (pap) and amasi",
+        "Sorghum and wild herbs",
+        "Dried meat and fat"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/umvubo.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Nelson Mandela, South Africa's first democratically elected president, belonged to which Xhosa clan?",
+      "options": [
+        "Mpondo",
+        "Thembu (Madiba clan)",
+        "Mfengu",
+        "Gcaleka"
+      ],
+      "correct_index": 1,
+      "image_path": "public/xhosa-photos/mandela.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Steve Biko, founder of the Black Consciousness Movement in South Africa, was a Xhosa man who died in police custody in which year?",
+      "options": [
+        "1969",
+        "1973",
+        "1977",
+        "1983"
+      ],
+      "correct_index": 2,
+      "image_path": "public/xhosa-photos/steve.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Archbishop Desmond Tutu, Nobel Peace Prize laureate and anti-apartheid activist, was of which Nguni heritage?",
+      "options": [
+        "Zulu",
+        "Sotho",
+        "Xhosa",
+        "Swazi"
+      ],
+      "correct_index": 2,
+      "image_path": "public/xhosa-photos/desmond.jpg"
+    }
+  ],
+  "Zulu": [
+    {
+      "category": "Language",
+      "prompt": "What does 'Sawubona' mean in IsiZulu?",
+      "options": [
+        "Goodbye",
+        "I see you / Hello",
+        "Thank you",
+        "Good night"
+      ],
+      "correct_index": 1,
+      "image_path": "public/zulu-photos/sawubona-zulu.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "How do you say 'Thank you' in IsiZulu?",
+      "options": [
+        "Yebo",
+        "Sawubona",
+        "Ngiyabonga",
+        "Hamba kahle"
+      ],
+      "correct_index": 2,
+      "image_path": "public/zulu-photos/ngiyabonga.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "What does 'Yebo' mean in IsiZulu?",
+      "options": [
+        "No",
+        "Yes",
+        "Please",
+        "Hurry"
+      ],
+      "correct_index": 1,
+      "image_path": "public/zulu-photos/yebo.png"
+    },
+    {
+      "category": "Language",
+      "prompt": "IsiZulu is one of South Africa's official languages. How many official languages does SA have in total?",
+      "options": [
+        "9",
+        "10",
+        "11",
+        "12"
+      ],
+      "correct_index": 2,
+      "image_path": "public/zulu-photos/sa-languages.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "Who was the famous Zulu king that built a powerful military empire in the early 1800s?",
+      "options": [
+        "Dingane",
+        "Cetshwayo",
+        "Shaka Zulu",
+        "Mpande"
+      ],
+      "correct_index": 2,
+      "image_path": "public/zulu-photos/shaka-zulu.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "The Battle of Isandlwana in 1879 was a major Zulu victory against which colonial power?",
+      "options": [
+        "Portuguese",
+        "Dutch (Boers)",
+        "British",
+        "German"
+      ],
+      "correct_index": 2,
+      "image_path": "public/zulu-photos/isandlwana.png"
+    },
+    {
+      "category": "History",
+      "prompt": "King Cetshwayo was the last independent king of the Zulu. He was exiled after which war?",
+      "options": [
+        "The Anglo-Boer War",
+        "The Anglo-Zulu War",
+        "The Frontier Wars",
+        "The Mfecane"
+      ],
+      "correct_index": 1,
+      "image_path": "public/zulu-photos/anglo-zulu-war.png"
+    },
+    {
+      "category": "History",
+      "prompt": "The Mfecane was a period of widespread chaos and warfare among Nguni tribes mainly caused by?",
+      "options": [
+        "Drought",
+        "Shaka's military expansion",
+        "British invasion",
+        "A plague"
+      ],
+      "correct_index": 1,
+      "image_path": "public/zulu-photos/mfecane.jpg"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The Zulu Reed Dance ceremony is called?",
+      "options": [
+        "Umhlanga",
+        "Ukweshwama",
+        "Umemulo",
+        "Ukubuyisa"
+      ],
+      "correct_index": 0,
+      "image_path": "public/zulu-photos/umhlanga.png"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "Lobola is an important Zulu tradition. What is it?",
+      "options": [
+        "A war dance performed by warriors",
+        "Bride wealth paid by the groom's family",
+        "A harvest celebration",
+        "A rain-calling ceremony"
+      ],
+      "correct_index": 1,
+      "image_path": "public/zulu-photos/lobola.png"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "The Zulu male first-fruits ceremony where the king tastes the new harvest is called?",
+      "options": [
+        "Umhlanga",
+        "Ukweshwama",
+        "Lobola",
+        "Umemulo"
+      ],
+      "correct_index": 1,
+      "image_path": "public/zulu-photos/ukweshwama.png"
+    },
+    {
+      "category": "Tradition",
+      "prompt": "An 'Umemulo' ceremony in Zulu culture celebrates?",
+      "options": [
+        "A boy becoming a warrior",
+        "A girl's coming of age (around 21)",
+        "A wedding anniversary",
+        "The death of an elder"
+      ],
+      "correct_index": 1,
+      "image_path": "public/zulu-photos/umemulo.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "What does the Zulu/Nguni philosophy 'Ubuntu' mean?",
+      "options": [
+        "I am the greatest",
+        "I am because we are",
+        "Work hard, eat well",
+        "Respect your elders"
+      ],
+      "correct_index": 1,
+      "image_path": "public/zulu-photos/ubuntu.png"
+    },
+    {
+      "category": "Culture",
+      "prompt": "Zulu women are internationally famous for making intricate colorful?",
+      "options": [
+        "Clay pottery",
+        "Beadwork jewelry",
+        "Wood carvings",
+        "Woven baskets"
+      ],
+      "correct_index": 1,
+      "image_path": "public/zulu-photos/beadwork.png"
+    },
+    {
+      "category": "Culture",
+      "prompt": "In Zulu culture, what colour beads traditionally symbolise love?",
+      "options": [
+        "Blue",
+        "White",
+        "Red",
+        "Pink"
+      ],
+      "correct_index": 2,
+      "image_path": null
+    },
+    {
+      "category": "Culture",
+      "prompt": "What is the traditional Zulu dwelling called?",
+      "options": [
+        "Rondavel",
+        "Indlu (beehive hut)",
+        "Kraal",
+        "Imizi"
+      ],
+      "correct_index": 1,
+      "image_path": "public/zulu-photos/zulu-dwelling.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "Which a cappella vocal style originated with Zulu migrant workers and became world-famous?",
+      "options": [
+        "Kwaito",
+        "Amapiano",
+        "Isicathamiya",
+        "Mbaqanga"
+      ],
+      "correct_index": 2,
+      "image_path": "public/zulu-photos/isicathamiya.png"
+    },
+    {
+      "category": "Music",
+      "prompt": "Ladysmith Black Mambazo made Isicathamiya world-famous. Which famous musician featured them on a 1986 album?",
+      "options": [
+        "Michael Jackson",
+        "Paul Simon",
+        "Elton John",
+        "Bob Marley"
+      ],
+      "correct_index": 1,
+      "image_path": "public/zulu-photos/LBM.png"
+    },
+    {
+      "category": "Music",
+      "prompt": "The energetic dance performed by Zulu warriors, also used during ceremonial occasions, is called?",
+      "options": [
+        "Gumboot dance",
+        "Indlamu",
+        "Pantsula",
+        "Toyi-toyi"
+      ],
+      "correct_index": 1,
+      "image_path": "public/zulu-photos/indlamu.jpg"
+    },
+    {
+      "category": "Music",
+      "prompt": "What is the name of the traditional Zulu musical bow, played by plucking a string and using the mouth as a resonator?",
+      "options": [
+        "Uhadi",
+        "Ugubhu",
+        "Umakhweyana",
+        "Isigqi"
+      ],
+      "correct_index": 2,
+      "image_path": "public/zulu-photos/umakhweyana.png"
+    },
+    {
+      "category": "Geography",
+      "prompt": "The heartland of Zulu culture is which South African province?",
+      "options": [
+        "Limpopo",
+        "Gauteng",
+        "KwaZulu-Natal",
+        "Eastern Cape"
+      ],
+      "correct_index": 2,
+      "image_path": "public/zulu-photos/kzn.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "The uKhahlamba-Drakensberg Park, a UNESCO World Heritage Site in KwaZulu-Natal, is known for?",
+      "options": [
+        "Gold mining history",
+        "Ancient San rock art and mountains",
+        "Zulu battlefield sites only",
+        "Coastal wetlands"
+      ],
+      "correct_index": 1,
+      "image_path": "public/zulu-photos/drakensberg.jpg"
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Zulu Royal Palace is located in which area of KwaZulu-Natal?",
+      "options": [
+        "Durban",
+        "Richards Bay",
+        "Nongoma",
+        "Pietermaritzburg"
+      ],
+      "correct_index": 2,
+      "image_path": "public/zulu-photos/zulu-royal-palace.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'Uphuthu', a staple in Zulu cuisine?",
+      "options": [
+        "A spicy meat stew",
+        "Dry crumbly maize meal (pap)",
+        "A fermented milk drink",
+        "Grilled chicken dish"
+      ],
+      "correct_index": 1,
+      "image_path": "public/zulu-photos/uphuthu.png"
+    },
+    {
+      "category": "Food",
+      "prompt": "What is 'Amasi' in Zulu culture?",
+      "options": [
+        "A type of bread",
+        "Fermented/soured milk, similar to yoghurt",
+        "A beer made from sorghum",
+        "A type of porridge made from millet"
+      ],
+      "correct_index": 1,
+      "image_path": "public/zulu-photos/amasi.jpg"
+    },
+    {
+      "category": "Food",
+      "prompt": "Umqombothi is a traditional Zulu beverage. What is it made from?",
+      "options": [
+        "Grapes",
+        "Sorghum and maize",
+        "Sugarcane",
+        "Fermented honey"
+      ],
+      "correct_index": 1,
+      "image_path": "public/zulu-photos/umqombothi.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Which Zulu poet and author, known as the 'Zulu Shakespeare', wrote the famous novel 'Insila kaShaka' in 1930?",
+      "options": [
+        "B.W. Vilakazi",
+        "John Dube",
+        "R.R.R. Dhlomo",
+        "Sibusiso Nyembezi"
+      ],
+      "correct_index": 1,
+      "image_path": "public/zulu-photos/insila.jpg"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "Prince Mangosuthu Buthelezi founded which major Zulu political organization in 1975?",
+      "options": [
+        "ANC",
+        "PAC",
+        "Inkatha Freedom Party",
+        "DA"
+      ],
+      "correct_index": 2,
+      "image_path": "public/zulu-photos/buthelezi.png"
+    },
+    {
+      "category": "Notable People",
+      "prompt": "The current (as of 2024) Zulu King is?",
+      "options": [
+        "Goodwill Zwelithini",
+        "Misuzulu kaZwelithini",
+        "Cetshwayo II",
+        "Dingane II"
+      ],
+      "correct_index": 1,
+      "image_path": "public/zulu-photos/king-misuzulu.jpg"
+    }
+  ]
+}

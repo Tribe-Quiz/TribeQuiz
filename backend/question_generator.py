@@ -6,6 +6,7 @@ import random
 import re
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from typing import Literal
 
 import requests
@@ -17,6 +18,9 @@ from backend.database import database
 
 
 logger = logging.getLogger(__name__)
+STATIC_QUESTION_SETS = json.loads(
+    (Path(__file__).parent / "data" / "tribe_questions.json").read_text(encoding="utf-8")
+)
 QUESTION_COUNT = 10
 QUESTION_POOL_SIZE = 30
 CACHE_LIFETIME = timedelta(days=30)
@@ -105,6 +109,27 @@ def _cached_questions(culture_id: int, *, fresh_only: bool) -> list[dict]:
         }
         for row in rows
         if row["question_set_id"] == latest_set_id
+    ]
+
+
+def _static_questions(culture: dict) -> list[dict]:
+    questions = STATIC_QUESTION_SETS.get(culture["name"], [])
+    return [
+        {
+            "id": None,
+            "category": question["category"],
+            "prompt": question["prompt"],
+            "options": question["options"],
+            "correct_index": question["correct_index"],
+            "note": f"The correct answer is {question['options'][question['correct_index']]}",
+            "image_url": None,
+            "image_search_term": question["prompt"],
+            "image_credit": None,
+            "image_source_url": None,
+            "image_license": None,
+            "image_license_url": None,
+        }
+        for question in questions
     ]
 
 
@@ -215,6 +240,10 @@ def _generate_questions(culture: dict) -> list[GeneratedQuestion]:
 
 
 def questions_for_culture(culture: dict) -> tuple[list[dict], str]:
+    static_questions = _static_questions(culture)
+    if len(static_questions) >= QUESTION_COUNT:
+        return static_questions, "static"
+
     cached = _cached_questions(culture["id"], fresh_only=True)
     if len(cached) >= QUESTION_COUNT:
         return cached, "ai"

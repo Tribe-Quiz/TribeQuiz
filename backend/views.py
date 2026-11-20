@@ -6,7 +6,6 @@ import mimetypes
 import re
 import secrets
 import smtplib
-import sqlite3
 import uuid
 from datetime import datetime, timedelta, timezone
 from functools import wraps
@@ -16,7 +15,7 @@ from django.http import FileResponse, Http404, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from pydantic import ValidationError
 
-from backend.database import database
+from backend.database import INTEGRITY_ERRORS, database
 from backend.errors import APIError
 from backend.mailer import (
     APP_BASE_URL,
@@ -236,7 +235,7 @@ def verify_email(request):
             )
             user_id = cursor.lastrowid
             connection.execute("DELETE FROM pending_signups WHERE email = ?", (pending["email"],))
-    except sqlite3.IntegrityError as error:
+    except INTEGRITY_ERRORS as error:
         raise APIError(409, "An account with that email already exists.") from error
 
     response = json_response({"user": public_user(user_id)})

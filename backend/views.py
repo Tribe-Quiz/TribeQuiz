@@ -473,6 +473,69 @@ def start_attempt(request):
     )
 
 
+@api_endpoint("GET")
+def get_attempt(request, attempt_id: str):
+    user_id = require_user(request.COOKIES.get(SESSION_COOKIE))
+    with database() as connection:
+        attempt_row = connection.execute(
+            """SELECT attempts.id, attempts.culture_id, cultures.name AS culture,
+                      cultures.language, attempts.score, attempts.question_count,
+                      attempts.completed_at
+               FROM attempts JOIN cultures ON cultures.id = attempts.culture_id
+               WHERE attempts.id = ? AND attempts.user_id = ?""",
+            (attempt_id, user_id),
+        ).fetchone()
+        if attempt_row is None:
+            raise APIError(404, "Quiz attempt not found.")
+        if attempt_row["completed_at"] is not None:
+            raise APIError(409, "This quiz attempt is already complete.")
+
+        questions = [
+            dict(row)
+            for row in connection.execute(
+                """SELECT id, prompt, options_json, category, image_url,
+                          image_search_term, image_credit, image_source_url,
+                          image_license, image_license_url
+                   FROM quiz_attempt_questions
+                   WHERE attempt_id = ? ORDER BY question_order""",
+                (attempt_id,),
+            )
+        ]
+        for question in questions:
+            question["options"] = json.loads(question.pop("options_json"))
+
+        answers = [
+            dict(row)
+            for row in connection.execute(
+                """SELECT quiz_attempt_answers.attempt_question_id AS question_id,
+                          quiz_attempt_answers.selected_index,
+                          quiz_attempt_answers.is_correct AS correct,
+                          quiz_attempt_questions.correct_index,
+                          quiz_attempt_questions.note
+                   FROM quiz_attempt_answers
+                   JOIN quiz_attempt_questions
+                     ON quiz_attempt_questions.id = quiz_attempt_answers.attempt_question_id
+                   WHERE quiz_attempt_answers.attempt_id = ?
+                   ORDER BY quiz_attempt_questions.question_order""",
+                (attempt_id,),
+            )
+        ]
+
+    return json_response(
+        {
+            "attempt_id": attempt_row["id"],
+            "culture_id": attempt_row["culture_id"],
+            "culture": attempt_row["culture"],
+            "language": attempt_row["language"],
+            "score": attempt_row["score"],
+            "question_count": attempt_row["question_count"],
+            "answered_count": len(answers),
+            "questions": questions,
+            "answers": answers,
+        }
+    )
+
+
 @api_endpoint("POST")
 def submit_answer(request, attempt_id: str):
     payload = parse_payload(request, AnswerRequest)
@@ -532,9 +595,12 @@ def get_user_attempts(request):
         attempts = [
             dict(row)
             for row in connection.execute(
-                """SELECT attempts.id, cultures.name AS culture, attempts.score,
+                """SELECT attempts.id, attempts.culture_id, cultures.name AS culture,
+                          attempts.score,
                           attempts.correct_count, attempts.question_count,
-                          attempts.started_at, attempts.completed_at
+                          attempts.started_at, attempts.completed_at,
+                          (SELECT COUNT(*) FROM quiz_attempt_answers
+                           WHERE attempt_id = attempts.id) AS answered_count
                    FROM attempts JOIN cultures ON cultures.id = attempts.culture_id
                    WHERE attempts.user_id = ? ORDER BY attempts.started_at DESC""",
                 (user_id,),

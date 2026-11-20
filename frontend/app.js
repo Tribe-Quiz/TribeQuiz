@@ -1,6 +1,8 @@
 import {
   getCurrentUser,
+  getAttempt,
   getQuiz,
+  getUserAttempts,
   signOut,
   startAttempt,
   submitAnswer
@@ -14,9 +16,9 @@ const toast = document.querySelector("#toast");
 const menuToggle = document.querySelector("#menu-toggle");
 const nav = document.querySelector("#main-nav");
 const answerList = document.querySelector("#answer-list");
-const nextButton = document.querySelector("#quiz-next");
 let cultures = [];
 let questions = [];
+let activeAttempts = [];
 let currentCulture = null;
 let currentAttemptId = null;
 let currentUser = null;
@@ -44,6 +46,7 @@ async function loadQuizData() {
 function renderCultureCards() {
   grid.replaceChildren();
   cultures.forEach((culture, index) => {
+    const resumableAttempt = activeAttempts.find((attempt) => attempt.culture_id === culture.id);
     const card = document.createElement("article");
     card.className = "culture-card";
     card.style.animationDelay = `${Math.min(index * 45, 360)}ms`;
@@ -56,8 +59,16 @@ function renderCultureCards() {
         <button class="culture-play" type="button" aria-label="Play ${culture.name} quiz">
           Begin the quiz <span aria-hidden="true">›</span>
         </button>
+        ${resumableAttempt ? `
+          <button class="culture-resume" type="button">
+            Resume quiz · ${resumableAttempt.answered_count}/${resumableAttempt.question_count}
+          </button>` : ""}
       </div>`;
     card.querySelector("button").addEventListener("click", () => startQuiz(culture));
+    const resumeButton = card.querySelector(".culture-resume");
+    if (resumeButton) {
+      resumeButton.addEventListener("click", () => startQuiz(culture, resumableAttempt.id));
+    }
     grid.append(card);
   });
 }
@@ -71,6 +82,12 @@ async function refreshNavigation() {
   } catch (error) {
     if (error.status !== 401) throw error;
     currentUser = null;
+  }
+  if (currentUser) {
+    ({ attempts: activeAttempts } = await getUserAttempts());
+    activeAttempts = activeAttempts.filter((attempt) => !attempt.completed_at);
+  } else {
+    activeAttempts = [];
   }
   authLinks.hidden = Boolean(currentUser);
   userLinks.hidden = !currentUser;
@@ -107,6 +124,7 @@ quizModal.addEventListener("click", (event) => closeOnBackdrop(event, quizModal)
 quizModal.addEventListener("close", () => {
   clearInterval(timerInterval);
   clearTimeout(autoAdvanceTimer);
+  renderCultureCards();
 });
 
 menuToggle.addEventListener("click", () => {
@@ -127,6 +145,7 @@ document.querySelector("#nav-signout").addEventListener("click", async () => {
     await signOut();
     currentUser = null;
     await refreshNavigation();
+    renderCultureCards();
   } catch (error) {
     showToast(error.message || "Could not sign out.");
   }
@@ -144,31 +163,52 @@ function closeOnBackdrop(event, dialog) {
   if (event.target === dialog) dialog.close();
 }
 
-async function startQuiz(culture) {
+async function startQuiz(culture, attemptId = null) {
   if (!currentUser) {
     window.location.href = "auth.html?tab=signup";
     return;
   }
+  let payload;
   try {
-    const payload = await startAttempt(culture.id);
+    payload = attemptId ? await getAttempt(attemptId) : await startAttempt(culture.id);
     if (!Array.isArray(payload.questions) || payload.questions.length !== payload.question_count) {
       throw new Error("The quiz could not load all questions. Please try again.");
     }
+    if (payload.answered_count >= payload.question_count) {
+      throw new Error("This quiz attempt is already complete.");
+    }
     currentAttemptId = payload.attempt_id;
     questions = payload.questions;
+    if (!attemptId) {
+      activeAttempts.unshift({
+        id: currentAttemptId,
+        culture_id: culture.id,
+        answered_count: 0,
+        question_count: payload.question_count
+      });
+    }
   } catch (error) {
     showToast(error.message || "Could not connect to the quiz server.");
     return;
   }
   currentCulture = culture;
-  questionIndex = 0;
-  score = 0;
-  answerLog = [];
+  questionIndex = payload.answered_count;
+  score = payload.score;
+  answerLog = (payload.answers || []).map((answer, index) => {
+    const question = questions[index];
+    return {
+      prompt: question.prompt,
+      selected: answer.selected_index === -1 ? "(no answer - time ran out)" : question.options[answer.selected_index],
+      correctAnswer: question.options[answer.correct_index],
+      correct: Boolean(answer.correct)
+    };
+  });
   document.querySelector("#quiz-culture").textContent = `${culture.name} · ${culture.language}`;
   document.querySelector("#result-view").hidden = true;
   document.querySelector("#question-view").hidden = false;
+  renderCultureCards();
   renderQuestion();
-  quizModal.showModal();
+  if (!quizModal.open) quizModal.showModal();
 }
 
 function renderQuestion() {
@@ -235,8 +275,6 @@ function renderQuestion() {
     button.addEventListener("click", () => selectAnswer(index));
     answerList.append(button);
   });
-  nextButton.disabled = true;
-  nextButton.textContent = "Lock in answer  ›";
   startTimer();
 }
 
@@ -268,17 +306,8 @@ function selectAnswer(index) {
   document.querySelectorAll(".answer-option").forEach((button, optionIndex) => {
     button.classList.toggle("selected", optionIndex === index);
   });
-  nextButton.disabled = false;
+  lockAnswer(index);
 }
-
-nextButton.addEventListener("click", async () => {
-  if (answerSubmitted) {
-    advanceQuestion();
-    return;
-  }
-  if (selectedAnswer === null) return;
-  await lockAnswer(selectedAnswer);
-});
 
 async function lockAnswer(answerIndex) {
   if (answerSubmitted) return;
@@ -288,8 +317,6 @@ async function lockAnswer(answerIndex) {
   const buttons = [...document.querySelectorAll(".answer-option")];
   const feedback = document.querySelector("#quiz-feedback");
   answerSubmitted = true;
-  nextButton.disabled = true;
-  nextButton.textContent = answerIndex === -1 ? "Time's up..." : "Checking answer...";
   buttons.forEach((button) => { button.disabled = true; });
   try {
     const payload = await submitAnswer(currentAttemptId, question.id, answerIndex);
@@ -310,19 +337,26 @@ async function lockAnswer(answerIndex) {
       ? `Time's up. ${payload.note}`
       : payload.correct ? `Correct. ${payload.note}` : `Not quite. ${payload.note}`;
     feedback.classList.add(payload.correct ? "is-correct" : "is-wrong");
-    document.querySelector("#quiz-score").textContent = `${score} points`;
-    nextButton.disabled = false;
-    nextButton.textContent = questionIndex === questions.length - 1 ? "See your result  ›" : "Next question  ›";
-    if (answerIndex === -1) {
-      autoAdvanceTimer = window.setTimeout(() => {
-        if (answerSubmitted && questionIndex < questions.length) advanceQuestion();
-      }, 1800);
+    document.querySelector("#quiz-score").textContent = `${score} ${score === 1 ? "point" : "points"}`;
+    const activeAttempt = activeAttempts.find((attempt) => attempt.id === currentAttemptId);
+    if (activeAttempt) {
+      activeAttempt.answered_count = payload.answered_count;
+      activeAttempt.score = payload.score;
+      if (payload.completed) {
+        activeAttempts = activeAttempts.filter((attempt) => attempt.id !== currentAttemptId);
+      }
     }
+    autoAdvanceTimer = window.setTimeout(
+      () => {
+        if (answerSubmitted && quizModal.open) advanceQuestion();
+      },
+      answerIndex === -1 ? 1800 : 1100
+    );
   } catch (error) {
     answerSubmitted = false;
+    selectedAnswer = null;
     buttons.forEach((button) => { button.disabled = false; });
-    nextButton.disabled = false;
-    nextButton.textContent = "Try answer again  ›";
+    buttons.forEach((button) => button.classList.remove("selected"));
     showToast(error.message || "Could not connect to the quiz server.");
   }
 }

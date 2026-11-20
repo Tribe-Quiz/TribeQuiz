@@ -391,6 +391,47 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
 
         self.assertEqual(response.status_code, 401)
 
+    def test_incomplete_attempt_can_be_resumed_with_saved_progress(self):
+        attempt = self._start_attempt()
+        response = self.client.post(
+            f"/api/attempts/{attempt['attempt_id']}/answers",
+            data=json.dumps(
+                {
+                    "question_id": attempt["questions"][0]["id"],
+                    "selected_index": 0,
+                }
+            ),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+
+        resumed = self.client.get(f"/api/attempts/{attempt['attempt_id']}")
+
+        self.assertEqual(resumed.status_code, 200)
+        payload = resumed.json()
+        self.assertEqual(payload["answered_count"], 1)
+        self.assertEqual(payload["score"], 10)
+        self.assertEqual(payload["answers"][0]["selected_index"], 0)
+        self.assertEqual(payload["answers"][0]["correct_index"], 0)
+        self.assertNotIn("correct_index", payload["questions"][0])
+        self.assertNotIn("correct_index", payload["questions"][1])
+
+    def test_attempt_cannot_be_resumed_by_another_user(self):
+        attempt = self._start_attempt()
+        with database() as connection:
+            connection.execute(
+                """INSERT INTO users (id, name, email, password_hash, created_at)
+                   VALUES (2, 'Another Player', 'another@example.com', 'unused', '2026-01-01')"""
+            )
+        other_client = Client()
+        response = HttpResponse()
+        issue_session(2, response)
+        other_client.cookies[SESSION_COOKIE] = response.cookies[SESSION_COOKIE].value
+
+        response = other_client.get(f"/api/attempts/{attempt['attempt_id']}")
+
+        self.assertEqual(response.status_code, 404)
+
     def test_timeout_answer_is_recorded_and_duplicate_answer_is_rejected(self):
         attempt = self._start_attempt()
         question_id = attempt["questions"][0]["id"]

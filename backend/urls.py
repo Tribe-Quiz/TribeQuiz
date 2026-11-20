@@ -16,6 +16,7 @@ urlpatterns = [
     path("api/auth/me", views.get_current_user),
     path("api/auth/signout", views.signout),
     path("api/attempts", views.start_attempt),
+    path("api/attempts/<str:attempt_id>", views.get_attempt),
     path("api/attempts/<str:attempt_id>/answers", views.submit_answer),
     path("api/auth/attempts", views.get_user_attempts),
     path("api/leaderboard", views.get_leaderboard),

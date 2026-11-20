@@ -30,6 +30,14 @@ export function startAttempt(cultureId) {
   return request("/attempts", { method: "POST", body: { culture_id: cultureId } });
 }
 
+export function getAttempt(attemptId) {
+  return request(`/attempts/${encodeURIComponent(attemptId)}`);
+}
+
+export function getUserAttempts() {
+  return request("/auth/attempts");
+}
+
 export function submitAnswer(attemptId, questionId, selectedIndex) {
   return request(`/attempts/${encodeURIComponent(attemptId)}/answers`, {
     method: "POST",

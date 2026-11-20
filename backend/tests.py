@@ -168,6 +168,7 @@ class EmailJSTests(SimpleTestCase):
                 "template_params": {
                     "to_email": "player@example.com",
                     "subject": "Verify your Tribe Quiz email",
+                    "verification_url": "https://tribequiz.example/verify?token=verify-token",
                     "message_body": (
                         "Thanks for signing up for Tribe Quiz.\n\n"
                         "Verify your email address within 24 hours to activate your account:\n"
@@ -181,16 +182,28 @@ class EmailJSTests(SimpleTestCase):
             "https://tribequiz.example/reset?token=reset-token",
             post.call_args_list[1].kwargs["json"]["template_params"]["message_body"],
         )
+        self.assertEqual(
+            post.call_args_list[1].kwargs["json"]["template_params"]["reset_url"],
+            "https://tribequiz.example/reset?token=reset-token",
+        )
         self.assertEqual(response.raise_for_status.call_count, 2)
 
     def test_emailjs_http_failures_are_reported_as_delivery_errors(self):
         response = Mock()
-        response.raise_for_status.side_effect = mailer.requests.HTTPError("rejected")
+        response.status_code = 400
+        response.text = "Invalid EmailJS template ID"
+        response.raise_for_status.side_effect = mailer.requests.HTTPError(
+            "rejected",
+            response=response,
+        )
         with patch(
             "backend.mailer.requests.post",
             return_value=response,
         ):
-            with self.assertRaises(mailer.EmailDeliveryError):
+            with self.assertRaisesRegex(
+                mailer.EmailDeliveryError,
+                "HTTP 400.*Invalid EmailJS template ID",
+            ):
                 mailer.send_account_verification_email(
                     "player@example.com",
                     "https://tribequiz.example/verify?token=verify-token",
@@ -246,6 +259,7 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
                 [
                     (2, "Higher Single Score", "higher@example.com"),
                     (3, "Second Overall", "second@example.com"),
+                    (4, "New Registered Player", "new@example.com"),
                 ],
             )
             connection.executemany(
@@ -266,7 +280,7 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
         self.assertEqual(response.status_code, 200)
         leaderboard = response.json()
         self.assertEqual(leaderboard["current_rank"], 1)
-        self.assertEqual(leaderboard["player_count"], 3)
+        self.assertEqual(leaderboard["player_count"], 4)
         self.assertEqual(
             [
                 (entry["user_name"], entry["score"], entry["rank"])
@@ -276,8 +290,12 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
                 ("Quiz Player", 140, 1),
                 ("Higher Single Score", 100, 2),
                 ("Second Overall", 90, 3),
+                ("New Registered Player", 0, 4),
             ],
         )
+        new_player = leaderboard["scores"][-1]
+        self.assertEqual(new_player["quizzes_played"], 0)
+        self.assertEqual(new_player["question_count"], 0)
         self.assertTrue(leaderboard["is_signed_in"])
 
     def test_leaderboard_is_available_without_signin(self):
@@ -745,6 +763,8 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
                 content_type="application/json",
             )
         self.assertEqual(unknown.status_code, 200)
+        self.assertIn("if an account matches", unknown.json()["message"].lower())
+        self.assertNotIn("has been sent", unknown.json()["message"])
 
         delivery_errors = (
             smtplib.SMTPException("test SMTP delivery failure"),

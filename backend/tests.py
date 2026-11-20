@@ -19,7 +19,7 @@ from backend.question_generator import (
     _commons_image,
     questions_for_culture,
 )
-from backend.security import SESSION_COOKIE, hash_password, issue_session
+from backend.security import COOKIE_SECURE, SESSION_COOKIE, hash_password, issue_session
 
 
 class DatabaseConnectionTests(SimpleTestCase):
@@ -296,6 +296,25 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
         self.database_path_patch.stop()
         self.temporary_directory.cleanup()
         self.turso_environment_patch.stop()
+
+    def test_signout_invalidates_session_and_clears_cookie(self):
+        response = self.client.post("/api/auth/signout")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"status": "ok"})
+        session_cookie = response.cookies[SESSION_COOKIE]
+        self.assertEqual(session_cookie["max-age"], 0)
+        self.assertTrue(session_cookie["httponly"])
+        self.assertEqual(bool(session_cookie["secure"]), COOKIE_SECURE)
+        self.assertEqual(session_cookie["samesite"], "Lax")
+        with database() as connection:
+            self.assertEqual(
+                connection.execute("SELECT COUNT(*) FROM sessions").fetchone()[0],
+                0,
+            )
+
+        current_user = self.client.get("/api/auth/me")
+        self.assertEqual(current_user.status_code, 401)
 
     def _culture_id(self):
         with database() as connection:

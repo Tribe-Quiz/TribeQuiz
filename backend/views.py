@@ -379,8 +379,10 @@ def signout(request):
         with database() as connection:
             connection.execute("DELETE FROM sessions WHERE token_hash = ?", (token_hash,))
     response = json_response({"status": "ok"})
-    response.delete_cookie(
+    response.set_cookie(
         SESSION_COOKIE,
+        "",
+        max_age=0,
         path="/",
         httponly=True,
         secure=COOKIE_SECURE,

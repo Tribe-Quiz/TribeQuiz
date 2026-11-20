@@ -7,6 +7,17 @@ const submitButton = document.querySelector("#reset-submit");
 const message = document.querySelector("#reset-message");
 const token = new URLSearchParams(location.search).get("token");
 
+document.querySelectorAll("[data-password-toggle]").forEach((button) => {
+  const input = document.getElementById(button.getAttribute("aria-controls"));
+  button.addEventListener("click", () => {
+    const showPassword = input.type === "password";
+    input.type = showPassword ? "text" : "password";
+    button.textContent = showPassword ? "Hide" : "Show";
+    button.setAttribute("aria-label", `${showPassword ? "Hide" : "Show"} password`);
+    button.setAttribute("aria-pressed", String(showPassword));
+  });
+});
+
 if (token) {
   history.replaceState(null, "", location.pathname);
 } else {

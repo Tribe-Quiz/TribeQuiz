@@ -192,8 +192,8 @@ async function startQuiz(culture, attemptId = null) {
     return;
   }
   currentCulture = culture;
-  questionIndex = payload.answered_count;
-  score = payload.score;
+  questionIndex = payload.answered_count || 0;
+  score = payload.score || 0;
   answerLog = (payload.answers || []).map((answer, index) => {
     const question = questions[index];
     return {

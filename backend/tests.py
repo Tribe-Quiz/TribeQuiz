@@ -234,6 +234,65 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
             ).fetchone()
         return row["id"]
 
+    def test_leaderboard_ranks_players_by_combined_completed_quiz_scores(self):
+        with database() as connection:
+            culture_ids = {
+                row["name"]: row["id"]
+                for row in connection.execute("SELECT id, name FROM cultures")
+            }
+            connection.executemany(
+                """INSERT INTO users (id, name, email, password_hash, created_at)
+                   VALUES (?, ?, ?, 'unused', '2026-01-01')""",
+                [
+                    (2, "Higher Single Score", "higher@example.com"),
+                    (3, "Second Overall", "second@example.com"),
+                ],
+            )
+            connection.executemany(
+                """INSERT INTO attempts
+                   (id, user_id, culture_id, score, correct_count, question_count,
+                    started_at, completed_at)
+                   VALUES (?, ?, ?, ?, ?, 10, '2026-01-01', '2026-01-01')""",
+                [
+                    ("player-one-zulu", 1, culture_ids["Zulu"], 70, 7),
+                    ("player-one-xhosa", 1, culture_ids["Xhosa"], 70, 7),
+                    ("player-two-zulu", 2, culture_ids["Zulu"], 100, 10),
+                    ("player-three-zulu", 3, culture_ids["Zulu"], 90, 9),
+                ],
+            )
+
+        response = self.client.get("/api/leaderboard")
+
+        self.assertEqual(response.status_code, 200)
+        leaderboard = response.json()
+        self.assertEqual(leaderboard["current_rank"], 1)
+        self.assertEqual(leaderboard["player_count"], 3)
+        self.assertEqual(
+            [
+                (entry["user_name"], entry["score"], entry["rank"])
+                for entry in leaderboard["scores"]
+            ],
+            [
+                ("Quiz Player", 140, 1),
+                ("Higher Single Score", 100, 2),
+                ("Second Overall", 90, 3),
+            ],
+        )
+        self.assertTrue(leaderboard["is_signed_in"])
+
+    def test_leaderboard_is_available_without_signin(self):
+        self.client.cookies.pop(SESSION_COOKIE, None)
+
+        response = self.client.get("/api/leaderboard")
+
+        self.assertEqual(response.status_code, 200)
+        leaderboard = response.json()
+        self.assertFalse(leaderboard["is_signed_in"])
+        self.assertIsNone(leaderboard["current_rank"])
+        self.assertTrue(
+            all(not entry["is_current_user"] for entry in leaderboard["scores"])
+        )
+
     def _culture_question_pool(self):
         return [
             {

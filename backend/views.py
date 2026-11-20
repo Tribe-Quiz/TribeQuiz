@@ -545,32 +545,44 @@ def get_user_attempts(request):
 
 @api_endpoint("GET")
 def get_leaderboard(request):
-    require_user(request.COOKIES.get(SESSION_COOKIE))
+    user_id = session_user_id(request.COOKIES.get(SESSION_COOKIE))
     with database() as connection:
         rows = connection.execute(
-            """SELECT users.name AS user_name, cultures.name AS culture,
-                      attempts.score, attempts.correct_count, attempts.question_count,
-                      attempts.completed_at
-               FROM attempts
-               JOIN users ON users.id = attempts.user_id
-               JOIN cultures ON cultures.id = attempts.culture_id
-               WHERE attempts.completed_at IS NOT NULL
-                 AND attempts.id IN (
-                     SELECT id FROM (
-                         SELECT id,
-                                ROW_NUMBER() OVER (
-                                    PARTITION BY user_id, culture_id
-                                    ORDER BY score DESC, completed_at ASC
-                                ) AS rank
-                         FROM attempts
-                         WHERE user_id IS NOT NULL AND completed_at IS NOT NULL
-                     )
-                     WHERE rank = 1
-                 )
-               ORDER BY attempts.score DESC, attempts.completed_at DESC
-               LIMIT 100"""
+            """WITH player_totals AS (
+                   SELECT users.id AS user_id, users.name AS user_name,
+                          SUM(attempts.score) AS score,
+                          SUM(attempts.correct_count) AS correct_count,
+                          SUM(attempts.question_count) AS question_count,
+                          COUNT(*) AS quizzes_played
+                   FROM attempts
+                   JOIN users ON users.id = attempts.user_id
+                   WHERE attempts.completed_at IS NOT NULL
+                   GROUP BY users.id, users.name
+               ),
+               ranked_players AS (
+                   SELECT player_totals.*,
+                          ROW_NUMBER() OVER (
+                              ORDER BY score DESC, user_id ASC
+                          ) AS rank
+                   FROM player_totals
+               )
+               SELECT user_name, score, correct_count, question_count,
+                      quizzes_played, rank,
+                      CASE WHEN ? IS NOT NULL AND user_id = ? THEN 1 ELSE 0 END AS is_current_user
+               FROM ranked_players
+               ORDER BY rank""",
+            (user_id, user_id),
         ).fetchall()
-    return json_response({"scores": [dict(row) for row in rows]})
+    scores = [dict(row) for row in rows]
+    current_player = next((entry for entry in scores if entry["is_current_user"]), None)
+    return json_response(
+        {
+            "scores": scores,
+            "current_rank": current_player["rank"] if current_player else None,
+            "player_count": len(scores),
+            "is_signed_in": user_id is not None,
+        }
+    )
 
 
 @ensure_csrf_cookie

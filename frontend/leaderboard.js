@@ -1,11 +1,10 @@
-import { getCurrentUser, getLeaderboard, signOut } from "./api.js";
+import { getLeaderboard, signOut } from "./api.js";
 
 const list = document.querySelector("#leaderboard-list");
-const filters = document.querySelector("#leaderboard-filters");
 const menuToggle = document.querySelector("#menu-toggle");
-let scores = [];
-let currentCulture = "all";
-let currentSort = "score";
+const position = document.querySelector("#leaderboard-position");
+const signOutButton = document.querySelector("#leaderboard-signout");
+let isSignedIn = false;
 
 menuToggle.addEventListener("click", () => {
   const isExpanded = menuToggle.getAttribute("aria-expanded") === "true";
@@ -14,7 +13,11 @@ menuToggle.addEventListener("click", () => {
   document.querySelector(".main-nav").classList.toggle("is-open", !isExpanded);
 });
 
-document.querySelector("#leaderboard-signout").addEventListener("click", async () => {
+signOutButton.addEventListener("click", async () => {
+  if (!isSignedIn) {
+    window.location.href = "auth.html";
+    return;
+  }
   try {
     await signOut();
     window.location.href = "auth.html";
@@ -25,56 +28,30 @@ document.querySelector("#leaderboard-signout").addEventListener("click", async (
 
 async function loadLeaderboard() {
   try {
-    await getCurrentUser();
-  } catch (error) {
-    if (error.status === 401) {
-      window.location.replace("auth.html");
-      return;
-    }
-    showMessage(error.message || "Could not check your account.");
-    return;
-  }
-  try {
-    ({ scores } = await getLeaderboard());
-    renderFilters();
-    renderScores();
+    const leaderboard = await getLeaderboard();
+    isSignedIn = leaderboard.is_signed_in;
+    signOutButton.textContent = isSignedIn ? "Sign Out" : "Sign In";
+    renderPosition(
+      leaderboard.current_rank,
+      leaderboard.player_count,
+      leaderboard.is_signed_in
+    );
+    renderScores(leaderboard.scores);
   } catch (error) {
     showMessage(error.message || "Could not load the leaderboard.");
   }
 }
 
-function renderFilters() {
-  const cultures = ["all", ...new Set(scores.map((entry) => entry.culture))];
-  filters.replaceChildren();
-  cultures.forEach((culture) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = culture === currentCulture ? "filter-btn active" : "filter-btn";
-    button.textContent = culture === "all" ? "All Cultures" : culture;
-    button.setAttribute("aria-pressed", String(culture === currentCulture));
-    button.addEventListener("click", () => {
-      currentCulture = culture;
-      renderFilters();
-      renderScores();
-    });
-    filters.append(button);
-  });
+function renderPosition(rank, playerCount, isSignedIn) {
+  position.textContent = rank
+    ? `Your overall position: #${rank} of ${playerCount} player${playerCount === 1 ? "" : "s"}`
+    : isSignedIn
+      ? "Complete a quiz to appear in the overall rankings."
+      : "Sign in and complete a quiz to see your overall position.";
 }
 
-function renderScores() {
-  const visibleScores = scores
-    .filter((entry) => currentCulture === "all" || entry.culture === currentCulture)
-    .sort((left, right) => {
-      if (currentSort === "percentage") {
-        return (right.correct_count / right.question_count) - (left.correct_count / left.question_count);
-      }
-      if (currentSort === "date") {
-        return right.completed_at.localeCompare(left.completed_at);
-      }
-      return right.score - left.score || right.completed_at.localeCompare(left.completed_at);
-    });
-
-  if (!visibleScores.length) {
+function renderScores(scores) {
+  if (!scores.length) {
     showMessage("No completed scores yet. Be the first to play!");
     return;
   }
@@ -83,43 +60,26 @@ function renderScores() {
   table.className = "leaderboard-table";
   const header = document.createElement("thead");
   const headerRow = document.createElement("tr");
-  [
-    ["Rank", null],
-    ["Player", null],
-    ["Culture", null],
-    ["Score", "score"],
-    ["%", "percentage"],
-    ["Date", "date"]
-  ].forEach(([label, sortKey]) => {
+  ["Rank", "Player", "Overall score", "Quizzes played", "Accuracy"].forEach((label) => {
     const cell = document.createElement("th");
-    if (!sortKey) {
-      cell.textContent = label;
-    } else {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "sort-btn";
-      button.textContent = `${label}${currentSort === sortKey ? " ⬍" : ""}`;
-      button.addEventListener("click", () => {
-        currentSort = sortKey;
-        renderScores();
-      });
-      cell.append(button);
-    }
+    cell.textContent = label;
     headerRow.append(cell);
   });
   header.append(headerRow);
 
   const body = document.createElement("tbody");
-  visibleScores.forEach((entry, index) => {
+  scores.forEach((entry) => {
     const row = document.createElement("tr");
-    const percent = Math.round((entry.correct_count / entry.question_count) * 100);
+    if (entry.is_current_user) row.className = "current-player";
+    const percent = entry.question_count
+      ? Math.round((entry.correct_count / entry.question_count) * 100)
+      : 0;
     const values = [
-      index < 3 ? ["🥇", "🥈", "🥉"][index] : String(index + 1),
-      entry.user_name,
-      entry.culture,
-      `${entry.score} / ${entry.question_count * 10}`,
+      String(entry.rank),
+      entry.is_current_user ? `${entry.user_name} (You)` : entry.user_name,
+      `${entry.score} points`,
+      String(entry.quizzes_played),
       `${percent}%`,
-      new Date(entry.completed_at).toLocaleDateString()
     ];
     values.forEach((value) => {
       const cell = document.createElement("td");

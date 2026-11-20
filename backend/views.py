@@ -263,14 +263,18 @@ def forgot_password(request):
     if not is_mail_configured():
         raise APIError(503, "Password reset email is not configured on this server.")
 
+    response_message = (
+        "If an account matches, a reset link will be sent if email delivery succeeds. "
+        "Check your spam folder, and contact the site administrator if it does not arrive."
+    )
     email = payload.email.strip().lower()
     if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]+", email):
-        return json_response({"message": "If an account exists for that email, a reset link has been sent."})
+        return json_response({"message": response_message})
     now = datetime.now(timezone.utc)
     with database() as connection:
         user = connection.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()
         if user is None:
-            return json_response({"message": "If an account exists for that email, a reset link has been sent."})
+            return json_response({"message": response_message})
 
         user_id = user["id"]
         connection.execute(
@@ -282,7 +286,7 @@ def forgot_password(request):
             (user_id, (now - RESET_REQUEST_COOLDOWN).isoformat()),
         ).fetchone()
         if recent_token is not None:
-            return json_response({"message": "If an account exists for that email, a reset link has been sent."})
+            return json_response({"message": response_message})
 
         token = secrets.token_urlsafe(32)
         token_hash = hashlib.sha256(token.encode()).hexdigest()
@@ -304,7 +308,7 @@ def forgot_password(request):
                 "DELETE FROM password_reset_tokens WHERE user_id = ? AND token_hash != ?",
                 (user_id, token_hash),
             )
-    return json_response({"message": "If an account exists for that email, a reset link has been sent."})
+    return json_response({"message": response_message})
 
 
 @api_endpoint("POST")
@@ -550,13 +554,14 @@ def get_leaderboard(request):
         rows = connection.execute(
             """WITH player_totals AS (
                    SELECT users.id AS user_id, users.name AS user_name,
-                          SUM(attempts.score) AS score,
-                          SUM(attempts.correct_count) AS correct_count,
-                          SUM(attempts.question_count) AS question_count,
-                          COUNT(*) AS quizzes_played
-                   FROM attempts
-                   JOIN users ON users.id = attempts.user_id
-                   WHERE attempts.completed_at IS NOT NULL
+                          COALESCE(SUM(attempts.score), 0) AS score,
+                          COALESCE(SUM(attempts.correct_count), 0) AS correct_count,
+                          COALESCE(SUM(attempts.question_count), 0) AS question_count,
+                          COUNT(attempts.id) AS quizzes_played
+                   FROM users
+                   LEFT JOIN attempts
+                       ON attempts.user_id = users.id
+                      AND attempts.completed_at IS NOT NULL
                    GROUP BY users.id, users.name
                ),
                ranked_players AS (

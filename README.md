@@ -69,7 +69,7 @@ APP_BASE_URL=https://tribequiz.onrender.com
 
 Keep `RESEND_API_KEY` private in Render and use a sender address on the domain verified with Resend. When `EMAIL_PROVIDER=resend`, the SMTP variables are not used.
 
-If you do not own a sending domain, EmailJS can connect a Gmail account and send through its HTTPS API. Connect Gmail in EmailJS, create two templates, and configure each template's recipient as `{{to_email}}`, subject as `{{subject}}`, and body as `{{message_body}}`. Set these variables in Render:
+If you do not own a sending domain, EmailJS can connect a Gmail account and send through its HTTPS API. Connect Gmail in EmailJS, create two templates, and configure each template's recipient as `{{to_email}}`, subject as `{{subject}}`, and body as `{{message_body}}`. The reset and verification template parameters also include `{{reset_url}}` and `{{verification_url}}`, respectively, so each template can render its link directly. Set these variables in Render:
 
 ```text
 EMAIL_PROVIDER=emailjs
@@ -81,7 +81,9 @@ EMAILJS_PRIVATE_KEY=your-private-emailjs-key
 APP_BASE_URL=https://tribequiz.onrender.com
 ```
 
-The EmailJS templates receive `to_email`, `subject`, and `message_body` parameters. Keep `EMAILJS_PRIVATE_KEY` private in Render. EmailJS's current free plan lists 200 requests per month and two templates; it recommends personal email services like Gmail only for development or very low volume. Verification and reset links pass through EmailJS, so disable its email-history storage if you do not want those message variables retained. When `EMAIL_PROVIDER=emailjs`, the SMTP and Resend variables are not used.
+The EmailJS templates receive `to_email`, `subject`, and `message_body`, plus `verification_url` or `reset_url` for the corresponding template. Keep `EMAILJS_PRIVATE_KEY` private in Render. EmailJS's current free plan lists 200 requests per month and two templates; it recommends personal email services like Gmail only for development or very low volume. Verification and reset links pass through EmailJS, so disable its email-history storage if you do not want those message variables retained. When `EMAIL_PROVIDER=emailjs`, the SMTP and Resend variables are not used.
+
+The password-reset page uses a generic response and cannot confirm delivery. If no reset email arrives, check the hosting logs for `Could not send a password reset email`, then inspect the email provider's delivery activity, spam folder, and sender/template configuration. Set `APP_BASE_URL` to the public HTTPS site URL so the reset link does not point to localhost.
 
 ## Deploy on Render
 

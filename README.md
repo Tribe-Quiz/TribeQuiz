@@ -26,7 +26,7 @@ pip install -r requirements.txt
 py manage.py runserver 127.0.0.1:8000
 ```
 
-Open `http://127.0.0.1:8000`. The API is documented at `http://127.0.0.1:8000/api/health` and exposes quiz data, account signup/signin/signout, email verification, password recovery, answer submission, and authenticated attempt history. SQLite data is stored in `backend/tribe_quiz.db` by default; set `DATABASE_PATH` to use another location. Environment variables in `backend/.env` are loaded automatically.
+Open `http://127.0.0.1:8000`. The API is documented at `http://127.0.0.1:8000/api/health` and exposes quiz data, account signup/signin/signout, email verification, password recovery, answer submission, authenticated attempt history, and an overall leaderboard ranked by each player's cumulative score across completed quizzes. SQLite data is stored in `backend/tribe_quiz.db` by default; set `DATABASE_PATH` to use another location. Environment variables in `backend/.env` are loaded automatically.
 
 Passwords are stored as salted hashes. Production deployments should use HTTPS and set `COOKIE_SECURE=true`.
 

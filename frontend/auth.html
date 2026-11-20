@@ -29,9 +29,21 @@
         <form id="auth-form" novalidate>
           <label class="auth-field" id="name-field"><span>Display name</span><input id="display-name" name="name" autocomplete="name" placeholder="Your name" /></label>
           <label class="auth-field"><span>Email</span><input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required /></label>
-          <label class="auth-field"><span>Password</span><input id="password" name="password" type="password" autocomplete="new-password" placeholder="Min. 8 characters" required minlength="8" /></label>
+          <div class="auth-field">
+            <label class="auth-field-label" for="password">Password</label>
+            <div class="password-input-wrap">
+              <input id="password" name="password" type="password" autocomplete="new-password" placeholder="Min. 8 characters" required minlength="8" />
+              <button class="password-toggle" type="button" aria-label="Show password" aria-controls="password" aria-pressed="false" data-password-toggle>Show</button>
+            </div>
+          </div>
           <p class="auth-forgot" id="forgot-password-link" hidden><a href="forgot-password.html">Forgot your password?</a></p>
-          <label class="auth-field" id="confirm-field"><span>Confirm password</span><input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" placeholder="Repeat password" /></label>
+          <div class="auth-field" id="confirm-field">
+            <label class="auth-field-label" for="confirm-password">Confirm password</label>
+            <div class="password-input-wrap">
+              <input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" placeholder="Repeat password" />
+              <button class="password-toggle" type="button" aria-label="Show confirm password" aria-controls="confirm-password" aria-pressed="false" data-password-toggle>Show</button>
+            </div>
+          </div>
           <p class="auth-error" id="auth-error" role="alert"></p>
           <button class="button button-primary auth-submit" type="submit" id="auth-submit">Create account <span>›</span></button>
         </form>

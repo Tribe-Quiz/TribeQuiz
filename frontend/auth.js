@@ -11,6 +11,16 @@ const authSwitch = document.querySelector("#auth-switch");
 const errorMessage = document.querySelector("#auth-error");
 const googleButton = document.querySelector("#google-button");
 const forgotPasswordLink = document.querySelector("#forgot-password-link");
+document.querySelectorAll("[data-password-toggle]").forEach((button) => {
+  const input = document.getElementById(button.getAttribute("aria-controls"));
+  button.addEventListener("click", () => {
+    const showPassword = input.type === "password";
+    input.type = showPassword ? "text" : "password";
+    button.textContent = showPassword ? "Hide" : "Show";
+    button.setAttribute("aria-label", `${showPassword ? "Hide" : "Show"} password`);
+    button.setAttribute("aria-pressed", String(showPassword));
+  });
+});
 const googleNonceBytes = crypto.getRandomValues(new Uint8Array(32));
 const googleNonce = Array.from(googleNonceBytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
 let activeTab = new URLSearchParams(location.search).get("tab") === "signup" ? "signup" : "signin";

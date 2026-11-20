@@ -53,7 +53,23 @@ def _from_address() -> str:
     return SMTP_FROM
 
 
-def _send_email(message: EmailMessage, emailjs_template_id: str) -> None:
+def _delivery_error(provider: str, error: requests.RequestException) -> EmailDeliveryError:
+    response = error.response
+    if response is None:
+        return EmailDeliveryError(f"{provider} email delivery failed.")
+
+    details = (response.text or "").strip()
+    message = f"{provider} email delivery failed (HTTP {response.status_code}"
+    if details:
+        message += f": {details[:300]}"
+    return EmailDeliveryError(f"{message}).")
+
+
+def _send_email(
+    message: EmailMessage,
+    emailjs_template_id: str,
+    emailjs_template_params: dict[str, str] | None = None,
+) -> None:
     if EMAIL_PROVIDER == "resend":
         if not RESEND_API_KEY or not EMAIL_FROM:
             raise EmailDeliveryError("Resend email delivery is not configured.")
@@ -71,12 +87,19 @@ def _send_email(message: EmailMessage, emailjs_template_id: str) -> None:
             )
             response.raise_for_status()
         except requests.RequestException as error:
-            raise EmailDeliveryError("Resend email delivery failed.") from error
+            raise _delivery_error("Resend", error) from error
         return
 
     if EMAIL_PROVIDER == "emailjs":
         if not is_configured():
             raise EmailDeliveryError("EmailJS email delivery is not configured.")
+        template_params = {
+            "to_email": str(message["To"]),
+            "subject": str(message["Subject"]),
+            "message_body": message.get_content(),
+        }
+        if emailjs_template_params:
+            template_params.update(emailjs_template_params)
         try:
             response = requests.post(
                 EMAILJS_API_URL,
@@ -85,17 +108,13 @@ def _send_email(message: EmailMessage, emailjs_template_id: str) -> None:
                     "template_id": emailjs_template_id,
                     "user_id": EMAILJS_PUBLIC_KEY,
                     "accessToken": EMAILJS_PRIVATE_KEY,
-                    "template_params": {
-                        "to_email": str(message["To"]),
-                        "subject": str(message["Subject"]),
-                        "message_body": message.get_content(),
-                    },
+                    "template_params": template_params,
                 },
                 timeout=10,
             )
             response.raise_for_status()
         except requests.RequestException as error:
-            raise EmailDeliveryError("EmailJS email delivery failed.") from error
+            raise _delivery_error("EmailJS", error) from error
         return
 
     if EMAIL_PROVIDER != "smtp":
@@ -121,7 +140,11 @@ def send_password_reset_email(recipient: str, reset_url: str) -> None:
         f"Use this link within 1 hour to choose a new password:\n{reset_url}\n\n"
         "If you did not request this, you can ignore this email."
     )
-    _send_email(message, EMAILJS_RESET_TEMPLATE_ID)
+    _send_email(
+        message,
+        EMAILJS_RESET_TEMPLATE_ID,
+        {"reset_url": reset_url},
+    )
 
 
 def send_account_verification_email(recipient: str, verification_url: str) -> None:
@@ -134,4 +157,8 @@ def send_account_verification_email(recipient: str, verification_url: str) -> No
         f"Verify your email address within 24 hours to activate your account:\n{verification_url}\n\n"
         "If you did not create this account, you can ignore this email."
     )
-    _send_email(message, EMAILJS_VERIFICATION_TEMPLATE_ID)
+    _send_email(
+        message,
+        EMAILJS_VERIFICATION_TEMPLATE_ID,
+        {"verification_url": verification_url},
+    )

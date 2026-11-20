@@ -26,7 +26,7 @@ pip install -r requirements.txt
 py manage.py runserver 127.0.0.1:8000
 ```
 
-Open `http://127.0.0.1:8000`. The API is documented at `http://127.0.0.1:8000/api/health` and exposes quiz data, account signup/signin/signout, email verification, password recovery, answer submission, and authenticated attempt history. SQLite data is stored in `backend/tribe_quiz.db` by default; set `DATABASE_PATH` to use another location. Environment variables in `backend/.env` are loaded automatically.
+Open `http://127.0.0.1:8000`. The API is documented at `http://127.0.0.1:8000/api/health` and exposes quiz data, account signup/signin/signout, email verification, password recovery, answer submission, authenticated attempt history, and an overall leaderboard ranked by each player's cumulative score across completed quizzes. SQLite data is stored in `backend/tribe_quiz.db` by default; set `DATABASE_PATH` to use another location. Environment variables in `backend/.env` are loaded automatically.
 
 Passwords are stored as salted hashes. Production deployments should use HTTPS and set `COOKIE_SECURE=true`.
 
@@ -69,7 +69,7 @@ APP_BASE_URL=https://tribequiz.onrender.com
 
 Keep `RESEND_API_KEY` private in Render and use a sender address on the domain verified with Resend. When `EMAIL_PROVIDER=resend`, the SMTP variables are not used.
 
-If you do not own a sending domain, EmailJS can connect a Gmail account and send through its HTTPS API. Connect Gmail in EmailJS, create two templates, and configure each template's recipient as `{{to_email}}`, subject as `{{subject}}`, and body as `{{message_body}}`. Set these variables in Render:
+If you do not own a sending domain, EmailJS can connect a Gmail account and send through its HTTPS API. Connect Gmail in EmailJS, create two templates, and configure each template's recipient as `{{to_email}}`, subject as `{{subject}}`, and body as `{{message_body}}`. The reset and verification template parameters also include `{{reset_url}}` and `{{verification_url}}`, respectively, so each template can render its link directly. Set these variables in Render:
 
 ```text
 EMAIL_PROVIDER=emailjs
@@ -81,8 +81,12 @@ EMAILJS_PRIVATE_KEY=your-private-emailjs-key
 APP_BASE_URL=https://tribequiz.onrender.com
 ```
 
-The EmailJS templates receive `to_email`, `subject`, and `message_body` parameters. Keep `EMAILJS_PRIVATE_KEY` private in Render. EmailJS's current free plan lists 200 requests per month and two templates; it recommends personal email services like Gmail only for development or very low volume. Verification and reset links pass through EmailJS, so disable its email-history storage if you do not want those message variables retained. When `EMAIL_PROVIDER=emailjs`, the SMTP and Resend variables are not used.
+The EmailJS templates receive `to_email`, `subject`, and `message_body`, plus `verification_url` or `reset_url` for the corresponding template. Keep `EMAILJS_PRIVATE_KEY` private in Render. EmailJS's current free plan lists 200 requests per month and two templates; it recommends personal email services like Gmail only for development or very low volume. Verification and reset links pass through EmailJS, so disable its email-history storage if you do not want those message variables retained. When `EMAIL_PROVIDER=emailjs`, the SMTP and Resend variables are not used.
+
+The password-reset page uses a generic response and cannot confirm delivery. If no reset email arrives, check the hosting logs for `Could not send a password reset email`, then inspect the email provider's delivery activity, spam folder, and sender/template configuration. Set `APP_BASE_URL` to the public HTTPS site URL so the reset link does not point to localhost.
 
 ## Deploy on Render
 
-Use the repository root as the service root, `pip install -r requirements.txt` as the build command, and `waitress-serve --listen=0.0.0.0:$PORT backend.wsgi:application` as the start command. Set `ALLOWED_HOSTS` to the Render hostname, set `CSRF_TRUSTED_ORIGINS` to its HTTPS origin (for example, `https://your-service.onrender.com`), set `DJANGO_SECRET_KEY` to a private random value, and configure `APP_BASE_URL`, `COOKIE_SECURE=true`, and the email/Google variables for the deployment. Render Free cannot send outbound SMTP on ports 25, 465, or 587; configure an HTTPS email provider such as Resend instead. Attach a persistent disk and set `DATABASE_PATH` to a file on its mount path (for example, `/var/data/tribe_quiz.db`) or SQLite data may be lost when the service is replaced.
+Use the repository root as the service root, `pip install -r requirements.txt` as the build command, and `waitress-serve --listen=0.0.0.0:$PORT backend.wsgi:application` as the start command. Set `ALLOWED_HOSTS` to the Render hostname, set `CSRF_TRUSTED_ORIGINS` to its HTTPS origin (for example, `https://your-service.onrender.com`), set `DJANGO_SECRET_KEY` to a private random value, and configure `APP_BASE_URL`, `COOKIE_SECURE=true`, and the email/Google variables for the deployment. Render Free cannot send outbound SMTP on ports 25, 465, or 587; configure an HTTPS email provider such as Resend instead.
+
+For persistent database storage on Render Free, create a Turso database and set both `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` in the Render service's environment. Keep the token private and do not commit it. The app uses Turso when both variables are present and continues to use local SQLite when neither is set; setting only one is treated as a configuration error. On startup, the app creates the schema and seeds the quiz's reference content. Existing accounts and scores are not copied automatically from another database; restore them only from an available backup.

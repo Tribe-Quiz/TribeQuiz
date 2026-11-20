@@ -18,7 +18,7 @@
         <a href="index.html">Home</a>
         <a href="leaderboard.html" aria-current="page">Leaderboard</a>
         <a href="index.html#about">About</a>
-        <button type="button" class="leaderboard-signout" id="leaderboard-signout">Sign Out</button>
+        <button type="button" class="leaderboard-signout" id="leaderboard-signout">Sign In</button>
       </nav>
       <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -27,9 +27,9 @@
     <main class="leaderboard-main">
       <div class="leaderboard-heading">
         <p class="eyebrow eyebrow-gold">🏆 Leaderboard</p>
-        <h1>Top players from across Africa</h1>
+        <h1>Overall player rankings</h1>
+        <p class="leaderboard-position" id="leaderboard-position" aria-live="polite"></p>
       </div>
-      <div class="leaderboard-filters" id="leaderboard-filters" aria-label="Filter scores by culture"></div>
       <div class="leaderboard-panel" id="leaderboard-list" aria-live="polite">
         <p class="leaderboard-message">Loading scores...</p>
       </div>

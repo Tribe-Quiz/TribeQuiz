@@ -7,18 +7,69 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 from unittest.mock import Mock, patch
 
+import turso_serverless
 from django.http import HttpResponse
 from django.test import Client, SimpleTestCase
 from pydantic import ValidationError
 
 from backend import mailer
-from backend.database import database, initialize_database
+from backend.database import INTEGRITY_ERRORS, database, initialize_database
 from backend.question_generator import (
     GeneratedQuestion,
     _commons_image,
     questions_for_culture,
 )
-from backend.security import SESSION_COOKIE, hash_password, issue_session
+from backend.security import COOKIE_SECURE, SESSION_COOKIE, hash_password, issue_session
+
+
+class DatabaseConnectionTests(SimpleTestCase):
+    def test_remote_connection_uses_turso_dbapi_and_compatible_rows(self):
+        remote_connection = Mock()
+        with patch.dict(
+            os.environ,
+            {
+                "TURSO_DATABASE_URL": "libsql://quiz.turso.io",
+                "TURSO_AUTH_TOKEN": "test-token",
+            },
+        ):
+            with patch(
+                "backend.database.turso_serverless.connect",
+                return_value=remote_connection,
+            ) as connect:
+                with database() as connection:
+                    self.assertIs(connection, remote_connection)
+                    self.assertIs(connection.row_factory, turso_serverless.Row)
+
+        connect.assert_called_once_with(
+            "libsql://quiz.turso.io",
+            auth_token="test-token",
+        )
+        remote_connection.commit.assert_called_once_with()
+        remote_connection.close.assert_called_once_with()
+        self.assertIn(turso_serverless.IntegrityError, INTEGRITY_ERRORS)
+
+    def test_incomplete_turso_configuration_does_not_fall_back_to_sqlite(self):
+        with patch.dict(
+            os.environ,
+            {"TURSO_DATABASE_URL": "libsql://quiz.turso.io", "TURSO_AUTH_TOKEN": ""},
+        ):
+            with patch("backend.database.sqlite3.connect") as local_connect:
+                with self.assertRaisesRegex(
+                    RuntimeError,
+                    "TURSO_DATABASE_URL and TURSO_AUTH_TOKEN",
+                ):
+                    with database():
+                        pass
+
+        local_connect.assert_not_called()
+
+    def test_turso_rows_support_name_lookup_and_dict_conversion(self):
+        cursor = Mock()
+        cursor.description = (("id",), ("name",))
+        row = turso_serverless.Row(cursor, (7, "Maya"))
+
+        self.assertEqual(row["name"], "Maya")
+        self.assertEqual(dict(row), {"id": 7, "name": "Maya"})
 
 
 class ResendEmailTests(SimpleTestCase):
@@ -168,6 +219,7 @@ class EmailJSTests(SimpleTestCase):
                 "template_params": {
                     "to_email": "player@example.com",
                     "subject": "Verify your Tribe Quiz email",
+                    "verification_url": "https://tribequiz.example/verify?token=verify-token",
                     "message_body": (
                         "Thanks for signing up for Tribe Quiz.\n\n"
                         "Verify your email address within 24 hours to activate your account:\n"
@@ -181,16 +233,28 @@ class EmailJSTests(SimpleTestCase):
             "https://tribequiz.example/reset?token=reset-token",
             post.call_args_list[1].kwargs["json"]["template_params"]["message_body"],
         )
+        self.assertEqual(
+            post.call_args_list[1].kwargs["json"]["template_params"]["reset_url"],
+            "https://tribequiz.example/reset?token=reset-token",
+        )
         self.assertEqual(response.raise_for_status.call_count, 2)
 
     def test_emailjs_http_failures_are_reported_as_delivery_errors(self):
         response = Mock()
-        response.raise_for_status.side_effect = mailer.requests.HTTPError("rejected")
+        response.status_code = 400
+        response.text = "Invalid EmailJS template ID"
+        response.raise_for_status.side_effect = mailer.requests.HTTPError(
+            "rejected",
+            response=response,
+        )
         with patch(
             "backend.mailer.requests.post",
             return_value=response,
         ):
-            with self.assertRaises(mailer.EmailDeliveryError):
+            with self.assertRaisesRegex(
+                mailer.EmailDeliveryError,
+                "HTTP 400.*Invalid EmailJS template ID",
+            ):
                 mailer.send_account_verification_email(
                     "player@example.com",
                     "https://tribequiz.example/verify?token=verify-token",
@@ -203,6 +267,11 @@ class EmailJSTests(SimpleTestCase):
 
 class QuizAPIAndQuestionValidationTests(SimpleTestCase):
     def setUp(self):
+        self.turso_environment_patch = patch.dict(
+            os.environ,
+            {"TURSO_DATABASE_URL": "", "TURSO_AUTH_TOKEN": ""},
+        )
+        self.turso_environment_patch.start()
         self.temporary_directory = tempfile.TemporaryDirectory()
         self.database_path_patch = patch(
             "backend.database.DATABASE_PATH",
@@ -226,6 +295,26 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
         self.gemini_key_patch.stop()
         self.database_path_patch.stop()
         self.temporary_directory.cleanup()
+        self.turso_environment_patch.stop()
+
+    def test_signout_invalidates_session_and_clears_cookie(self):
+        response = self.client.post("/api/auth/signout")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"status": "ok"})
+        session_cookie = response.cookies[SESSION_COOKIE]
+        self.assertEqual(session_cookie["max-age"], 0)
+        self.assertTrue(session_cookie["httponly"])
+        self.assertEqual(bool(session_cookie["secure"]), COOKIE_SECURE)
+        self.assertEqual(session_cookie["samesite"], "Lax")
+        with database() as connection:
+            self.assertEqual(
+                connection.execute("SELECT COUNT(*) FROM sessions").fetchone()[0],
+                0,
+            )
+
+        current_user = self.client.get("/api/auth/me")
+        self.assertEqual(current_user.status_code, 401)
 
     def _culture_id(self):
         with database() as connection:
@@ -233,6 +322,70 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
                 "SELECT id FROM cultures WHERE name = 'Zulu'"
             ).fetchone()
         return row["id"]
+
+    def test_leaderboard_ranks_players_by_combined_completed_quiz_scores(self):
+        with database() as connection:
+            culture_ids = {
+                row["name"]: row["id"]
+                for row in connection.execute("SELECT id, name FROM cultures")
+            }
+            connection.executemany(
+                """INSERT INTO users (id, name, email, password_hash, created_at)
+                   VALUES (?, ?, ?, 'unused', '2026-01-01')""",
+                [
+                    (2, "Higher Single Score", "higher@example.com"),
+                    (3, "Second Overall", "second@example.com"),
+                    (4, "New Registered Player", "new@example.com"),
+                ],
+            )
+            connection.executemany(
+                """INSERT INTO attempts
+                   (id, user_id, culture_id, score, correct_count, question_count,
+                    started_at, completed_at)
+                   VALUES (?, ?, ?, ?, ?, 10, '2026-01-01', '2026-01-01')""",
+                [
+                    ("player-one-zulu", 1, culture_ids["Zulu"], 70, 7),
+                    ("player-one-xhosa", 1, culture_ids["Xhosa"], 70, 7),
+                    ("player-two-zulu", 2, culture_ids["Zulu"], 100, 10),
+                    ("player-three-zulu", 3, culture_ids["Zulu"], 90, 9),
+                ],
+            )
+
+        response = self.client.get("/api/leaderboard")
+
+        self.assertEqual(response.status_code, 200)
+        leaderboard = response.json()
+        self.assertEqual(leaderboard["current_rank"], 1)
+        self.assertEqual(leaderboard["player_count"], 4)
+        self.assertEqual(
+            [
+                (entry["user_name"], entry["score"], entry["rank"])
+                for entry in leaderboard["scores"]
+            ],
+            [
+                ("Quiz Player", 140, 1),
+                ("Higher Single Score", 100, 2),
+                ("Second Overall", 90, 3),
+                ("New Registered Player", 0, 4),
+            ],
+        )
+        new_player = leaderboard["scores"][-1]
+        self.assertEqual(new_player["quizzes_played"], 0)
+        self.assertEqual(new_player["question_count"], 0)
+        self.assertTrue(leaderboard["is_signed_in"])
+
+    def test_leaderboard_is_available_without_signin(self):
+        self.client.cookies.pop(SESSION_COOKIE, None)
+
+        response = self.client.get("/api/leaderboard")
+
+        self.assertEqual(response.status_code, 200)
+        leaderboard = response.json()
+        self.assertFalse(leaderboard["is_signed_in"])
+        self.assertIsNone(leaderboard["current_rank"])
+        self.assertTrue(
+            all(not entry["is_current_user"] for entry in leaderboard["scores"])
+        )
 
     def _culture_question_pool(self):
         return [
@@ -727,6 +880,8 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
                 content_type="application/json",
             )
         self.assertEqual(unknown.status_code, 200)
+        self.assertIn("if an account matches", unknown.json()["message"].lower())
+        self.assertNotIn("has been sent", unknown.json()["message"])
 
         delivery_errors = (
             smtplib.SMTPException("test SMTP delivery failure"),

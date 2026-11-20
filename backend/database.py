@@ -5,9 +5,12 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Iterator
 
+import turso_serverless
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATABASE_PATH = Path(os.environ.get("DATABASE_PATH", BASE_DIR / "backend" / "tribe_quiz.db"))
+INTEGRITY_ERRORS = (sqlite3.IntegrityError, turso_serverless.IntegrityError)
 
 CULTURES = [
     {"name": "Zulu", "language": "IsiZulu", "region": "South Africa", "image": "/TribeProfile/zulu.webp"},
@@ -38,12 +41,22 @@ QUESTIONS = [
 
 
 @contextmanager
-def database() -> Iterator[sqlite3.Connection]:
-    DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    connection = sqlite3.connect(DATABASE_PATH)
-    connection.row_factory = sqlite3.Row
-    connection.execute("PRAGMA foreign_keys = ON")
+def database() -> Iterator[sqlite3.Connection | turso_serverless.Connection]:
+    database_url = os.environ.get("TURSO_DATABASE_URL", "").strip()
+    auth_token = os.environ.get("TURSO_AUTH_TOKEN", "").strip()
+    if bool(database_url) != bool(auth_token):
+        raise RuntimeError(
+            "TURSO_DATABASE_URL and TURSO_AUTH_TOKEN must both be configured."
+        )
+    if database_url:
+        connection = turso_serverless.connect(database_url, auth_token=auth_token)
+        connection.row_factory = turso_serverless.Row
+    else:
+        DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        connection = sqlite3.connect(DATABASE_PATH)
+        connection.row_factory = sqlite3.Row
     try:
+        connection.execute("PRAGMA foreign_keys = ON")
         yield connection
         connection.commit()
     except Exception:

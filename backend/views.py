@@ -6,7 +6,6 @@ import mimetypes
 import re
 import secrets
 import smtplib
-import sqlite3
 import uuid
 from datetime import datetime, timedelta, timezone
 from functools import wraps
@@ -16,7 +15,7 @@ from django.http import FileResponse, Http404, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from pydantic import ValidationError
 
-from backend.database import database
+from backend.database import INTEGRITY_ERRORS, database
 from backend.errors import APIError
 from backend.mailer import (
     APP_BASE_URL,
@@ -236,7 +235,7 @@ def verify_email(request):
             )
             user_id = cursor.lastrowid
             connection.execute("DELETE FROM pending_signups WHERE email = ?", (pending["email"],))
-    except sqlite3.IntegrityError as error:
+    except INTEGRITY_ERRORS as error:
         raise APIError(409, "An account with that email already exists.") from error
 
     response = json_response({"user": public_user(user_id)})
@@ -263,14 +262,18 @@ def forgot_password(request):
     if not is_mail_configured():
         raise APIError(503, "Password reset email is not configured on this server.")
 
+    response_message = (
+        "If an account matches, a reset link will be sent if email delivery succeeds. "
+        "Check your spam folder, and contact the site administrator if it does not arrive."
+    )
     email = payload.email.strip().lower()
     if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]+", email):
-        return json_response({"message": "If an account exists for that email, a reset link has been sent."})
+        return json_response({"message": response_message})
     now = datetime.now(timezone.utc)
     with database() as connection:
         user = connection.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()
         if user is None:
-            return json_response({"message": "If an account exists for that email, a reset link has been sent."})
+            return json_response({"message": response_message})
 
         user_id = user["id"]
         connection.execute(
@@ -282,7 +285,7 @@ def forgot_password(request):
             (user_id, (now - RESET_REQUEST_COOLDOWN).isoformat()),
         ).fetchone()
         if recent_token is not None:
-            return json_response({"message": "If an account exists for that email, a reset link has been sent."})
+            return json_response({"message": response_message})
 
         token = secrets.token_urlsafe(32)
         token_hash = hashlib.sha256(token.encode()).hexdigest()
@@ -304,7 +307,7 @@ def forgot_password(request):
                 "DELETE FROM password_reset_tokens WHERE user_id = ? AND token_hash != ?",
                 (user_id, token_hash),
             )
-    return json_response({"message": "If an account exists for that email, a reset link has been sent."})
+    return json_response({"message": response_message})
 
 
 @api_endpoint("POST")
@@ -376,8 +379,10 @@ def signout(request):
         with database() as connection:
             connection.execute("DELETE FROM sessions WHERE token_hash = ?", (token_hash,))
     response = json_response({"status": "ok"})
-    response.delete_cookie(
+    response.set_cookie(
         SESSION_COOKIE,
+        "",
+        max_age=0,
         path="/",
         httponly=True,
         secure=COOKIE_SECURE,
@@ -611,32 +616,45 @@ def get_user_attempts(request):
 
 @api_endpoint("GET")
 def get_leaderboard(request):
-    require_user(request.COOKIES.get(SESSION_COOKIE))
+    user_id = session_user_id(request.COOKIES.get(SESSION_COOKIE))
     with database() as connection:
         rows = connection.execute(
-            """SELECT users.name AS user_name, cultures.name AS culture,
-                      attempts.score, attempts.correct_count, attempts.question_count,
-                      attempts.completed_at
-               FROM attempts
-               JOIN users ON users.id = attempts.user_id
-               JOIN cultures ON cultures.id = attempts.culture_id
-               WHERE attempts.completed_at IS NOT NULL
-                 AND attempts.id IN (
-                     SELECT id FROM (
-                         SELECT id,
-                                ROW_NUMBER() OVER (
-                                    PARTITION BY user_id, culture_id
-                                    ORDER BY score DESC, completed_at ASC
-                                ) AS rank
-                         FROM attempts
-                         WHERE user_id IS NOT NULL AND completed_at IS NOT NULL
-                     )
-                     WHERE rank = 1
-                 )
-               ORDER BY attempts.score DESC, attempts.completed_at DESC
-               LIMIT 100"""
+            """WITH player_totals AS (
+                   SELECT users.id AS user_id, users.name AS user_name,
+                          COALESCE(SUM(attempts.score), 0) AS score,
+                          COALESCE(SUM(attempts.correct_count), 0) AS correct_count,
+                          COALESCE(SUM(attempts.question_count), 0) AS question_count,
+                          COUNT(attempts.id) AS quizzes_played
+                   FROM users
+                   LEFT JOIN attempts
+                       ON attempts.user_id = users.id
+                      AND attempts.completed_at IS NOT NULL
+                   GROUP BY users.id, users.name
+               ),
+               ranked_players AS (
+                   SELECT player_totals.*,
+                          ROW_NUMBER() OVER (
+                              ORDER BY score DESC, user_id ASC
+                          ) AS rank
+                   FROM player_totals
+               )
+               SELECT user_name, score, correct_count, question_count,
+                      quizzes_played, rank,
+                      CASE WHEN ? IS NOT NULL AND user_id = ? THEN 1 ELSE 0 END AS is_current_user
+               FROM ranked_players
+               ORDER BY rank""",
+            (user_id, user_id),
         ).fetchall()
-    return json_response({"scores": [dict(row) for row in rows]})
+    scores = [dict(row) for row in rows]
+    current_player = next((entry for entry in scores if entry["is_current_user"]), None)
+    return json_response(
+        {
+            "scores": scores,
+            "current_rank": current_player["rank"] if current_player else None,
+            "player_count": len(scores),
+            "is_signed_in": user_id is not None,
+        }
+    )
 
 
 @ensure_csrf_cookie

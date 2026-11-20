@@ -18,7 +18,7 @@ CULTURES = [
     {"name": "Sesotho", "language": "Sesotho", "region": "Lesotho · South Africa", "image": "/TribeProfile/sesotho.webp"},
     {"name": "Sepedi", "language": "Sesotho sa Leboa", "region": "South Africa", "image": "/TribeProfile/sepedi.webp"},
     {"name": "Tswana", "language": "Setswana", "region": "Botswana · South Africa", "image": "/TribeProfile/tswana.webp"},
-    {"name": "Tsonga", "language": "itsonga", "region": "Southern Africa", "image": "/TribeProfile/tsonga.webp"},
+    {"name": "Tsonga", "language": "Xitsonga", "region": "Southern Africa", "image": "/TribeProfile/tsonga.webp"},
     {"name": "Venda", "language": "Tshivenḓa", "region": "South Africa", "image": "/TribeProfile/vhenda.webp"},
     {"name": "Swati", "language": "siSwati", "region": "Eswatini · South Africa", "image": "/TribeProfile/swati.webp"},
     {"name": "Ndebele", "language": "isiNdebele", "region": "Southern Africa", "image": "/TribeProfile/ndebele.webp"},

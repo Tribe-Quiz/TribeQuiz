@@ -203,7 +203,7 @@ dialog { color: var(--cream); }
 .leaderboard-signout { border: 0; background: transparent; color: var(--cream); cursor: pointer; font: inherit; }
 .leaderboard-signout:hover { color: var(--gold-light); }
 .leaderboard-message { padding: 30px 18px; margin: 0; color: var(--muted); font-size: 13px; text-align: center; }
-.toast { position: fixed; z-index: 8; bottom: 22px; left: 50%; transform: translate(-50%, 20px); padding: 12px 18px; border: 1px solid var(--line); border-radius: 5px; color: var(--cream); background: #24150b; font-size: 12px; opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
+.toast { position: fixed; z-index: 8; bottom: 22px; left: 50%; width: min(360px, calc(100% - 32px)); padding: 16px 20px; border: 1px solid rgba(255, 216, 91, .42); border-radius: 8px; color: var(--cream); background: #24150b; box-shadow: 0 12px 36px rgba(0, 0, 0, .4); font-size: 14px; font-weight: 600; text-align: center; opacity: 0; pointer-events: none; transform: translate(-50%, 20px); transition: opacity .2s ease, transform .2s ease; }
 .toast.visible { opacity: 1; transform: translate(-50%, 0); }
 
 @keyframes rise-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }

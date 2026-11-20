@@ -146,6 +146,7 @@ document.querySelector("#nav-signout").addEventListener("click", async () => {
     currentUser = null;
     await refreshNavigation();
     renderCultureCards();
+    showToast("You are now signed out.");
   } catch (error) {
     showToast(error.message || "Could not sign out.");
   }

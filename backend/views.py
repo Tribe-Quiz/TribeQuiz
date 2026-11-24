@@ -80,6 +80,7 @@ FRONTEND_FILES = {
 }
 PROFILE_FILES = {
     "afrikaans.png",
+    "khoi.jpg",
     "ndebele.webp",
     "sepedi.webp",
     "sesotho.webp",

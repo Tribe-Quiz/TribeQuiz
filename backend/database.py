@@ -21,6 +21,7 @@ CULTURES = [
     {"name": "Ndebele", "language": "isiNdebele", "region": "Southern Africa", "image": "/TribeProfile/ndebele.webp"},
     {"name": "Afrikaner", "language": "Afrikaans", "region": "Southern Africa", "image": "/TribeProfile/afrikaans.png"},
     {"name": "Swahili", "language": "Kiswahili", "region": "East Africa", "image": "/TribeProfile/swahili.png"},
+    {"name": "Khoi", "language": "Khoekhoe", "region": "Southern Africa", "image": "/TribeProfile/khoi.jpg"},
 ]
 
 QUESTIONS = [
@@ -183,11 +184,11 @@ def initialize_database() -> None:
                 for item in CULTURES
             ],
         )
-        if connection.execute("SELECT COUNT(*) FROM cultures").fetchone()[0] == 0:
-            connection.executemany(
-                "INSERT INTO cultures (name, language, region, image) VALUES (?, ?, ?, ?)",
-                [(item["name"], item["language"], item["region"], item["image"]) for item in CULTURES],
-            )
+        connection.executemany(
+            """INSERT OR IGNORE INTO cultures (name, language, region, image)
+               VALUES (?, ?, ?, ?)""",
+            [(item["name"], item["language"], item["region"], item["image"]) for item in CULTURES],
+        )
         if connection.execute("SELECT COUNT(*) FROM questions").fetchone()[0] == 0:
             connection.executemany(
                 "INSERT INTO questions (prompt, options_json, correct_index, note) VALUES (?, ?, ?, ?)",

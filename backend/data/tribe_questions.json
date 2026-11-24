@@ -121,7 +121,8 @@
         "Kiswahili",
         "Tonga"
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "image_path": "public/lozi-photos/lozi-q1.jpg"
     },
     {
       "category": "Geography",
@@ -132,7 +133,8 @@
         "Kola",
         "Luapula"
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "image_path": "public/lozi-photos/lozi-q2.jpg"
     },
     {
       "category": "Culture",
@@ -143,7 +145,8 @@
         "Litunga",
         "Mwamba"
       ],
-      "correct_index": 2
+      "correct_index": 2,
+      "image_path": "public/lozi-photos/lozi-q3.jpg"
     },
     {
       "category": "Culture",
@@ -154,7 +157,8 @@
         "2,300,000",
         "750,000"
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "image_path": "public/lozi-photos/lozi-q4.jpg"
     },
     {
       "category": "Language",
@@ -165,7 +169,8 @@
         "Warriors",
         "Traders"
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "image_path": "public/lozi-photos/lozi-q5.jpg"
     },
     {
       "category": "Tradition",
@@ -176,7 +181,8 @@
         "Tongosa",
         "Liwale"
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "image_path": "public/lozi-photos/lozi-q6.jpg"
     },
     {
       "category": "Culture",
@@ -187,7 +193,8 @@
         "Lamba",
         "Ngoni"
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "image_path": "public/lozi-photos/lozi-q7.jpg"
     },
     {
       "category": "History",
@@ -198,7 +205,8 @@
         "17th",
         "19th"
       ],
-      "correct_index": 2
+      "correct_index": 2,
+      "image_path": "public/lozi-photos/lozi-q8.jpg"
     },
     {
       "category": "Tradition",
@@ -209,7 +217,8 @@
         "Ngomalume",
         "Siyemboka"
       ],
-      "correct_index": 2
+      "correct_index": 2,
+      "image_path": "public/lozi-photos/lozi-q9.jpg"
     },
     {
       "category": "Culture",
@@ -220,7 +229,8 @@
         "Great warrior",
         "River guardian"
       ],
-      "correct_index": 0
+      "correct_index": 0,
+      "image_path": "public/lozi-photos/lozi-q10.jpg"
     }
   ],
   "Bemba": [

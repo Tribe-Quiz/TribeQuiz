@@ -27,6 +27,7 @@ CULTURES = [
     {"name": "Bemba", "language": "Ichibemba", "region": "Zambia", "subregion": "Southern Africa", "image": "/TribeProfile/bemba.svg"},
     {"name": "Lozi", "language": "Silozi", "region": "Zambia", "subregion": "Southern Africa", "image": "/TribeProfile/lozi.svg"},
     {"name": "Herero", "language": "Otjiherero", "region": "Namibia · Botswana · Angola", "subregion": "Southern Africa", "image": "/TribeProfile/herero.svg"},
+    {"name": "Khoi", "language": "Khoekhoe", "region": "Southern Africa", "subregion": "Southern Africa", "image": "/TribeProfile/khoi.jpg"},
 ]
 
 QUESTIONS = [

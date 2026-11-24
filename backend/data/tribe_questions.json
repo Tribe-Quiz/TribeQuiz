@@ -4316,5 +4316,127 @@
       "correct_index": 1,
       "image_path": "public/zulu-photos/king-misuzulu.jpg"
     }
+  ],
+  "Khoi": [
+    {
+      "category": "History",
+      "prompt": "What does the name 'Khoekhoe' roughly mean in the Khoekhoe language?",
+      "options": [
+        "Cattle herders",
+        "People of people",
+        "Sons of the sun",
+        "River dwellers"
+      ],
+      "correct_index": 1,
+      "image_path": "public/khoi-photos/khoi-q1.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "What was the traditional way of life of the Khoi?",
+      "options": [
+        "Pastoralism (herding cattle and sheep)",
+        "Deep-sea fishing only",
+        "Growing yams in forests",
+        "Trading gold across deserts"
+      ],
+      "correct_index": 0,
+      "image_path": "public/khoi-photos/khoi-q2.jpg"
+    },
+    {
+      "category": "Language",
+      "prompt": "Which feature makes the Khoekhoe language famous?",
+      "options": [
+        "Click consonants",
+        "Tonal drum language",
+        "No spoken words",
+        "Whistled speech"
+      ],
+      "correct_index": 0,
+      "image_path": "public/khoi-photos/khoi-q3.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "What was the traditional Khoi dwelling called?",
+      "options": [
+        "Rondavel",
+        "Matjieshuis (portable domed reed-mat hut)",
+        "Igloo",
+        "Kraal tower"
+      ],
+      "correct_index": 1,
+      "image_path": "public/khoi-photos/khoi-q4.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "Which Khoi woman was taken to Europe in 1810 and later became a symbol of dignity and restitution?",
+      "options": [
+        "Krotoa",
+        "Sarah Baartman",
+        "Nongqawuse",
+        "Charlotte Maxeke"
+      ],
+      "correct_index": 1,
+      "image_path": "public/khoi-photos/khoi-q5.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "In which year were Sarah Baartman's remains returned to South Africa and buried?",
+      "options": [
+        "1994",
+        "1999",
+        "2002",
+        "2010"
+      ],
+      "correct_index": 2,
+      "image_path": "public/khoi-photos/khoi-q6.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "Which group is traditionally known as hunter-gatherers and is often linked with the Khoi as 'Khoisan'?",
+      "options": [
+        "Zulu",
+        "San",
+        "Maasai",
+        "Himba"
+      ],
+      "correct_index": 1,
+      "image_path": "public/khoi-photos/khoi-q7.webp"
+    },
+    {
+      "category": "History",
+      "prompt": "Which European settlement in 1652 led to major conflict and land loss for the Khoi at the Cape?",
+      "options": [
+        "Portuguese fort at Maputo",
+        "Dutch VOC settlement at Table Bay",
+        "British colony at Natal",
+        "German colony in Togo"
+      ],
+      "correct_index": 1,
+      "image_path": "public/khoi-photos/khoi-q8.jpg"
+    },
+    {
+      "category": "History",
+      "prompt": "Which Khoi leader acted as a go-between and interpreter with early Dutch settlers at the Cape?",
+      "options": [
+        "Shaka",
+        "Autshumao (Harry the Strandloper)",
+        "Moshoeshoe",
+        "Sekhukhune"
+      ],
+      "correct_index": 1,
+      "image_path": "public/khoi-photos/khoi-q9.jpg"
+    },
+    {
+      "category": "Culture",
+      "prompt": "Which plants have long been used by the Khoi and San, and are now known worldwide?",
+      "options": [
+        "Cocoa and vanilla",
+        "Rooibos and buchu",
+        "Coffee and tea",
+        "Cassava and sorghum"
+      ],
+      "correct_index": 1,
+      "image_path": "public/khoi-photos/khoi-q10.jpg"
+    }
   ]
 }

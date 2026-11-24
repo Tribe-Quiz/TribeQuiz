@@ -529,6 +529,15 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
         self.assertEqual(cover_response.status_code, 200)
         self.assertEqual(cover_response["Content-Type"], "image/jpeg")
 
+        lozi_questions, source = questions_for_culture(lozi)
+        self.assertEqual(source, "static")
+        for index, question in enumerate(lozi_questions, start=1):
+            expected_url = f"/quiz-images/lozi-photos/lozi-q{index}.jpg"
+            self.assertEqual(question["image_url"], expected_url)
+            image_response = self.client.get(expected_url)
+            self.assertEqual(image_response.status_code, 200)
+            self.assertEqual(image_response["Content-Type"], "image/jpeg")
+
         attempt_response = self.client.post(
             "/api/attempts",
             data=json.dumps({"culture_id": lozi["id"]}),

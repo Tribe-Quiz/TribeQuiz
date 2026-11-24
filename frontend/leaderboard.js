@@ -4,7 +4,9 @@ const list = document.querySelector("#leaderboard-list");
 const menuToggle = document.querySelector("#menu-toggle");
 const position = document.querySelector("#leaderboard-position");
 const signOutButton = document.querySelector("#leaderboard-signout");
+const toast = document.querySelector("#toast");
 let isSignedIn = false;
+let toastTimer;
 
 menuToggle.addEventListener("click", () => {
   const isExpanded = menuToggle.getAttribute("aria-expanded") === "true";
@@ -20,9 +22,10 @@ signOutButton.addEventListener("click", async () => {
   }
   try {
     await signOut();
-    window.location.href = "auth.html";
+    await loadLeaderboard();
+    showToast("You are now signed out.");
   } catch (error) {
-    showMessage(error.message || "Could not sign out.");
+    showToast(error.message || "Could not sign out.");
   }
 });
 
@@ -97,6 +100,13 @@ function showMessage(message) {
   paragraph.className = "leaderboard-message";
   paragraph.textContent = message;
   list.replaceChildren(paragraph);
+}
+
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("visible");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("visible"), 3500);
 }
 
 loadLeaderboard();

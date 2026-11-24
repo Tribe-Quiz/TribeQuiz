@@ -451,7 +451,7 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
                 )
             ]
 
-        self.assertEqual(len(cultures), 11)
+        self.assertEqual(len(cultures), 14)
         for culture in cultures:
             with self.subTest(culture=culture["name"]):
                 questions, source = questions_for_culture(culture)
@@ -461,6 +461,127 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
                 self.assertTrue(
                     all(0 <= question["correct_index"] < 4 for question in questions)
                 )
+
+    def test_bemba_quiz_uses_its_static_multiple_choice_questions(self):
+        response = self.client.get("/api/quiz")
+        self.assertEqual(response.status_code, 200)
+        bemba = next(
+            culture
+            for culture in response.json()["cultures"]
+            if culture["name"] == "Bemba"
+        )
+        self.assertEqual(bemba["language"], "Ichibemba")
+        self.assertEqual(bemba["region"], "Zambia")
+
+        attempt_response = self.client.post(
+            "/api/attempts",
+            data=json.dumps({"culture_id": bemba["id"]}),
+            content_type="application/json",
+        )
+        self.assertEqual(attempt_response.status_code, 201)
+        attempt = attempt_response.json()
+        self.assertEqual(attempt["question_source"], "static")
+        self.assertEqual(attempt["question_count"], 10)
+        self.assertEqual(len(attempt["questions"]), 10)
+
+        bemba_questions = {
+            question["prompt"]
+            for question in questions_for_culture(bemba)[0]
+        }
+        self.assertTrue(
+            all(
+                question["prompt"] in bemba_questions
+                for question in attempt["questions"]
+            )
+        )
+
+    def test_lozi_quiz_uses_its_static_multiple_choice_questions(self):
+        response = self.client.get("/api/quiz")
+        self.assertEqual(response.status_code, 200)
+        lozi = next(
+            culture
+            for culture in response.json()["cultures"]
+            if culture["name"] == "Lozi"
+        )
+        self.assertEqual(lozi["language"], "Silozi")
+        self.assertEqual(lozi["region"], "Zambia")
+
+        attempt_response = self.client.post(
+            "/api/attempts",
+            data=json.dumps({"culture_id": lozi["id"]}),
+            content_type="application/json",
+        )
+        self.assertEqual(attempt_response.status_code, 201)
+        attempt = attempt_response.json()
+        self.assertEqual(attempt["question_source"], "static")
+        self.assertEqual(attempt["question_count"], 10)
+        self.assertEqual(len(attempt["questions"]), 10)
+
+        lozi_questions = {
+            question["prompt"]
+            for question in questions_for_culture(lozi)[0]
+        }
+        self.assertTrue(
+            all(
+                question["prompt"] in lozi_questions
+                for question in attempt["questions"]
+            )
+        )
+
+    def test_herero_quiz_uses_its_static_multiple_choice_questions(self):
+        response = self.client.get("/api/quiz")
+        self.assertEqual(response.status_code, 200)
+        herero = next(
+            culture
+            for culture in response.json()["cultures"]
+            if culture["name"] == "Herero"
+        )
+        self.assertEqual(herero["language"], "Otjiherero")
+        self.assertEqual(herero["region"], "Namibia · Botswana · Angola")
+
+        attempt_response = self.client.post(
+            "/api/attempts",
+            data=json.dumps({"culture_id": herero["id"]}),
+            content_type="application/json",
+        )
+        self.assertEqual(attempt_response.status_code, 201)
+        attempt = attempt_response.json()
+        self.assertEqual(attempt["question_source"], "static")
+        self.assertEqual(attempt["question_count"], 10)
+        self.assertEqual(len(attempt["questions"]), 10)
+
+        herero_questions = {
+            question["prompt"]
+            for question in questions_for_culture(herero)[0]
+        }
+        self.assertTrue(
+            all(
+                question["prompt"] in herero_questions
+                for question in attempt["questions"]
+            )
+        )
+
+    def test_database_initialization_adds_missing_cultures_to_existing_database(self):
+        with database() as connection:
+            connection.execute(
+                "DELETE FROM cultures WHERE name IN ('Bemba', 'Lozi', 'Herero')"
+            )
+
+        initialize_database()
+
+        with database() as connection:
+            cultures = {
+                row["name"]: dict(row)
+                for row in connection.execute(
+                    "SELECT name, language, region, image FROM cultures "
+                    "WHERE name IN ('Bemba', 'Lozi', 'Herero')"
+                )
+            }
+        self.assertEqual(cultures["Bemba"]["language"], "Ichibemba")
+        self.assertEqual(cultures["Lozi"]["language"], "Silozi")
+        self.assertEqual(cultures["Lozi"]["region"], "Zambia")
+        self.assertEqual(cultures["Herero"]["language"], "Otjiherero")
+        self.assertEqual(cultures["Herero"]["region"], "Namibia · Botswana · Angola")
 
     def test_start_attempt_uses_tribe_specific_static_questions_without_ai(self):
         culture_id = self._culture_id()
@@ -614,6 +735,10 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "image/webp")
+
+        bemba_response = self.client.get("/TribeProfile/bemba.svg")
+        self.assertEqual(bemba_response.status_code, 200)
+        self.assertEqual(bemba_response["Content-Type"], "image/svg+xml")
 
     def test_static_question_images_are_matched_and_served_locally(self):
         questions, source = questions_for_culture(

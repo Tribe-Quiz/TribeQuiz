@@ -79,6 +79,9 @@ FRONTEND_FILES = {
 }
 PROFILE_FILES = {
     "afrikaans.png",
+    "bemba.svg",
+    "herero.svg",
+    "lozi.svg",
     "ndebele.webp",
     "sepedi.webp",
     "sesotho.webp",

@@ -24,6 +24,9 @@ CULTURES = [
     {"name": "Ndebele", "language": "isiNdebele", "region": "Southern Africa", "image": "/TribeProfile/ndebele.webp"},
     {"name": "Afrikaner", "language": "Afrikaans", "region": "Southern Africa", "image": "/TribeProfile/afrikaans.png"},
     {"name": "Swahili", "language": "Kiswahili", "region": "East Africa", "image": "/TribeProfile/swahili.png"},
+    {"name": "Bemba", "language": "Ichibemba", "region": "Zambia", "image": "/TribeProfile/bemba.svg"},
+    {"name": "Lozi", "language": "Silozi", "region": "Zambia", "image": "/TribeProfile/lozi.svg"},
+    {"name": "Herero", "language": "Otjiherero", "region": "Namibia · Botswana · Angola", "image": "/TribeProfile/herero.svg"},
 ]
 
 QUESTIONS = [
@@ -190,17 +193,17 @@ def initialize_database() -> None:
                 if column not in existing_columns:
                     connection.execute(f"ALTER TABLE {table} ADD COLUMN {column} TEXT")
         connection.executemany(
-            "UPDATE cultures SET language = ?, region = ?, image = ? WHERE name = ?",
+            """INSERT INTO cultures (name, language, region, image)
+               VALUES (?, ?, ?, ?)
+               ON CONFLICT(name) DO UPDATE SET
+                   language = excluded.language,
+                   region = excluded.region,
+                   image = excluded.image""",
             [
-                (item["language"], item["region"], item["image"], item["name"])
+                (item["name"], item["language"], item["region"], item["image"])
                 for item in CULTURES
             ],
         )
-        if connection.execute("SELECT COUNT(*) FROM cultures").fetchone()[0] == 0:
-            connection.executemany(
-                "INSERT INTO cultures (name, language, region, image) VALUES (?, ?, ?, ?)",
-                [(item["name"], item["language"], item["region"], item["image"]) for item in CULTURES],
-            )
         if connection.execute("SELECT COUNT(*) FROM questions").fetchone()[0] == 0:
             connection.executemany(
                 "INSERT INTO questions (prompt, options_json, correct_index, note) VALUES (?, ?, ?, ?)",

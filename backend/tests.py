@@ -451,7 +451,7 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
                 )
             ]
 
-        self.assertEqual(len(cultures), 20)
+        self.assertEqual(len(cultures), 25)
         north_african_cultures = [
             culture["name"]
             for culture in cultures
@@ -469,6 +469,15 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
         self.assertEqual(
             east_african_cultures,
             ["Swahili"],
+        )
+        central_african_cultures = [
+            culture["name"]
+            for culture in cultures
+            if culture["subregion"] == "Central Africa"
+        ]
+        self.assertEqual(
+            central_african_cultures,
+            ["Mongo", "Luba", "Kongo", "Fang", "Teke"],
         )
         for culture in cultures:
             with self.subTest(culture=culture["name"]):
@@ -607,7 +616,7 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
             connection.execute(
                 "DELETE FROM cultures WHERE name IN "
                 "('Bemba', 'Lozi', 'Herero', 'Amazigh', 'Beja', 'Tuareg', "
-                "'Sahrawi', 'Kabyle')"
+                "'Sahrawi', 'Kabyle', 'Mongo', 'Luba', 'Kongo', 'Fang', 'Teke')"
             )
 
         initialize_database()
@@ -619,7 +628,7 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
                     "SELECT name, language, region, image, subregion FROM cultures "
                     "WHERE name IN "
                     "('Bemba', 'Lozi', 'Herero', 'Amazigh', 'Beja', 'Tuareg', "
-                    "'Sahrawi', 'Kabyle')"
+                    "'Sahrawi', 'Kabyle', 'Mongo', 'Luba', 'Kongo', 'Fang', 'Teke')"
                 )
             }
         self.assertEqual(cultures["Bemba"]["language"], "Ichibemba")
@@ -637,6 +646,45 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
         self.assertEqual(cultures["Sahrawi"]["subregion"], "North Africa")
         self.assertEqual(cultures["Kabyle"]["language"], "Kabyle Amazigh")
         self.assertEqual(cultures["Kabyle"]["subregion"], "North Africa")
+        for name in ("Mongo", "Luba", "Kongo", "Fang", "Teke"):
+            self.assertEqual(cultures[name]["subregion"], "Central Africa")
+
+    def test_central_african_cultures_have_static_questions_and_can_start_quizzes(self):
+        response = self.client.get("/api/quiz")
+        self.assertEqual(response.status_code, 200)
+        central_cultures = [
+            culture
+            for culture in response.json()["cultures"]
+            if culture["subregion"] == "Central Africa"
+        ]
+        self.assertEqual(
+            [culture["name"] for culture in central_cultures],
+            ["Mongo", "Luba", "Kongo", "Fang", "Teke"],
+        )
+
+        for culture in central_cultures:
+            with self.subTest(culture=culture["name"]):
+                questions, source = questions_for_culture(culture)
+                self.assertEqual(source, "static")
+                self.assertEqual(len(questions), 10)
+                self.assertTrue(
+                    all(
+                        len(question["options"]) == 4
+                        and 0 <= question["correct_index"] < 4
+                        for question in questions
+                    )
+                )
+                attempt_response = self.client.post(
+                    "/api/attempts",
+                    data=json.dumps({"culture_id": culture["id"]}),
+                    content_type="application/json",
+                )
+                self.assertEqual(attempt_response.status_code, 201)
+                self.assertEqual(
+                    attempt_response.json()["question_source"],
+                    "static",
+                )
+                self.assertEqual(attempt_response.json()["question_count"], 10)
 
     def test_quiz_api_includes_khoi_with_uploaded_cover(self):
         response = self.client.get("/api/quiz")
@@ -1004,6 +1052,12 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
         sahrawi_response = self.client.get("/TribeProfile/sahrawi.svg")
         self.assertEqual(sahrawi_response.status_code, 200)
         self.assertEqual(sahrawi_response["Content-Type"], "image/svg+xml")
+
+        for name in ("mongo", "luba", "kongo", "fang", "teke"):
+            with self.subTest(profile=name):
+                profile_response = self.client.get(f"/TribeProfile/{name}.svg")
+                self.assertEqual(profile_response.status_code, 200)
+                self.assertEqual(profile_response["Content-Type"], "image/svg+xml")
 
         kabyle_response = self.client.get("/TribeProfile/kabyle.svg")
         self.assertEqual(kabyle_response.status_code, 200)

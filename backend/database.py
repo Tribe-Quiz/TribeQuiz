@@ -33,6 +33,11 @@ CULTURES = [
     {"name": "Tuareg", "language": "Tuareg languages", "region": "Sahara · North and West Africa", "subregion": "North Africa", "image": "/TribeProfile/tuareg.svg"},
     {"name": "Sahrawi", "language": "Hassaniya Arabic", "region": "Western Sahara", "subregion": "North Africa", "image": "/TribeProfile/sahrawi.svg"},
     {"name": "Kabyle", "language": "Kabyle Amazigh", "region": "Kabylia · Algeria", "subregion": "North Africa", "image": "/TribeProfile/kabyle.svg"},
+    {"name": "Mongo", "language": "Mongo languages", "region": "Democratic Republic of the Congo", "subregion": "Central Africa", "image": "/TribeProfile/mongo.svg"},
+    {"name": "Luba", "language": "Tshiluba", "region": "Southern Democratic Republic of the Congo", "subregion": "Central Africa", "image": "/TribeProfile/luba.svg"},
+    {"name": "Kongo", "language": "Kikongo", "region": "Democratic Republic of the Congo · Angola · Republic of the Congo", "subregion": "Central Africa", "image": "/TribeProfile/kongo.svg"},
+    {"name": "Fang", "language": "Fang", "region": "Gabon · Cameroon · Equatorial Guinea", "subregion": "Central Africa", "image": "/TribeProfile/fang.svg"},
+    {"name": "Teke", "language": "Teke languages", "region": "Republic of the Congo · Democratic Republic of the Congo", "subregion": "Central Africa", "image": "/TribeProfile/teke.svg"},
 ]
 
 QUESTIONS = [

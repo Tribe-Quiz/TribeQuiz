@@ -1,4 +1,564 @@
 {
+  "Mongo": [
+    {
+      "category": "Geography",
+      "prompt": "The Mongo people are primarily found in which country?",
+      "options": [
+        "Kenya",
+        "Democratic Republic of the Congo",
+        "Nigeria",
+        "Chad"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Mongo people mainly inhabit which region?",
+      "options": [
+        "Sahara Desert",
+        "Congo Basin Rainforest",
+        "Atlas Mountains",
+        "Kalahari Desert"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Language",
+      "prompt": "The Mongo belong to which language family?",
+      "options": [
+        "Afro-Asiatic",
+        "Bantu",
+        "Nilotic",
+        "Khoisan"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Culture",
+      "prompt": "Which activities have traditionally been part of Mongo livelihoods?",
+      "options": [
+        "Camel herding",
+        "Deep-sea fishing",
+        "Farming, fishing and hunting",
+        "Snow farming"
+      ],
+      "correct_index": 2
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Mongo are one of the largest ethnic groups in which country?",
+      "options": [
+        "Sudan",
+        "Angola",
+        "Democratic Republic of the Congo",
+        "Ethiopia"
+      ],
+      "correct_index": 2
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Mongo people are associated with which major river basin?",
+      "options": [
+        "Nile Basin",
+        "Congo Basin",
+        "Niger Basin",
+        "Limpopo Basin"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Culture",
+      "prompt": "Mongo communities traditionally live in which environment?",
+      "options": [
+        "Tropical forests",
+        "Tundra regions",
+        "Coastal islands",
+        "Deserts"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "Which African region are the Mongo most associated with?",
+      "options": [
+        "West Africa",
+        "Central Africa",
+        "East Africa",
+        "North Africa"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Geography",
+      "prompt": "Which natural resource surrounds much of Mongo territory?",
+      "options": [
+        "Rainforest",
+        "Glacier",
+        "Coral reef",
+        "Savannah only"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Culture",
+      "prompt": "Mongo people's culture developed largely around which environment?",
+      "options": [
+        "Forest environments",
+        "Desert trade routes",
+        "Mountain mining",
+        "Ocean trade"
+      ],
+      "correct_index": 0
+    }
+  ],
+  "Luba": [
+    {
+      "category": "Geography",
+      "prompt": "The Luba people are primarily found in which country?",
+      "options": [
+        "Rwanda",
+        "Democratic Republic of the Congo",
+        "Somalia",
+        "Namibia"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "History",
+      "prompt": "Which historical kingdom is associated with the Luba?",
+      "options": [
+        "Mali Empire",
+        "Luba Kingdom",
+        "Kingdom of Kush",
+        "Benin Kingdom"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Language",
+      "prompt": "The Luba belong to which language family?",
+      "options": [
+        "Khoisan",
+        "Bantu",
+        "Semitic",
+        "Indo-European"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Luba homeland is located in which area?",
+      "options": [
+        "Southern Democratic Republic of the Congo",
+        "Algeria",
+        "Kenya",
+        "Egypt"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "History",
+      "prompt": "The Luba are known for what historical achievement?",
+      "options": [
+        "Kingdom-building",
+        "Arctic exploration",
+        "Desert nomadism",
+        "Shipbuilding"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "Which African region is home to the Luba?",
+      "options": [
+        "Central Africa",
+        "East Africa",
+        "North Africa",
+        "Southern Africa"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "History",
+      "prompt": "The Luba Kingdom became influential through what?",
+      "options": [
+        "Political organisation",
+        "Whale hunting",
+        "Silk trading",
+        "Ice fishing"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Culture",
+      "prompt": "How is Luba culture famous for preserving history?",
+      "options": [
+        "Memory keepers and oral traditions",
+        "Stone carvings only",
+        "Written newspapers",
+        "Ship logs"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Luba people are among the major ethnic groups of which country?",
+      "options": [
+        "Democratic Republic of the Congo",
+        "Morocco",
+        "Tanzania",
+        "South Africa"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Language",
+      "prompt": "The Luba language is classified as which language family?",
+      "options": [
+        "Bantu",
+        "Cushitic",
+        "Nilotic",
+        "Semitic"
+      ],
+      "correct_index": 0
+    }
+  ],
+  "Kongo": [
+    {
+      "category": "History",
+      "prompt": "The Kongo people are traditionally linked to which kingdom?",
+      "options": [
+        "Kingdom of Kongo",
+        "Kingdom of Kush",
+        "Zulu Kingdom",
+        "Mali Empire"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Kongo people are mainly found in which countries?",
+      "options": [
+        "Democratic Republic of the Congo, Angola and Republic of the Congo",
+        "Kenya and Uganda",
+        "Morocco and Tunisia",
+        "Ethiopia and Eritrea"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Language",
+      "prompt": "Which language family does the Kongo language belong to?",
+      "options": [
+        "Bantu",
+        "Nilotic",
+        "Cushitic",
+        "Khoisan"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Kongo people are associated with which major river?",
+      "options": [
+        "Nile",
+        "Congo River",
+        "Orange River",
+        "Niger River"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Kingdom of Kongo was located in which region?",
+      "options": [
+        "Central Africa",
+        "North Africa",
+        "Southern Africa",
+        "East Africa"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Language",
+      "prompt": "What is the traditional language of the Kongo people?",
+      "options": [
+        "Kikongo",
+        "Swahili",
+        "Hausa",
+        "Oromo"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "Which ocean influenced Kongo trade?",
+      "options": [
+        "Pacific Ocean",
+        "Atlantic Ocean",
+        "Indian Ocean",
+        "Arctic Ocean"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "History",
+      "prompt": "The Kongo people became known for what?",
+      "options": [
+        "Organised kingdoms",
+        "Reindeer herding",
+        "Arctic trade",
+        "Rice terraces"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Kongo are one of the best-known peoples of which region?",
+      "options": [
+        "Central Africa",
+        "Southern Europe",
+        "East Asia",
+        "Arabia"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "History",
+      "prompt": "The name “Kongo” inspired the name of which country?",
+      "options": [
+        "Congo",
+        "Kenya",
+        "Mali",
+        "Botswana"
+      ],
+      "correct_index": 0
+    }
+  ],
+  "Fang": [
+    {
+      "category": "Geography",
+      "prompt": "The Fang people are mainly found in which countries?",
+      "options": [
+        "Gabon, Cameroon and Equatorial Guinea",
+        "Sudan and Egypt",
+        "Zambia and Malawi",
+        "Kenya and Tanzania"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Culture",
+      "prompt": "The Fang are famous for which art form?",
+      "options": [
+        "Wood carvings",
+        "Ice sculptures",
+        "Camel racing",
+        "Shipbuilding"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Fang primarily inhabit which environment?",
+      "options": [
+        "Tropical forests",
+        "Deserts",
+        "High mountains",
+        "Coastal islands"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Language",
+      "prompt": "The Fang language belongs to which language family?",
+      "options": [
+        "Bantu",
+        "Nilotic",
+        "Semitic",
+        "Khoisan"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Fang belong to which African region?",
+      "options": [
+        "Central Africa",
+        "North Africa",
+        "Southern Africa",
+        "East Africa"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Culture",
+      "prompt": "Fang traditional art often includes what?",
+      "options": [
+        "Masks and sculptures",
+        "Snow carvings",
+        "Pottery only",
+        "Metal coins only"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "Many Fang communities live near what?",
+      "options": [
+        "Equatorial forests",
+        "Arctic tundra",
+        "Deserts",
+        "Grasslands only"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "Which country has a large Fang population?",
+      "options": [
+        "Gabon",
+        "Botswana",
+        "Lesotho",
+        "Tunisia"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Culture",
+      "prompt": "Fang culture is strongly connected to which traditions?",
+      "options": [
+        "Ancestor traditions",
+        "Viking traditions",
+        "Samurai traditions",
+        "Roman traditions"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Fang are among the most well-known peoples of which area?",
+      "options": [
+        "Central African rainforests",
+        "Sahara Desert",
+        "Nile Delta",
+        "Kalahari Desert"
+      ],
+      "correct_index": 0
+    }
+  ],
+  "Teke": [
+    {
+      "category": "Geography",
+      "prompt": "The Teke people are mainly found in which countries?",
+      "options": [
+        "Republic of the Congo and Democratic Republic of the Congo",
+        "Kenya and Uganda",
+        "Egypt and Sudan",
+        "Namibia and Botswana"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "History",
+      "prompt": "The Teke are historically known for what?",
+      "options": [
+        "Trade networks",
+        "Whale hunting",
+        "Polar exploration",
+        "Reindeer farming"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "The traditional homeland of the Teke is near which region?",
+      "options": [
+        "Congo Basin",
+        "Sahara Desert",
+        "Atlas Mountains",
+        "Rift Valley"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Language",
+      "prompt": "The Teke language belongs to which language family?",
+      "options": [
+        "Bantu",
+        "Semitic",
+        "Nilotic",
+        "Cushitic"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Teke belong to which African region?",
+      "options": [
+        "Central Africa",
+        "West Africa",
+        "East Africa",
+        "Southern Africa"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "History",
+      "prompt": "Historically, the Teke were important because of what?",
+      "options": [
+        "Regional commerce",
+        "Arctic trade",
+        "Silk production",
+        "Shipbuilding"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Culture",
+      "prompt": "The Teke people traditionally lived in which environments?",
+      "options": [
+        "Forest and savannah regions",
+        "Polar regions",
+        "Coastal islands only",
+        "Deserts only"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "Which river system influenced Teke trade?",
+      "options": [
+        "Congo River",
+        "Nile River",
+        "Niger River",
+        "Zambezi River"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "History",
+      "prompt": "The Teke Kingdom was known for what?",
+      "options": [
+        "Trade and diplomacy",
+        "Viking raids",
+        "Whaling fleets",
+        "Arctic exploration"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Teke are one of the historic peoples of which region?",
+      "options": [
+        "The Congo region",
+        "The Maghreb",
+        "East African coast",
+        "Southern Africa"
+      ],
+      "correct_index": 0
+    }
+  ],
   "Kabyle": [
     {
       "category": "Culture",

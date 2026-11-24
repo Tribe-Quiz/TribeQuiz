@@ -4327,7 +4327,8 @@
         "Sons of the sun",
         "River dwellers"
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "image_path": "public/khoi-photos/khoi-q1.jpg"
     },
     {
       "category": "Culture",
@@ -4338,7 +4339,8 @@
         "Growing yams in forests",
         "Trading gold across deserts"
       ],
-      "correct_index": 0
+      "correct_index": 0,
+      "image_path": "public/khoi-photos/khoi-q2.jpg"
     },
     {
       "category": "Language",
@@ -4349,7 +4351,8 @@
         "No spoken words",
         "Whistled speech"
       ],
-      "correct_index": 0
+      "correct_index": 0,
+      "image_path": "public/khoi-photos/khoi-q3.jpg"
     },
     {
       "category": "Culture",
@@ -4360,7 +4363,8 @@
         "Igloo",
         "Kraal tower"
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "image_path": "public/khoi-photos/khoi-q4.jpg"
     },
     {
       "category": "History",
@@ -4371,7 +4375,8 @@
         "Nongqawuse",
         "Charlotte Maxeke"
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "image_path": "public/khoi-photos/khoi-q5.jpg"
     },
     {
       "category": "History",
@@ -4382,7 +4387,8 @@
         "2002",
         "2010"
       ],
-      "correct_index": 2
+      "correct_index": 2,
+      "image_path": "public/khoi-photos/khoi-q6.jpg"
     },
     {
       "category": "Culture",
@@ -4393,7 +4399,8 @@
         "Maasai",
         "Himba"
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "image_path": "public/khoi-photos/khoi-q7.webp"
     },
     {
       "category": "History",
@@ -4404,7 +4411,8 @@
         "British colony at Natal",
         "German colony in Togo"
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "image_path": "public/khoi-photos/khoi-q8.jpg"
     },
     {
       "category": "History",
@@ -4415,7 +4423,8 @@
         "Moshoeshoe",
         "Sekhukhune"
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "image_path": "public/khoi-photos/khoi-q9.jpg"
     },
     {
       "category": "Culture",
@@ -4426,7 +4435,8 @@
         "Coffee and tea",
         "Cassava and sorghum"
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "image_path": "public/khoi-photos/khoi-q10.jpg"
     }
   ]
 }

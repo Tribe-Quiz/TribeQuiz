@@ -594,6 +594,27 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
         )
         self.assertEqual(khoi["image"], "/TribeProfile/khoi.jpg")
 
+    def test_khoi_question_images_match_question_numbers_and_are_served(self):
+        with database() as connection:
+            culture = dict(
+                connection.execute(
+                    "SELECT id, name FROM cultures WHERE name = 'Khoi'"
+                ).fetchone()
+            )
+
+        questions, source = questions_for_culture(culture)
+
+        self.assertEqual(source, "static")
+        self.assertEqual(len(questions), 10)
+        for index, question in enumerate(questions, start=1):
+            extension = "webp" if index == 7 else "jpg"
+            expected_url = f"/quiz-images/khoi-photos/khoi-q{index}.{extension}"
+            self.assertEqual(question["image_url"], expected_url)
+            response = self.client.get(expected_url)
+            self.assertEqual(response.status_code, 200)
+            expected_type = "image/webp" if extension == "webp" else "image/jpeg"
+            self.assertEqual(response["Content-Type"], expected_type)
+
     def test_start_attempt_uses_tribe_specific_static_questions_without_ai(self):
         culture_id = self._culture_id()
 

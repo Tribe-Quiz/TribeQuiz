@@ -451,7 +451,7 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
                 )
             ]
 
-        self.assertEqual(len(cultures), 14)
+        self.assertEqual(len(cultures), 15)
         for culture in cultures:
             with self.subTest(culture=culture["name"]):
                 questions, source = questions_for_culture(culture)
@@ -582,6 +582,17 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
         self.assertEqual(cultures["Lozi"]["region"], "Zambia")
         self.assertEqual(cultures["Herero"]["language"], "Otjiherero")
         self.assertEqual(cultures["Herero"]["region"], "Namibia · Botswana · Angola")
+
+    def test_quiz_api_includes_khoi_with_uploaded_cover(self):
+        response = self.client.get("/api/quiz")
+
+        self.assertEqual(response.status_code, 200)
+        khoi = next(
+            culture
+            for culture in response.json()["cultures"]
+            if culture["name"] == "Khoi"
+        )
+        self.assertEqual(khoi["image"], "/TribeProfile/khoi.jpg")
 
     def test_start_attempt_uses_tribe_specific_static_questions_without_ai(self):
         culture_id = self._culture_id()
@@ -739,6 +750,24 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
         bemba_response = self.client.get("/TribeProfile/bemba.svg")
         self.assertEqual(bemba_response.status_code, 200)
         self.assertEqual(bemba_response["Content-Type"], "image/svg+xml")
+
+    def test_khoi_profile_image_is_served_from_the_local_project(self):
+        response = self.client.get("/TribeProfile/khoi.jpg")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "image/jpeg")
+
+    def test_database_initialization_adds_missing_khoi_to_existing_database(self):
+        with database() as connection:
+            connection.execute("DELETE FROM cultures WHERE name = 'Khoi'")
+
+        initialize_database()
+
+        with database() as connection:
+            khoi_count = connection.execute(
+                "SELECT COUNT(*) FROM cultures WHERE name = 'Khoi'"
+            ).fetchone()[0]
+        self.assertEqual(khoi_count, 1)
 
     def test_static_question_images_are_matched_and_served_locally(self):
         questions, source = questions_for_culture(

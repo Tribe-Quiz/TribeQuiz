@@ -82,6 +82,7 @@ PROFILE_FILES = {
     "bemba.svg",
     "herero.svg",
     "lozi.svg",
+    "khoi.jpg",
     "ndebele.webp",
     "sepedi.webp",
     "sesotho.webp",

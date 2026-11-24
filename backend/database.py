@@ -25,7 +25,7 @@ CULTURES = [
     {"name": "Afrikaner", "language": "Afrikaans", "region": "Southern Africa", "subregion": "Southern Africa", "image": "/TribeProfile/afrikaans.png"},
     {"name": "Swahili", "language": "Kiswahili", "region": "East Africa", "subregion": "East Africa", "image": "/TribeProfile/swahili.png"},
     {"name": "Bemba", "language": "Ichibemba", "region": "Zambia", "subregion": "Southern Africa", "image": "/TribeProfile/bemba.svg"},
-    {"name": "Lozi", "language": "Silozi", "region": "Zambia", "subregion": "Southern Africa", "image": "/TribeProfile/lozi.svg"},
+    {"name": "Lozi", "language": "Silozi", "region": "Zambia", "subregion": "Southern Africa", "image": "/TribeProfile/loziCover.jpg"},
     {"name": "Herero", "language": "Otjiherero", "region": "Namibia · Botswana · Angola", "subregion": "Southern Africa", "image": "/TribeProfile/herero.svg"},
     {"name": "Khoi", "language": "Khoekhoe", "region": "Southern Africa", "subregion": "Southern Africa", "image": "/TribeProfile/khoi.jpg"},
 ]

@@ -1,4 +1,564 @@
 {
+  "Kabyle": [
+    {
+      "category": "Culture",
+      "prompt": "The Kabyle people are a subgroup of which people?",
+      "options": [
+        "Amazigh (Berber)",
+        "Fulani",
+        "Somali",
+        "Hausa"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Kabyle primarily live in which country?",
+      "options": [
+        "Algeria",
+        "Tanzania",
+        "Namibia",
+        "Uganda"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "What is the Kabyle homeland known as?",
+      "options": [
+        "Kabylia",
+        "Zululand",
+        "Oromia",
+        "Ashanti"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "Kabylia is located near which mountain range?",
+      "options": [
+        "Atlas Mountains",
+        "Andes",
+        "Himalayas",
+        "Drakensberg"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Language",
+      "prompt": "Which language do many Kabyle people speak?",
+      "options": [
+        "Kabyle Amazigh",
+        "Zulu",
+        "Luo",
+        "Tswana"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Kabyle are part of which region of Africa?",
+      "options": [
+        "North Africa",
+        "Central Africa",
+        "East Africa",
+        "Southern Africa"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Culture",
+      "prompt": "Kabyle culture is especially known for what?",
+      "options": [
+        "Music and crafts",
+        "Whale hunting",
+        "Ice fishing",
+        "Reindeer herding"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "Which country has the largest Kabyle population?",
+      "options": [
+        "Algeria",
+        "Ghana",
+        "Malawi",
+        "Chad"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "History",
+      "prompt": "The Kabyle are historically linked to which heritage?",
+      "options": [
+        "Amazigh heritage",
+        "Bantu expansion",
+        "Nilotic migration",
+        "Khoisan culture"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "Kabylia lies close to which sea?",
+      "options": [
+        "Mediterranean Sea",
+        "Indian Ocean",
+        "Red Sea",
+        "Black Sea"
+      ],
+      "correct_index": 0
+    }
+  ],
+  "Sahrawi": [
+    {
+      "category": "Geography",
+      "prompt": "The Sahrawi people are native to which place?",
+      "options": [
+        "Western Sahara",
+        "South Africa",
+        "Ethiopia",
+        "Cameroon"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Culture",
+      "prompt": "The name Sahrawi is linked to what?",
+      "options": [
+        "Mountains",
+        "Forests",
+        "The Sahara",
+        "Rivers"
+      ],
+      "correct_index": 2
+    },
+    {
+      "category": "Culture",
+      "prompt": "The Sahrawi traditionally practised what?",
+      "options": [
+        "Desert nomadism",
+        "Deep-sea fishing",
+        "Logging",
+        "Vineyard farming"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Culture",
+      "prompt": "Which animal was important to Sahrawi life?",
+      "options": [
+        "Camel",
+        "Gorilla",
+        "Buffalo",
+        "Crocodile"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Language",
+      "prompt": "What language do the Sahrawi mainly speak?",
+      "options": [
+        "Swahili",
+        "Hassaniya Arabic",
+        "Zulu",
+        "Yoruba"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Geography",
+      "prompt": "Their homeland is located in which region?",
+      "options": [
+        "North Africa",
+        "East Africa",
+        "Central Africa",
+        "Southern Africa"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Sahrawi culture developed in which environment?",
+      "options": [
+        "Tropical rainforest",
+        "Desert environment",
+        "Savannah only",
+        "Mountain region"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Geography",
+      "prompt": "Which ocean borders Western Sahara?",
+      "options": [
+        "Indian Ocean",
+        "Pacific Ocean",
+        "Atlantic Ocean",
+        "Arctic Ocean"
+      ],
+      "correct_index": 2
+    },
+    {
+      "category": "Tradition",
+      "prompt": "Traditional Sahrawi shelters were designed for what?",
+      "options": [
+        "Desert mobility",
+        "Snowfall",
+        "Swamps",
+        "Jungles"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Sahrawi are most closely associated with which place?",
+      "options": [
+        "Western Sahara",
+        "Nigeria",
+        "Kenya",
+        "Botswana"
+      ],
+      "correct_index": 0
+    }
+  ],
+  "Tuareg": [
+    {
+      "category": "Culture",
+      "prompt": "The Tuareg people are known as which people?",
+      "options": [
+        "People of the Sahara",
+        "Forest Dwellers",
+        "River Kings",
+        "Mountain Farmers"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Tuareg primarily inhabit which place?",
+      "options": [
+        "Sahara Desert",
+        "Congo Basin",
+        "Kalahari Desert",
+        "Great Rift Valley"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Culture",
+      "prompt": "What colour clothing is often associated with Tuareg men?",
+      "options": [
+        "Green",
+        "Blue",
+        "Red",
+        "White"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Culture",
+      "prompt": "Which animal has been central to Tuareg transport?",
+      "options": [
+        "Horse",
+        "Camel",
+        "Elephant",
+        "Donkey"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Tuareg are found across which areas?",
+      "options": [
+        "Multiple Saharan countries",
+        "Only Morocco",
+        "Only Libya",
+        "Only Algeria"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Culture",
+      "prompt": "The Tuareg are a branch of which people?",
+      "options": [
+        "Amazigh (Berber) people",
+        "Zulu",
+        "Fulani",
+        "Xhosa"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Culture",
+      "prompt": "Traditional Tuareg life is associated with what?",
+      "options": [
+        "Nomadism",
+        "Deep-sea fishing",
+        "Urban trade only",
+        "Rice farming"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "Which desert dominates Tuareg territory?",
+      "options": [
+        "Namib",
+        "Sahara",
+        "Kalahari",
+        "Atacama"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "History",
+      "prompt": "Tuareg communities are known for trans-Saharan what?",
+      "options": [
+        "Mining",
+        "Trade",
+        "Whaling",
+        "Logging"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Tuareg are most associated with which region?",
+      "options": [
+        "West and North Africa",
+        "Southern Africa",
+        "East Africa",
+        "Central Africa"
+      ],
+      "correct_index": 0
+    }
+  ],
+  "Beja": [
+    {
+      "category": "Geography",
+      "prompt": "The Beja people mainly live in which countries?",
+      "options": [
+        "Egypt, Sudan and Eritrea",
+        "Kenya and Tanzania",
+        "South Africa",
+        "Ghana"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Culture",
+      "prompt": "The Beja are traditionally known as what?",
+      "options": [
+        "Fishermen",
+        "Pastoralists",
+        "Miners",
+        "Sailors"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Geography",
+      "prompt": "The Beja inhabit areas near which sea?",
+      "options": [
+        "Mediterranean Sea",
+        "Red Sea",
+        "Atlantic Ocean",
+        "Indian Ocean"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Language",
+      "prompt": "The Beja language belongs to which family?",
+      "options": [
+        "Cushitic",
+        "Bantu",
+        "Khoisan",
+        "Nilotic"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "Which African region is home to the Beja?",
+      "options": [
+        "North-East Africa",
+        "Southern Africa",
+        "Central Africa",
+        "West Africa"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Culture",
+      "prompt": "What animal is important in traditional Beja life?",
+      "options": [
+        "Camel",
+        "Gorilla",
+        "Zebra",
+        "Penguin"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Culture",
+      "prompt": "The Beja are famous for which traditions?",
+      "options": [
+        "Nomadic traditions",
+        "Rice farming",
+        "Whale hunting",
+        "Gold mining"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "Which climate do many Beja communities inhabit?",
+      "options": [
+        "Desert",
+        "Rainforest",
+        "Alpine",
+        "Arctic"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Geography",
+      "prompt": "Which country has a significant Beja population?",
+      "options": [
+        "Sudan",
+        "Malawi",
+        "Lesotho",
+        "Benin"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Culture",
+      "prompt": "Beja culture is strongly linked to what?",
+      "options": [
+        "Cattle herding",
+        "Camel herding",
+        "Fishing",
+        "Hunting"
+      ],
+      "correct_index": 1
+    }
+  ],
+  "Amazigh": [
+    {
+      "category": "Culture",
+      "prompt": "The Amazigh people are also commonly known as what?",
+      "options": [
+        "Fulani",
+        "Berbers",
+        "Hausa",
+        "Tuareg"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Geography",
+      "prompt": "In which region of Africa are the Amazigh primarily found?",
+      "options": [
+        "Southern Africa",
+        "East Africa",
+        "North Africa",
+        "Central Africa"
+      ],
+      "correct_index": 2
+    },
+    {
+      "category": "Geography",
+      "prompt": "Which country has a large Amazigh population?",
+      "options": [
+        "Morocco",
+        "Kenya",
+        "Zambia",
+        "Rwanda"
+      ],
+      "correct_index": 0
+    },
+    {
+      "category": "Language",
+      "prompt": "What does “Amazigh” roughly mean?",
+      "options": [
+        "Desert Dweller",
+        "Free People",
+        "Warrior Tribe",
+        "Camel Rider"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Language",
+      "prompt": "Which language family do Amazigh languages belong to?",
+      "options": [
+        "Bantu",
+        "Afro-Asiatic",
+        "Nilotic",
+        "Khoisan"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Geography",
+      "prompt": "Which mountain range is strongly associated with Amazigh communities?",
+      "options": [
+        "Drakensberg",
+        "Atlas Mountains",
+        "Rwenzori",
+        "Simien"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Language",
+      "prompt": "What script is commonly used for Amazigh writing?",
+      "options": [
+        "Latin",
+        "Arabic",
+        "Tifinagh",
+        "Ge'ez"
+      ],
+      "correct_index": 2
+    },
+    {
+      "category": "Geography",
+      "prompt": "Which desert is part of traditional Amazigh territory?",
+      "options": [
+        "Kalahari",
+        "Namib",
+        "Sahara",
+        "Gobi"
+      ],
+      "correct_index": 2
+    },
+    {
+      "category": "Culture",
+      "prompt": "Which colour appears frequently in Amazigh cultural symbols?",
+      "options": [
+        "Yellow",
+        "Blue",
+        "Purple",
+        "Grey"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Culture",
+      "prompt": "Amazigh culture is especially prominent in which countries?",
+      "options": [
+        "Morocco and Algeria",
+        "South Africa and Botswana",
+        "Kenya and Uganda",
+        "Nigeria and Ghana"
+      ],
+      "correct_index": 0
+    }
+  ],
   "Herero": [
     {
       "category": "Geography",

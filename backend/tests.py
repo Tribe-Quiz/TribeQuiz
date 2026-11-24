@@ -451,7 +451,16 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
                 )
             ]
 
-        self.assertEqual(len(cultures), 15)
+        self.assertEqual(len(cultures), 20)
+        north_african_cultures = [
+            culture["name"]
+            for culture in cultures
+            if culture["subregion"] == "North Africa"
+        ]
+        self.assertEqual(
+            north_african_cultures,
+            ["Amazigh", "Beja", "Tuareg", "Sahrawi", "Kabyle"],
+        )
         east_african_cultures = [
             culture["name"]
             for culture in cultures
@@ -596,7 +605,9 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
     def test_database_initialization_adds_missing_cultures_to_existing_database(self):
         with database() as connection:
             connection.execute(
-                "DELETE FROM cultures WHERE name IN ('Bemba', 'Lozi', 'Herero')"
+                "DELETE FROM cultures WHERE name IN "
+                "('Bemba', 'Lozi', 'Herero', 'Amazigh', 'Beja', 'Tuareg', "
+                "'Sahrawi', 'Kabyle')"
             )
 
         initialize_database()
@@ -605,8 +616,10 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
             cultures = {
                 row["name"]: dict(row)
                 for row in connection.execute(
-                    "SELECT name, language, region, image FROM cultures "
-                    "WHERE name IN ('Bemba', 'Lozi', 'Herero')"
+                    "SELECT name, language, region, image, subregion FROM cultures "
+                    "WHERE name IN "
+                    "('Bemba', 'Lozi', 'Herero', 'Amazigh', 'Beja', 'Tuareg', "
+                    "'Sahrawi', 'Kabyle')"
                 )
             }
         self.assertEqual(cultures["Bemba"]["language"], "Ichibemba")
@@ -614,6 +627,16 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
         self.assertEqual(cultures["Lozi"]["region"], "Zambia")
         self.assertEqual(cultures["Herero"]["language"], "Otjiherero")
         self.assertEqual(cultures["Herero"]["region"], "Namibia · Botswana · Angola")
+        self.assertEqual(cultures["Amazigh"]["language"], "Tamazight")
+        self.assertEqual(cultures["Amazigh"]["subregion"], "North Africa")
+        self.assertEqual(cultures["Beja"]["language"], "Beja")
+        self.assertEqual(cultures["Beja"]["subregion"], "North Africa")
+        self.assertEqual(cultures["Tuareg"]["language"], "Tuareg languages")
+        self.assertEqual(cultures["Tuareg"]["subregion"], "North Africa")
+        self.assertEqual(cultures["Sahrawi"]["language"], "Hassaniya Arabic")
+        self.assertEqual(cultures["Sahrawi"]["subregion"], "North Africa")
+        self.assertEqual(cultures["Kabyle"]["language"], "Kabyle Amazigh")
+        self.assertEqual(cultures["Kabyle"]["subregion"], "North Africa")
 
     def test_quiz_api_includes_khoi_with_uploaded_cover(self):
         response = self.client.get("/api/quiz")
@@ -625,6 +648,172 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
             if culture["name"] == "Khoi"
         )
         self.assertEqual(khoi["image"], "/TribeProfile/khoi.jpg")
+
+    def test_amazigh_quiz_is_listed_in_north_africa_and_uses_static_questions(self):
+        response = self.client.get("/api/quiz")
+        self.assertEqual(response.status_code, 200)
+        amazigh = next(
+            culture
+            for culture in response.json()["cultures"]
+            if culture["name"] == "Amazigh"
+        )
+        self.assertEqual(amazigh["language"], "Tamazight")
+        self.assertEqual(amazigh["region"], "Morocco · Algeria")
+        self.assertEqual(amazigh["subregion"], "North Africa")
+
+        questions, source = questions_for_culture(amazigh)
+        self.assertEqual(source, "static")
+        self.assertEqual(len(questions), 10)
+        self.assertTrue(all(len(question["options"]) == 4 for question in questions))
+        self.assertTrue(
+            all(0 <= question["correct_index"] < 4 for question in questions)
+        )
+
+        attempt_response = self.client.post(
+            "/api/attempts",
+            data=json.dumps({"culture_id": amazigh["id"]}),
+            content_type="application/json",
+        )
+        self.assertEqual(attempt_response.status_code, 201)
+        attempt = attempt_response.json()
+        self.assertEqual(attempt["question_source"], "static")
+        self.assertEqual(len(attempt["questions"]), 10)
+        self.assertTrue(
+            all(question["prompt"] in {item["prompt"] for item in questions}
+                for question in attempt["questions"])
+        )
+
+    def test_beja_quiz_is_listed_in_north_africa_and_uses_static_questions(self):
+        response = self.client.get("/api/quiz")
+        self.assertEqual(response.status_code, 200)
+        beja = next(
+            culture
+            for culture in response.json()["cultures"]
+            if culture["name"] == "Beja"
+        )
+        self.assertEqual(beja["language"], "Beja")
+        self.assertEqual(beja["region"], "Egypt · Sudan · Eritrea")
+        self.assertEqual(beja["subregion"], "North Africa")
+
+        questions, source = questions_for_culture(beja)
+        self.assertEqual(source, "static")
+        self.assertEqual(len(questions), 10)
+        self.assertTrue(
+            all(
+                len(question["options"]) == 4
+                and 0 <= question["correct_index"] < 4
+                for question in questions
+            )
+        )
+
+        attempt_response = self.client.post(
+            "/api/attempts",
+            data=json.dumps({"culture_id": beja["id"]}),
+            content_type="application/json",
+        )
+        self.assertEqual(attempt_response.status_code, 201)
+        attempt = attempt_response.json()
+        self.assertEqual(attempt["question_source"], "static")
+        self.assertEqual(len(attempt["questions"]), 10)
+
+    def test_tuareg_quiz_is_listed_in_north_africa_and_uses_static_questions(self):
+        response = self.client.get("/api/quiz")
+        self.assertEqual(response.status_code, 200)
+        tuareg = next(
+            culture
+            for culture in response.json()["cultures"]
+            if culture["name"] == "Tuareg"
+        )
+        self.assertEqual(tuareg["language"], "Tuareg languages")
+        self.assertEqual(tuareg["region"], "Sahara · North and West Africa")
+        self.assertEqual(tuareg["subregion"], "North Africa")
+
+        questions, source = questions_for_culture(tuareg)
+        self.assertEqual(source, "static")
+        self.assertEqual(len(questions), 10)
+        self.assertTrue(
+            all(
+                len(question["options"]) == 4
+                and 0 <= question["correct_index"] < 4
+                for question in questions
+            )
+        )
+
+        attempt_response = self.client.post(
+            "/api/attempts",
+            data=json.dumps({"culture_id": tuareg["id"]}),
+            content_type="application/json",
+        )
+        self.assertEqual(attempt_response.status_code, 201)
+        attempt = attempt_response.json()
+        self.assertEqual(attempt["question_source"], "static")
+        self.assertEqual(len(attempt["questions"]), 10)
+
+    def test_sahrawi_quiz_is_listed_in_north_africa_and_uses_static_questions(self):
+        response = self.client.get("/api/quiz")
+        self.assertEqual(response.status_code, 200)
+        sahrawi = next(
+            culture
+            for culture in response.json()["cultures"]
+            if culture["name"] == "Sahrawi"
+        )
+        self.assertEqual(sahrawi["language"], "Hassaniya Arabic")
+        self.assertEqual(sahrawi["region"], "Western Sahara")
+        self.assertEqual(sahrawi["subregion"], "North Africa")
+
+        questions, source = questions_for_culture(sahrawi)
+        self.assertEqual(source, "static")
+        self.assertEqual(len(questions), 10)
+        self.assertTrue(
+            all(
+                len(question["options"]) == 4
+                and 0 <= question["correct_index"] < 4
+                for question in questions
+            )
+        )
+
+        attempt_response = self.client.post(
+            "/api/attempts",
+            data=json.dumps({"culture_id": sahrawi["id"]}),
+            content_type="application/json",
+        )
+        self.assertEqual(attempt_response.status_code, 201)
+        attempt = attempt_response.json()
+        self.assertEqual(attempt["question_source"], "static")
+        self.assertEqual(len(attempt["questions"]), 10)
+
+    def test_kabyle_quiz_is_listed_in_north_africa_and_uses_static_questions(self):
+        response = self.client.get("/api/quiz")
+        self.assertEqual(response.status_code, 200)
+        kabyle = next(
+            culture
+            for culture in response.json()["cultures"]
+            if culture["name"] == "Kabyle"
+        )
+        self.assertEqual(kabyle["language"], "Kabyle Amazigh")
+        self.assertEqual(kabyle["region"], "Kabylia · Algeria")
+        self.assertEqual(kabyle["subregion"], "North Africa")
+
+        questions, source = questions_for_culture(kabyle)
+        self.assertEqual(source, "static")
+        self.assertEqual(len(questions), 10)
+        self.assertTrue(
+            all(
+                len(question["options"]) == 4
+                and 0 <= question["correct_index"] < 4
+                for question in questions
+            )
+        )
+
+        attempt_response = self.client.post(
+            "/api/attempts",
+            data=json.dumps({"culture_id": kabyle["id"]}),
+            content_type="application/json",
+        )
+        self.assertEqual(attempt_response.status_code, 201)
+        attempt = attempt_response.json()
+        self.assertEqual(attempt["question_source"], "static")
+        self.assertEqual(len(attempt["questions"]), 10)
 
     def test_khoi_question_images_match_question_numbers_and_are_served(self):
         with database() as connection:
@@ -799,6 +988,26 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "image/webp")
+
+        amazigh_response = self.client.get("/TribeProfile/amazigh.svg")
+        self.assertEqual(amazigh_response.status_code, 200)
+        self.assertEqual(amazigh_response["Content-Type"], "image/svg+xml")
+
+        beja_response = self.client.get("/TribeProfile/beja.svg")
+        self.assertEqual(beja_response.status_code, 200)
+        self.assertEqual(beja_response["Content-Type"], "image/svg+xml")
+
+        tuareg_response = self.client.get("/TribeProfile/tuareg.svg")
+        self.assertEqual(tuareg_response.status_code, 200)
+        self.assertEqual(tuareg_response["Content-Type"], "image/svg+xml")
+
+        sahrawi_response = self.client.get("/TribeProfile/sahrawi.svg")
+        self.assertEqual(sahrawi_response.status_code, 200)
+        self.assertEqual(sahrawi_response["Content-Type"], "image/svg+xml")
+
+        kabyle_response = self.client.get("/TribeProfile/kabyle.svg")
+        self.assertEqual(kabyle_response.status_code, 200)
+        self.assertEqual(kabyle_response["Content-Type"], "image/svg+xml")
 
         bemba_response = self.client.get("/TribeProfile/bemba.svg")
         self.assertEqual(bemba_response.status_code, 200)

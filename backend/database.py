@@ -18,7 +18,7 @@ CULTURES = [
     {"name": "Sesotho", "language": "Sesotho", "region": "Lesotho · South Africa", "subregion": "Southern Africa", "image": "/TribeProfile/sesotho.webp"},
     {"name": "Sepedi", "language": "Sesotho sa Leboa", "region": "South Africa", "subregion": "Southern Africa", "image": "/TribeProfile/sepedi.webp"},
     {"name": "Tswana", "language": "Setswana", "region": "Botswana · South Africa", "subregion": "Southern Africa", "image": "/TribeProfile/tswana.webp"},
-    {"name": "Tsonga", "language": "X" + "itsonga", "region": "Southern Africa", "subregion": "Southern Africa", "image": "/TribeProfile/tsonga.webp"},
+    {"name": "Tsonga", "language": "itsonga", "region": "Southern Africa", "subregion": "Southern Africa", "image": "/TribeProfile/tsonga.webp"},
     {"name": "Venda", "language": "Tshivenḓa", "region": "South Africa", "subregion": "Southern Africa", "image": "/TribeProfile/vhenda.webp"},
     {"name": "Swati", "language": "siSwati", "region": "Eswatini · South Africa", "subregion": "Southern Africa", "image": "/TribeProfile/swati.webp"},
     {"name": "Ndebele", "language": "isiNdebele", "region": "Southern Africa", "subregion": "Southern Africa", "image": "/TribeProfile/ndebele.webp"},
@@ -28,6 +28,11 @@ CULTURES = [
     {"name": "Lozi", "language": "Silozi", "region": "Zambia", "subregion": "Southern Africa", "image": "/TribeProfile/loziCover.jpg"},
     {"name": "Herero", "language": "Otjiherero", "region": "Namibia · Botswana · Angola", "subregion": "Southern Africa", "image": "/TribeProfile/herero.svg"},
     {"name": "Khoi", "language": "Khoekhoe", "region": "Southern Africa", "subregion": "Southern Africa", "image": "/TribeProfile/khoi.jpg"},
+    {"name": "Amazigh", "language": "Tamazight", "region": "Morocco · Algeria", "subregion": "North Africa", "image": "/TribeProfile/amazigh.svg"},
+    {"name": "Beja", "language": "Beja", "region": "Egypt · Sudan · Eritrea", "subregion": "North Africa", "image": "/TribeProfile/beja.svg"},
+    {"name": "Tuareg", "language": "Tuareg languages", "region": "Sahara · North and West Africa", "subregion": "North Africa", "image": "/TribeProfile/tuareg.svg"},
+    {"name": "Sahrawi", "language": "Hassaniya Arabic", "region": "Western Sahara", "subregion": "North Africa", "image": "/TribeProfile/sahrawi.svg"},
+    {"name": "Kabyle", "language": "Kabyle Amazigh", "region": "Kabylia · Algeria", "subregion": "North Africa", "image": "/TribeProfile/kabyle.svg"},
 ]
 
 QUESTIONS = [

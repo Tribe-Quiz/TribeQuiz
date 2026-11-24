@@ -13,7 +13,7 @@ The browser uses the shared API client to call Django's `/api` endpoints. The se
 
 The curated question pools for all 15 cultures are stored in `backend/data/tribe_questions.json`. Each pool is matched to its culture and a round draws ten questions from that pool, so local quizzes do not require an API key. If a culture has no curated pool, the backend can generate a 30-question pool with Gemini, validate its structured output, and cache it in SQLite for 30 days. Add `GEMINI_API_KEY` to `backend/.env` for local development and to the hosting provider's private environment settings for deployment; never put the key in frontend code.
 
-The home screen groups cultures by African subregion. Current cultures are listed under East or Southern Africa; North, Central, and West Africa are shown as empty sections until cultures from those regions are added.
+The home screen displays African subregions as selectable cards. Choosing a region shows its culture cards on the same page, with a Back button; regions without cultures show a placeholder.
 
 For each generated question, the backend searches Wikimedia Commons using the culture and the question's image-search phrase, then caches the thumbnail and its source/credit/license metadata with the question. The quiz displays the photo credit and links to the Commons file page. Image lookup does not require a separate API key. AI-generated cultural content and image relevance should be reviewed before being used publicly.
 

@@ -72,8 +72,18 @@ button { color: inherit; }
 .section-heading h2 em { color: var(--gold-light); }
 .section-heading > p:last-child { margin: 12px 0 0; color: var(--muted); font-size: 14px; }
 .culture-groups { width: min(1140px, 100%); margin: 0 auto; display: grid; gap: 40px; }
-.culture-region-heading { margin: 0 0 17px; color: var(--gold-light); font: 700 25px var(--serif); }
 .culture-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 17px; }
+.region-card { min-height: 170px; padding: 22px; border: 1px solid rgba(231, 175, 32, .24); border-radius: 8px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; background: radial-gradient(ellipse at top left, rgba(110, 53, 12, .36), rgba(20, 10, 4, .95)); color: var(--cream); cursor: pointer; text-align: left; transition: border-color .2s ease, transform .2s ease, background .2s ease; }
+.region-card:hover { border-color: var(--gold); transform: translateY(-3px); background: rgba(35, 19, 8, .95); }
+.region-card:focus-visible, .region-back:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 3px; }
+.region-card-label { color: var(--gold); font-size: 9px; font-weight: 700; letter-spacing: .2em; }
+.region-card-title { font: 700 23px var(--serif); }
+.region-card-count { color: #c8b9a2; font-size: 12px; }
+.region-card-action { margin-top: auto; color: var(--gold-light); font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.region-view-header { display: flex; align-items: center; gap: 18px; }
+.region-back { min-height: 38px; padding: 0 14px; border: 1px solid rgba(251, 204, 74, .34); border-radius: 4px; background: transparent; color: var(--gold-light); cursor: pointer; font-size: 11px; font-weight: 700; }
+.region-back:hover { background: rgba(231, 175, 32, .1); }
+.region-view-title { margin: 0; color: var(--gold-light); font: 700 25px var(--serif); }
 .culture-empty { margin: 0; color: var(--muted); font-size: 13px; }
 .culture-card { min-height: 276px; border: 1px solid rgba(231, 175, 32, .24); border-radius: 8px; overflow: hidden; background: rgba(25, 14, 7, .9); animation: card-rise .5s both; }
 .culture-image { height: 145px; display: grid; place-items: center; padding: 8px; background: radial-gradient(ellipse at center, rgba(110, 53, 12, .36), rgba(20, 10, 4, .95)); }

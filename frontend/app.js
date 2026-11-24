@@ -20,6 +20,7 @@ let cultures = [];
 let questions = [];
 let activeAttempts = [];
 let currentCulture = null;
+let selectedSubregion = null;
 let currentAttemptId = null;
 let currentUser = null;
 let questionIndex = 0;
@@ -52,29 +53,79 @@ function renderCultureCards() {
     "West Africa",
     "Southern Africa"
   ];
-  subregions.forEach((subregion) => {
-    const regionSection = document.createElement("section");
-    regionSection.className = "culture-region";
-    const heading = document.createElement("h3");
-    heading.className = "culture-region-heading";
-    heading.textContent = subregion;
+  if (selectedSubregion) {
+    renderSubregionCultures(selectedSubregion);
+    return;
+  }
 
+  const regionGrid = document.createElement("div");
+  regionGrid.className = "culture-grid region-grid";
+  subregions.forEach((subregion) => {
     const regionCultures = cultures.filter((culture) => culture.subregion === subregion);
-    if (regionCultures.length === 0) {
-      const emptyState = document.createElement("p");
-      emptyState.className = "culture-empty";
-      emptyState.textContent = "More cultures coming soon.";
-      regionSection.append(heading, emptyState);
-    } else {
-      const regionGrid = document.createElement("div");
-      regionGrid.className = "culture-grid";
-      regionCultures.forEach((culture) => {
-        renderCultureCard(culture, cultures.indexOf(culture), regionGrid);
-      });
-      regionSection.append(heading, regionGrid);
-    }
-    grid.append(regionSection);
+    const card = document.createElement("button");
+    card.className = "region-card";
+    card.type = "button";
+    card.setAttribute(
+      "aria-label",
+      `Open ${subregion}, ${regionCultures.length} ${regionCultures.length === 1 ? "tribe" : "tribes"}`
+    );
+
+    const label = document.createElement("span");
+    label.className = "region-card-label";
+    label.textContent = "AFRICAN REGION";
+    const title = document.createElement("span");
+    title.className = "region-card-title";
+    title.textContent = subregion;
+    const count = document.createElement("span");
+    count.className = "region-card-count";
+    count.textContent = regionCultures.length === 0
+      ? "No tribes yet"
+      : `${regionCultures.length} ${regionCultures.length === 1 ? "tribe" : "tribes"}`;
+    const action = document.createElement("span");
+    action.className = "region-card-action";
+    action.textContent = "View tribes";
+    card.append(label, title, count, action);
+    card.addEventListener("click", () => {
+      selectedSubregion = subregion;
+      renderCultureCards();
+    });
+    regionGrid.append(card);
   });
+  grid.append(regionGrid);
+}
+
+function renderSubregionCultures(subregion) {
+  const header = document.createElement("div");
+  header.className = "region-view-header";
+  const backButton = document.createElement("button");
+  backButton.className = "region-back";
+  backButton.type = "button";
+  backButton.textContent = "Back to regions";
+  backButton.addEventListener("click", () => {
+    selectedSubregion = null;
+    renderCultureCards();
+  });
+  const title = document.createElement("h3");
+  title.className = "region-view-title";
+  title.textContent = subregion;
+  header.append(backButton, title);
+  grid.append(header);
+
+  const regionCultures = cultures.filter((culture) => culture.subregion === subregion);
+  if (regionCultures.length === 0) {
+    const emptyState = document.createElement("p");
+    emptyState.className = "culture-empty";
+    emptyState.textContent = "More cultures coming soon.";
+    grid.append(emptyState);
+    return;
+  }
+
+  const cultureGrid = document.createElement("div");
+  cultureGrid.className = "culture-grid";
+  regionCultures.forEach((culture) => {
+    renderCultureCard(culture, cultures.indexOf(culture), cultureGrid);
+  });
+  grid.append(cultureGrid);
 }
 
 function renderCultureCard(culture, index, container) {

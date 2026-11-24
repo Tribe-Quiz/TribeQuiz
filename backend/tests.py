@@ -505,6 +505,10 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
         )
         self.assertEqual(lozi["language"], "Silozi")
         self.assertEqual(lozi["region"], "Zambia")
+        self.assertEqual(lozi["image"], "/TribeProfile/loziCover.jpg")
+        cover_response = self.client.get(lozi["image"])
+        self.assertEqual(cover_response.status_code, 200)
+        self.assertEqual(cover_response["Content-Type"], "image/jpeg")
 
         attempt_response = self.client.post(
             "/api/attempts",

@@ -447,13 +447,32 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
             cultures = [
                 dict(row)
                 for row in connection.execute(
-                    "SELECT id, name FROM cultures ORDER BY id"
+                    "SELECT id, name, subregion FROM cultures ORDER BY id"
                 )
             ]
 
         self.assertEqual(len(cultures), 14)
+        east_african_cultures = [
+            culture["name"]
+            for culture in cultures
+            if culture["subregion"] == "East Africa"
+        ]
+        self.assertEqual(
+            east_african_cultures,
+            ["Swahili"],
+        )
         for culture in cultures:
             with self.subTest(culture=culture["name"]):
+                self.assertIn(
+                    culture["subregion"],
+                    {
+                        "North Africa",
+                        "Central Africa",
+                        "East Africa",
+                        "West Africa",
+                        "Southern Africa",
+                    },
+                )
                 questions, source = questions_for_culture(culture)
                 self.assertEqual(source, "static")
                 self.assertGreaterEqual(len(questions), 10)

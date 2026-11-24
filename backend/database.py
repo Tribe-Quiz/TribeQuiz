@@ -13,20 +13,20 @@ DATABASE_PATH = Path(os.environ.get("DATABASE_PATH", BASE_DIR / "backend" / "tri
 INTEGRITY_ERRORS = (sqlite3.IntegrityError, turso_serverless.IntegrityError)
 
 CULTURES = [
-    {"name": "Zulu", "language": "IsiZulu", "region": "South Africa", "image": "/TribeProfile/zulu.webp"},
-    {"name": "Xhosa", "language": "IsiXhosa", "region": "South Africa", "image": "/TribeProfile/xhosa.webp"},
-    {"name": "Sesotho", "language": "Sesotho", "region": "Lesotho · South Africa", "image": "/TribeProfile/sesotho.webp"},
-    {"name": "Sepedi", "language": "Sesotho sa Leboa", "region": "South Africa", "image": "/TribeProfile/sepedi.webp"},
-    {"name": "Tswana", "language": "Setswana", "region": "Botswana · South Africa", "image": "/TribeProfile/tswana.webp"},
-    {"name": "Tsonga", "language": "Xitsonga", "region": "Southern Africa", "image": "/TribeProfile/tsonga.webp"},
-    {"name": "Venda", "language": "Tshivenḓa", "region": "South Africa", "image": "/TribeProfile/vhenda.webp"},
-    {"name": "Swati", "language": "siSwati", "region": "Eswatini · South Africa", "image": "/TribeProfile/swati.webp"},
-    {"name": "Ndebele", "language": "isiNdebele", "region": "Southern Africa", "image": "/TribeProfile/ndebele.webp"},
-    {"name": "Afrikaner", "language": "Afrikaans", "region": "Southern Africa", "image": "/TribeProfile/afrikaans.png"},
-    {"name": "Swahili", "language": "Kiswahili", "region": "East Africa", "image": "/TribeProfile/swahili.png"},
-    {"name": "Bemba", "language": "Ichibemba", "region": "Zambia", "image": "/TribeProfile/bemba.svg"},
-    {"name": "Lozi", "language": "Silozi", "region": "Zambia", "image": "/TribeProfile/lozi.svg"},
-    {"name": "Herero", "language": "Otjiherero", "region": "Namibia · Botswana · Angola", "image": "/TribeProfile/herero.svg"},
+    {"name": "Zulu", "language": "IsiZulu", "region": "South Africa", "subregion": "Southern Africa", "image": "/TribeProfile/zulu.webp"},
+    {"name": "Xhosa", "language": "IsiXhosa", "region": "South Africa", "subregion": "Southern Africa", "image": "/TribeProfile/xhosa.webp"},
+    {"name": "Sesotho", "language": "Sesotho", "region": "Lesotho · South Africa", "subregion": "Southern Africa", "image": "/TribeProfile/sesotho.webp"},
+    {"name": "Sepedi", "language": "Sesotho sa Leboa", "region": "South Africa", "subregion": "Southern Africa", "image": "/TribeProfile/sepedi.webp"},
+    {"name": "Tswana", "language": "Setswana", "region": "Botswana · South Africa", "subregion": "Southern Africa", "image": "/TribeProfile/tswana.webp"},
+    {"name": "Tsonga", "language": "X" + "itsonga", "region": "Southern Africa", "subregion": "Southern Africa", "image": "/TribeProfile/tsonga.webp"},
+    {"name": "Venda", "language": "Tshivenḓa", "region": "South Africa", "subregion": "Southern Africa", "image": "/TribeProfile/vhenda.webp"},
+    {"name": "Swati", "language": "siSwati", "region": "Eswatini · South Africa", "subregion": "Southern Africa", "image": "/TribeProfile/swati.webp"},
+    {"name": "Ndebele", "language": "isiNdebele", "region": "Southern Africa", "subregion": "Southern Africa", "image": "/TribeProfile/ndebele.webp"},
+    {"name": "Afrikaner", "language": "Afrikaans", "region": "Southern Africa", "subregion": "Southern Africa", "image": "/TribeProfile/afrikaans.png"},
+    {"name": "Swahili", "language": "Kiswahili", "region": "East Africa", "subregion": "East Africa", "image": "/TribeProfile/swahili.png"},
+    {"name": "Bemba", "language": "Ichibemba", "region": "Zambia", "subregion": "Southern Africa", "image": "/TribeProfile/bemba.svg"},
+    {"name": "Lozi", "language": "Silozi", "region": "Zambia", "subregion": "Southern Africa", "image": "/TribeProfile/lozi.svg"},
+    {"name": "Herero", "language": "Otjiherero", "region": "Namibia · Botswana · Angola", "subregion": "Southern Africa", "image": "/TribeProfile/herero.svg"},
 ]
 
 QUESTIONS = [
@@ -78,7 +78,8 @@ def initialize_database() -> None:
                 name TEXT NOT NULL UNIQUE,
                 language TEXT NOT NULL,
                 region TEXT NOT NULL,
-                image TEXT NOT NULL
+                image TEXT NOT NULL,
+                subregion TEXT NOT NULL DEFAULT 'Southern Africa'
             );
             CREATE TABLE IF NOT EXISTS questions (
                 id INTEGER PRIMARY KEY,
@@ -192,15 +193,30 @@ def initialize_database() -> None:
             ):
                 if column not in existing_columns:
                     connection.execute(f"ALTER TABLE {table} ADD COLUMN {column} TEXT")
+        culture_columns = {
+            row["name"] for row in connection.execute("PRAGMA table_info(cultures)")
+        }
+        if "subregion" not in culture_columns:
+            connection.execute(
+                "ALTER TABLE cultures ADD COLUMN subregion TEXT NOT NULL "
+                "DEFAULT 'Southern Africa'"
+            )
         connection.executemany(
-            """INSERT INTO cultures (name, language, region, image)
-               VALUES (?, ?, ?, ?)
+            """INSERT INTO cultures (name, language, region, image, subregion)
+               VALUES (?, ?, ?, ?, ?)
                ON CONFLICT(name) DO UPDATE SET
                    language = excluded.language,
                    region = excluded.region,
-                   image = excluded.image""",
+                   image = excluded.image,
+                   subregion = excluded.subregion""",
             [
-                (item["name"], item["language"], item["region"], item["image"])
+                (
+                    item["name"],
+                    item["language"],
+                    item["region"],
+                    item["image"],
+                    item["subregion"],
+                )
                 for item in CULTURES
             ],
         )

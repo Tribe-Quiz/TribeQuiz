@@ -45,32 +45,63 @@ async function loadQuizData() {
 
 function renderCultureCards() {
   grid.replaceChildren();
-  cultures.forEach((culture, index) => {
-    const resumableAttempt = activeAttempts.find((attempt) => attempt.culture_id === culture.id);
-    const card = document.createElement("article");
-    card.className = "culture-card";
-    card.style.animationDelay = `${Math.min(index * 45, 360)}ms`;
-    card.innerHTML = `
-      <div class="culture-image"><img src="${culture.image}" alt="${culture.name}" loading="lazy"></div>
-      <div class="culture-card-content">
-        <span class="culture-index">CULTURE ${String(index + 1).padStart(2, "0")}</span>
-        <h3>${culture.name}</h3>
-        <p>${culture.language} <span aria-hidden="true">·</span> ${culture.region}</p>
-        <button class="culture-play" type="button" aria-label="Play ${culture.name} quiz">
-          Begin the quiz <span aria-hidden="true">›</span>
-        </button>
-        ${resumableAttempt ? `
-          <button class="culture-resume" type="button">
-            Resume quiz · ${resumableAttempt.answered_count}/${resumableAttempt.question_count}
-          </button>` : ""}
-      </div>`;
-    card.querySelector("button").addEventListener("click", () => startQuiz(culture));
-    const resumeButton = card.querySelector(".culture-resume");
-    if (resumeButton) {
-      resumeButton.addEventListener("click", () => startQuiz(culture, resumableAttempt.id));
+  const subregions = [
+    "North Africa",
+    "Central Africa",
+    "East Africa",
+    "West Africa",
+    "Southern Africa"
+  ];
+  subregions.forEach((subregion) => {
+    const regionSection = document.createElement("section");
+    regionSection.className = "culture-region";
+    const heading = document.createElement("h3");
+    heading.className = "culture-region-heading";
+    heading.textContent = subregion;
+
+    const regionCultures = cultures.filter((culture) => culture.subregion === subregion);
+    if (regionCultures.length === 0) {
+      const emptyState = document.createElement("p");
+      emptyState.className = "culture-empty";
+      emptyState.textContent = "More cultures coming soon.";
+      regionSection.append(heading, emptyState);
+    } else {
+      const regionGrid = document.createElement("div");
+      regionGrid.className = "culture-grid";
+      regionCultures.forEach((culture) => {
+        renderCultureCard(culture, cultures.indexOf(culture), regionGrid);
+      });
+      regionSection.append(heading, regionGrid);
     }
-    grid.append(card);
+    grid.append(regionSection);
   });
+}
+
+function renderCultureCard(culture, index, container) {
+  const resumableAttempt = activeAttempts.find((attempt) => attempt.culture_id === culture.id);
+  const card = document.createElement("article");
+  card.className = "culture-card";
+  card.style.animationDelay = `${Math.min(index * 45, 360)}ms`;
+  card.innerHTML = `
+    <div class="culture-image"><img src="${culture.image}" alt="${culture.name}" loading="lazy"></div>
+    <div class="culture-card-content">
+      <span class="culture-index">CULTURE ${String(index + 1).padStart(2, "0")}</span>
+      <h3>${culture.name}</h3>
+      <p>${culture.language} <span aria-hidden="true">·</span> ${culture.region}</p>
+      <button class="culture-play" type="button" aria-label="Play ${culture.name} quiz">
+        Begin the quiz <span aria-hidden="true">›</span>
+      </button>
+      ${resumableAttempt ? `
+        <button class="culture-resume" type="button">
+          Resume quiz · ${resumableAttempt.answered_count}/${resumableAttempt.question_count}
+        </button>` : ""}
+    </div>`;
+  card.querySelector("button").addEventListener("click", () => startQuiz(culture));
+  const resumeButton = card.querySelector(".culture-resume");
+  if (resumeButton) {
+    resumeButton.addEventListener("click", () => startQuiz(culture, resumableAttempt.id));
+  }
+  container.append(card);
 }
 
 async function refreshNavigation() {

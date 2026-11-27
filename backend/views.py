@@ -82,6 +82,7 @@ PROFILE_FILES = {
     "amazigh.svg",
     "beja.svg",
     "bemba.svg",
+    "bembaCover.jpg",
     "herero.svg",
     "kabyle.svg",
     "fang.svg",

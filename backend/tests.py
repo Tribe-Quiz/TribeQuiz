@@ -509,6 +509,10 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
         )
         self.assertEqual(bemba["language"], "Ichibemba")
         self.assertEqual(bemba["region"], "Zambia")
+        self.assertEqual(bemba["image"], "/TribeProfile/bembaCover.jpg")
+        cover_response = self.client.get(bemba["image"])
+        self.assertEqual(cover_response.status_code, 200)
+        self.assertEqual(cover_response["Content-Type"], "image/jpeg")
 
         attempt_response = self.client.post(
             "/api/attempts",
@@ -531,6 +535,18 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
                 for question in attempt["questions"]
             )
         )
+
+    def test_tsonga_profile_uses_correct_language_and_region(self):
+        response = self.client.get("/api/quiz")
+        self.assertEqual(response.status_code, 200)
+        tsonga = next(
+            culture
+            for culture in response.json()["cultures"]
+            if culture["name"] == "Tsonga"
+        )
+
+        self.assertEqual(tsonga["language"], "Xitsonga")
+        self.assertEqual(tsonga["region"], "South Africa")
 
     def test_lozi_quiz_uses_its_static_multiple_choice_questions(self):
         response = self.client.get("/api/quiz")
@@ -1063,9 +1079,9 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
         self.assertEqual(kabyle_response.status_code, 200)
         self.assertEqual(kabyle_response["Content-Type"], "image/svg+xml")
 
-        bemba_response = self.client.get("/TribeProfile/bemba.svg")
+        bemba_response = self.client.get("/TribeProfile/bembaCover.jpg")
         self.assertEqual(bemba_response.status_code, 200)
-        self.assertEqual(bemba_response["Content-Type"], "image/svg+xml")
+        self.assertEqual(bemba_response["Content-Type"], "image/jpeg")
 
     def test_khoi_profile_image_is_served_from_the_local_project(self):
         response = self.client.get("/TribeProfile/khoi.jpg")

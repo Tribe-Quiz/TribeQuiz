@@ -21,6 +21,7 @@ CULTURES = [
     {"name": "Ndebele", "language": "isiNdebele", "region": "Southern Africa", "image": "/TribeProfile/ndebele.webp"},
     {"name": "Afrikaner", "language": "Afrikaans", "region": "Southern Africa", "image": "/TribeProfile/afrikaans.png"},
     {"name": "Swahili", "language": "Kiswahili", "region": "East Africa", "image": "/TribeProfile/swahili.png"},
+    {"name": "Bemba", "language": "Ichibemba", "region": "Zambia", "image": "/TribeProfile/bembaCover.jpg"},
     {"name": "Khoi", "language": "Khoekhoe", "region": "Southern Africa", "image": "/TribeProfile/khoi.jpg"},
 ]
 

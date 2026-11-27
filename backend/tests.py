@@ -375,7 +375,7 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
                 )
             ]
 
-        self.assertEqual(len(cultures), 12)
+        self.assertEqual(len(cultures), 13)
         for culture in cultures:
             with self.subTest(culture=culture["name"]):
                 questions, source = questions_for_culture(culture)
@@ -396,6 +396,18 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
             if culture["name"] == "Khoi"
         )
         self.assertEqual(khoi["image"], "/TribeProfile/khoi.jpg")
+
+    def test_quiz_api_includes_bemba_with_its_profile_cover(self):
+        response = self.client.get("/api/quiz")
+
+        self.assertEqual(response.status_code, 200)
+        bemba = next(
+            culture
+            for culture in response.json()["cultures"]
+            if culture["name"] == "Bemba"
+        )
+        self.assertEqual(bemba["language"], "Ichibemba")
+        self.assertEqual(bemba["image"], "/TribeProfile/bembaCover.jpg")
 
     def test_start_attempt_uses_tribe_specific_static_questions_without_ai(self):
         culture_id = self._culture_id()
@@ -511,6 +523,12 @@ class QuizAPIAndQuestionValidationTests(SimpleTestCase):
 
     def test_khoi_profile_image_is_served_from_the_local_project(self):
         response = self.client.get("/TribeProfile/khoi.jpg")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "image/jpeg")
+
+    def test_bemba_profile_image_is_served_from_the_local_project(self):
+        response = self.client.get("/TribeProfile/bembaCover.jpg")
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "image/jpeg")

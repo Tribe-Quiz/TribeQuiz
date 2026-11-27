@@ -3981,6 +3981,118 @@
       "image_path": "public/zulu-photos/king-misuzulu.jpg"
     }
   ],
+  "Bemba": [
+    {
+      "category": "Language",
+      "prompt": "The Bemba language belongs to which language family?",
+      "options": [
+        "Germanic",
+        "Slavic",
+        "Bantu",
+        "Romance"
+      ],
+      "correct_index": 2
+    },
+    {
+      "category": "History",
+      "prompt": "According to historical accounts, when did the Bemba migrate into Zambia?",
+      "options": [
+        "12th–14th centuries CE",
+        "Before 1740",
+        "18th–19th centuries CE",
+        "11th–12th centuries CE"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Geography",
+      "prompt": "Bemba is primarily spoken in which part of Zambia?",
+      "options": [
+        "Western",
+        "Northeastern",
+        "Southern",
+        "Central"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Language",
+      "prompt": "Which of the following is a dialect of Bemba?",
+      "options": [
+        "Silozi",
+        "Lala",
+        "Shona",
+        "Tswana"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Language",
+      "prompt": "What writing system does Bemba use?",
+      "options": [
+        "Arabic script",
+        "Cyrillic",
+        "Latin alphabet",
+        "Ge’ez"
+      ],
+      "correct_index": 2
+    },
+    {
+      "category": "Language",
+      "prompt": "Bemba is officially recognized in Zambia as what?",
+      "options": [
+        "A minority language",
+        "One of eight official regional languages",
+        "A ceremonial language",
+        "A trade pidgin"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Language",
+      "prompt": "Which of the following is true about Bemba phonology?",
+      "options": [
+        "It has no tonal distinctions",
+        "It has two basic tones",
+        "It uses clicks",
+        "It has no nasal consonants"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Language",
+      "prompt": "Which numeral corresponds to ‘-sano’ in Bemba?",
+      "options": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "correct_index": 2
+    },
+    {
+      "category": "Language",
+      "prompt": "Which of the following is a characteristic of Bemba grammar?",
+      "options": [
+        "Verb-final word order",
+        "Agglutinative structure",
+        "No noun classes",
+        "No subject prefixes"
+      ],
+      "correct_index": 1
+    },
+    {
+      "category": "Geography",
+      "prompt": "Which river did the Bemba cross to enter Zambia?",
+      "options": [
+        "Zambezi River",
+        "Luapula River",
+        "Kafue River",
+        "Congo River"
+      ],
+      "correct_index": 1
+    }
+  ],
   "Khoi": [
     {
       "category": "History",
